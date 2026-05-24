@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ICEMS - Publication Dashboard</title>
+  <link rel="stylesheet" href="publication.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+  <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+
+  <div class="sidebar" id="sidebar">
+    <div class="logo-section">
+      <div class="logo">
+        <img src="PUP.png" alt="puplogo">
+      </div>
+      <div class="logo-text">
+        <h2>ICEMS</h2>
+        <p>PUP Santa Maria</p>
+      </div>
+    </div>
+
+    <div class="org-profile" onclick="openProfileModal()">
+      <div class="org-avatar">PB</div>
+      <div class="org-name">Publication</div>
+    </div>
+
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a href="#" class="nav-link active" data-section="clearance">
+          <span class="nav-icon"><i class="fas fa-list-check"></i></span>
+          <span>Clearance</span>
+          <span class="nav-badge">0</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link" data-section="payment">
+          <span class="nav-icon"><i class="fas fa-peso-sign"></i></span>
+          <span>Payments</span>
+          <span class="nav-badge" id="pendingPaymentCount">0</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="logout()">
+        <span><i class="fa-solid fa-right-from-bracket"></i></span>
+        <span>Logout</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="main-wrapper">
+    <!-- CLEARANCE SECTION -->
+    <div class="section active" id="clearanceSection">
+      <div class="header">
+        <h1>Clearance <i class="fas fa-file-alt"></i></h1>
+        <p>View student clearance requests</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon clearance"><i class="fa-solid fa-file-invoice"></i></div>
+          </div>
+          <div class="stat-value" id="totalClearanceCount">0</div>
+          <div class="stat-label">Total Clearance Requests</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon events"><i class="fa-solid fa-spinner"></i></div>
+          </div>
+          <div class="stat-value" id="pendingClearanceCount">0</div>
+          <div class="stat-label">Pending Requests</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon payments"><i class="fas fa-check"></i></div>
+          </div>
+          <div class="stat-value" id="approvedClearanceCount">0</div>
+          <div class="stat-label">Approved Requests</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon rejected"><i class="fas fa-times"></i></div>
+          </div>
+          <div class="stat-value" id="rejectedClearanceCount">0</div>
+          <div class="stat-label">Rejected Requests</div>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <div class="table-header">
+          <h2 class="table-title">Clearance Requests</h2>
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search students..." onkeyup="searchClearanceRequests(this.value)">
+          </div>
+        </div>
+
+        <!-- ADD THIS TABLE -->
+        <table>
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Name</th>
+              <th>Requirement</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="clearanceTableBody">
+            <tr>
+              <td colspan="7">
+                <div class="empty-state">
+                  <div class="empty-icon"><i class="fas fa-file-alt"></i></div>
+                  <h2>Loading Clearance Requests...</h2>
+                  <p>Please wait while we load student clearance submissions</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table><!-- CLEARANCE SECTION -->
+        <div class="section active" id="clearanceSection">
+          <div class="header">
+            <h1>Clearance <i class="fas fa-file-alt"></i></h1>
+            <p>View student clearance requests</p>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon clearance"><i class="fa-solid fa-file-invoice"></i></div>
+              </div>
+              <div class="stat-value" id="totalClearanceCount">0</div>
+              <div class="stat-label">Total Clearance Requests</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon events"><i class="fa-solid fa-spinner"></i></div>
+              </div>
+              <div class="stat-value" id="pendingClearanceCount">0</div>
+              <div class="stat-label">Pending Requests</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon payments"><i class="fas fa-check"></i></div>
+              </div>
+              <div class="stat-value" id="approvedClearanceCount">0</div>
+              <div class="stat-label">Approved Requests</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-header">
+                <div class="stat-icon rejected"><i class="fas fa-times"></i></div>
+              </div>
+              <div class="stat-value" id="rejectedClearanceCount">0</div>
+              <div class="stat-label">Rejected Requests</div>
+            </div>
+          </div>
+
+          <div class="table-container">
+            <div class="table-header">
+              <h2 class="table-title">Clearance Requests</h2>
+              <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search students..." onkeyup="searchClearanceRequests(this.value)">
+              </div>
+            </div>
+
+            <!-- ADD THIS TABLE -->
+            <table>
+              <thead>
+                <tr>
+                  <th>Student ID</th>
+                  <th>Name</th>
+                  <th>Requirement</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="clearanceTableBody">
+                <tr>
+                  <td colspan="7">
+                    <div class="empty-state">
+                      <div class="empty-icon"><i class="fas fa-file-alt"></i></div>
+                      <h2>Loading Clearance Requests...</h2>
+                      <p>Please wait while we load student clearance submissions</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENTS SECTION -->
+    <div class="section" id="paymentSection" style="display: none;">
+      <div class="header payment-header">
+        <div class="header-left">
+          <h1>Payments <i class="fas fa-credit-card"></i></h1>
+          <p>Manage payment requirements and verify student payments</p>
+        </div>
+        <button class="save-payment-btn" id="openPaymentSettings">
+          <i class="fas fa-plus"></i> Create Payment
+        </button>
+      </div>
+
+      <!-- Statistics -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon payments"><i class="fa-solid fa-piggy-bank"></i></div>
+          </div>
+          <div class="stat-value" id="totalPaymentAmount">₱0</div>
+          <div class="stat-label">Total Collected</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon clearance"><i class="fa-solid fa-stopwatch"></i></div>
+          </div>
+          <div class="stat-value" id="pendingPaymentCount2">0</div>
+          <div class="stat-label">Pending Verification</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-header">
+            <div class="stat-icon events"><i class="fa-solid fa-sack-dollar"></i></div>
+          </div>
+          <div class="stat-value" id="verifiedPaymentCount">0</div>
+          <div class="stat-label">Verified Payments</div>
+        </div>
+      </div>
+
+      <!-- Payment Submissions Table -->
+      <div class="table-container">
+        <div class="table-header">
+          <h2 class="table-title">Payment Submissions</h2>
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" placeholder="Search transactions..." onkeyup="searchPayments(this.value)">
+          </div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Name</th>
+              <th>Payment</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="paymentsTableBody">
+            <tr>
+              <td colspan="7">
+                <div class="empty-state">
+                  <div class="empty-icon"><i class="fa-solid fa-peso-sign"></i></div>
+                  <h2>No Payment Submissions</h2>
+                  <p>Student payment submissions will appear here</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Payment Requirements Section -->
+      <div class="table-container" style="margin-top: 40px;">
+        <div class="table-header">
+          <h2 class="table-title">Payment Requirements</h2>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Amount</th>
+              <th>Description</th>
+              <th>Due Date</th>
+              <th>Type</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="requirementsTableBody">
+            <tr>
+              <td colspan="6">
+                <div class="empty-state">
+                  <div class="empty-icon"><i class="fas fa-receipt"></i></div>
+                  <h2>No Payment Requirements</h2>
+                  <p>Create a payment requirement to get started</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE MODAL -->
+  <div class="modal" id="profileModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeProfileModal()">&times;</span>
+      <h2 class="modal-title">Organization Profile</h2>
+      <div class="form-group">
+        <label>Organization Name</label>
+        <input type="text" class="form-input" value="Publication" readonly>
+      </div>
+      <div class="form-group">
+        <label>Organization Type</label>
+        <input type="text" class="form-input" value="Student Organization" readonly>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" class="form-input" value="publication@pupsmb.edu.ph" readonly>
+      </div>
+      <div class="form-group">
+        <label>Contact Number</label>
+        <input type="tel" class="form-input" value="+63 917 123 4567" readonly>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT SETTINGS MODAL -->
+  <div class="modal" id="paymentSettingsModal">
+    <div class="modal-content">
+      <span class="close-modal" aria-label="Close modal">&times;</span>
+      <h2 class="modal-title">Create Payment Requirement</h2>
+      <form id="paymentSettingsForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <label>Payment Title *</label>
+          <input type="text" class="form-input" name="title" required placeholder="e.g., Publication Fee">
+        </div>
+        <div class="form-group">
+          <label>Amount (₱) *</label>
+          <input type="number" class="form-input" name="amount" min="0" step="0.01" required placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea class="form-textarea" name="description" rows="3"
+            placeholder="Brief description of the payment"></textarea>
+        </div>
+        <div class="form-group">
+          <label>GCash Name *</label>
+          <input type="text" class="form-input" name="gcash_name" required placeholder="Account holder name">
+        </div>
+        <div class="form-group">
+          <label>GCash Number *</label>
+          <input type="text" class="form-input" name="gcash_number" required placeholder="09XX XXX XXXX">
+        </div>
+        <div class="form-group">
+          <label>Upload QR Code</label>
+          <input type="file" class="form-input" name="qr_code" accept="image/*">
+          <small style="color: #666;">Upload GCash QR code for payment (optional)</small>
+        </div>
+        <div class="form-group">
+          <label>Due Date *</label>
+          <input type="date" class="form-input" name="due_date" required>
+        </div>
+        <div class="form-group">
+          <label>Payment Type *</label>
+          <select class="form-select" name="is_mandatory" required>
+            <option value="1">Mandatory</option>
+            <option value="0">Optional</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary save-payment-btn">
+          <i class="fas fa-save"></i> Create Payment Requirement
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- LOGOUT MODAL -->
+  <div class="logout-modal" id="logoutModal">
+    <div class="logout-modal-content">
+      <h2>Logout Confirmation</h2>
+      <p>Are you sure you want to logout?</p>
+      <div class="logout-btn-wrapper">
+        <button class="logout-confirm" onclick="confirmLogout()">Yes</button>
+        <button class="logout-cancel" onclick="closeLogoutModal()">No</button>
+      </div>
+    </div>
+  </div>
+  `
+  <script src="qrpublication.js"></script>
+  <script src="publication.js"></script>
+  <script src="publicationclearance.js"></script>
+</body>
+
+</html>

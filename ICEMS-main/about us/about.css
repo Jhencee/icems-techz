@@ -1,0 +1,670 @@
+/* about.css - FINAL VERSION: MAY PICTURE SA HEADER + CLEAN NAV + BSIT-EXCLUSIVE */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #ffffff;
+    line-height: 1.7;
+}
+
+/* ====================== HEADER WITH PICTURE ====================== */
+.hero-header {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* BACKGROUND PICTURE */
+.header-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+}
+
+.header-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.65) contrast(1.15);
+    transition: transform 12s ease-in-out;
+}
+
+.hero-header:hover .header-image {
+    transform: scale(1.08);
+}
+
+/* MAROON + DARK OVERLAY */
+.header-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(135deg,
+        rgba(139, 0, 0, 0.88) 0%,
+        rgba(0, 0, 0, 0.75) 50%,
+        rgba(139, 0, 0, 0.92) 100%
+    );
+    z-index: 1;
+}
+
+/* NAV BUTTONS (3 buttons lang: Home, Contact, Team) */
+.nav-buttons {
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 22px;
+    z-index: 10;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.btn {
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    transition: all 0.4s ease;
+}
+
+.btn:hover {
+    transform: translateY(-6px);
+}
+
+.btn-home    { background: #fff; color: #800020; }
+.btn-contact { background: #fff; color: #800020; }
+.btn-team    { background: #fff; color: #800020; }
+
+/* HEADER CONTENT */
+.header-content {
+    position: relative;
+    z-index: 5;
+    max-width: 1150px;
+    padding: 0 20px;
+    margin-top: 140px;
+}
+
+.header-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 7.5rem;
+    color: #FFD700;
+    text-shadow: 7px 7px 30px rgba(0,0,0,0.95);
+    margin-bottom: 10px;
+
+}
+
+.tagline {
+    font-size: 2.3rem;
+    font-weight: 700;
+    margin: 15px 0;
+    color: #f5f7fa;
+}
+
+.subtitle {
+    font-size: 1.6rem;
+    margin: 20px 0;
+    opacity: 0.95;
+    color: #f5f7fa;
+
+
+}
+
+.pup-logo {
+    padding: 20px 45px;
+    display: inline-block;
+    border-radius: 50px;
+    margin: 30px 0;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+
+/* ====================== REST OF THE PAGE ====================== */
+.container { max-width: 1350px; margin: 0 auto; padding: 50px 20px; }
+
+section { margin: 100px 0; text-align: center; }
+
+h2 {
+    font-size: 2.9rem;
+    color: #8B0000;
+    margin-bottom: 55px;
+    position: relative;
+}
+h2::after {
+    content: '';
+    width: 120px;
+    height: 6px;
+    background: #FFD700;
+    display: block;
+    margin: 20px auto;
+    border-radius: 3px;
+}
+
+/* WELCOME SECTION – SAKTO LANG, HINDI OA, YELLOW TITLE LANG ANG STANDOUT */
+.section-welcome {
+    background: linear-gradient(135deg, #800020 0%, #800020 100%);
+    color: #fff;
+    padding: 85px 60px;
+    border-radius: 40px;
+    box-shadow: 0 30px 80px rgba(139, 0, 0, 0.35);
+    max-width: 1100px;
+    margin: 0 auto 120px;
+    position: relative;
+    overflow: hidden;
+    border: 5px solid #FFD700;
+    text-align: center;
+}
+
+/* TITLE: YELLOW LANG ANG MAY COLOR, HINDI BOLD, SAKTO LANG ANG SIZE */
+.section-welcome h2 {
+    font-size: 3.2rem;           /* sakto lang, hindi super laki */
+    font-weight: 700;            /* hindi 800, hindi bold na bold */
+    color: #FFD700;              /* yellow/gold lang */
+    text-shadow: 3px 3px 12px rgba(0,0,0,0.7);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+    letter-spacing: 1px;
+}
+
+/* GOLD LINE UNDER TITLE – SIMPLE LANG, NO GLOW */
+.section-welcome h2::after {
+    content: '';
+    width: 140px;
+    height: 7px;
+    background: #FFD700;
+    display: block;
+    margin: 22px auto 0;
+    border-radius: 4px;
+    box-shadow: 0 3px 10px rgba(255, 215, 0, 0.5);
+    /* TINANGGAL KO NA ANG GLOW ANIMATION – CLEAN NA CLEAN */
+}
+
+/* PARAGRAPH TEXT – WHITE LANG, HINDI BOLD, READABLE */
+.section-welcome p {
+    font-size: 1.35rem;
+    line-height: 2;
+    font-weight: 500;            /* hindi bold, sakto lang */
+    color: #ffffff;
+    text-shadow: 1px 1px 6px rgba(0,0,0,0.6);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+
+/* Mission & Vision – SAKTO RIN ANG STYLE, HINDI OA */
+.section-mv {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    gap: 60px;
+    margin: 120px 0;
+    
+}
+
+.mv-card {
+    background: #800020;
+    color: #fff;
+    padding: 55px 35px;
+    border-radius: 28px;
+    box-shadow: 0 20px 50px rgba(139,0,0,0.35);
+    transition: 0.4s;
+    text-align: center;
+}
+.mv-card:hover { transform: translateY(-12px); }
+.mv-card i { 
+    font-size: 3.8rem; 
+    color: #FFD700; 
+    text-shadow: 3px 3px 12px rgba(0,0,0,0.7);
+    margin-bottom: 22px; 
+}
+.mv-card h3 { 
+    font-size: 1.9rem; 
+    color: #FFD700; 
+    text-shadow: 3px 3px 12px rgba(0,0,0,0.7);
+    margin: 16px 0;
+    font-weight: 700;
+}
+.mv-card p {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    font-weight: 500;
+}
+
+/* Services */
+.section-services h2 { color: #800020; }
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 50px;
+}
+.service-card {
+    background: #fff;
+    padding: 45px 30px;
+    border-radius: 25px;
+    box-shadow: 0 15px 40px rgba(139,0,0,0.12);
+    border: 4px solid #800020;
+    transition: 0.4s;
+}
+.service-card:hover { transform: translateY(-15px); box-shadow: 0 25px 60px rgba(139,0,0,0.22); }
+.service-card i { font-size: 4.5rem; color: #800020; margin-bottom: 25px; }
+.service-card h3 { color: #800020; font-size: 1.7rem; margin: 18px 0; }
+
+/* Features */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 35px;
+}
+.feature {
+    background: #800020;
+    color: #fff;
+    padding: 28px;
+    border-radius: 18px;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Team */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 70px;
+    margin-top: 60px;
+}
+.team-card {
+    background: #fff;
+    padding: 35px;
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(139,0,0,0.18);
+    border: 5px solid #800020;
+    transition: 0.4s;
+}
+.team-card:hover { transform: translateY(-18px); }
+.photo-box {
+    width: 260px; height: 260px;
+    margin: 0 auto 25px;
+    padding: 12px;
+    background: #FFD700;
+    border-radius: 25px;
+    box-shadow: 0 15px 40px rgba(139,0,0,0.3);
+}
+.member-photo {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 18px;
+    border: 6px solid #fff;
+}
+.team-card h3 { font-size: 1.7rem; color: #800020; margin: 18px 0 10px; }
+.role {
+    font-size: 1.25rem;
+    color: #fff;
+    background: #800020;
+    padding: 10px 25px;
+    border-radius: 50px;
+    display: inline-block;
+    font-weight: 700;
+}
+
+/* Info Grid */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 50px;
+    margin: 120px 0;
+}
+.info-card {
+    background: #fff;
+    padding: 40px 30px;
+    border-radius: 25px;
+    box-shadow: 0 15px 40px rgba(139,0,0,0.12);
+    border-left: 8px solid #800020;
+}
+.info-card .icon { font-size: 3.5rem; color: #800020; margin-bottom: 20px; }
+.info-card h3 { color: #800020; margin: 18px 0; font-size: 1.6rem; }
+
+/* Acknowledgement + Motto */
+.final-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+    gap: 60px;
+    margin: 120px 0;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.thanks-box {
+    background: #800020;
+    color: #fff;
+    text-shadow: 3px 3px 12px rgba(0,0,0,0.7);
+    padding: 50px 40px;
+    border-radius: 30px;
+    box-shadow: 0 20px 50px rgba(139,0,0,0.35);
+    text-align: center;
+}
+.thanks-box h2 { color: #FFD700; margin-bottom: 30px; font-size: 2.3rem; }
+.thanks-box p { margin: 18px 0; font-size: 1.15rem; }
+.adviser { font-size: 1.7rem; color: #FFD700; margin: 25px 0; }
+
+.tagline-box {
+    background: #fff;
+    color: #800020;
+    padding: 50px 40px;
+    border-radius: 30px;
+    border: 8px solid #800020;
+    box-shadow: 0 20px 50px rgba(139,0,0,0.25);
+    text-align: center;
+}
+.tagline-box h2 { color: #800020; margin-bottom: 30px; font-size: 2.3rem; }
+.english{
+    font-size: 2.3rem;
+    font-weight: 800;
+    line-height: 1.5;
+    margin: 20px 0;
+}
+
+/* Footer */
+.footer {
+    background: #800020;
+    color: #fff;
+    text-align: center;
+    padding: 50px 20px;
+    margin-top: 120px;
+    font-size: 1.1rem;
+}
+.footer i { color: #800020; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.4); } }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header-content h1 { font-size: 4.2rem; }
+    .what-is-icems { padding: 35px 30px; margin: 40px 20px 0; }
+    .what-is-icems h2 { font-size: 2.4rem; }
+    .what-is-icems p { font-size: 1.2rem; }
+    .nav-buttons { gap: 15px; top: 20px; }
+    .btn { padding: 12px 22px; font-size: 0.9rem; }
+    .photo-box { width: 200px; height: 200px; }
+    .final-section { grid-template-columns: 1fr; }
+}
+
+/* JS ANIMATIONS + LOADER */
+.animate-fade {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+.animate-fade.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* TYPEWRITER EFFECT */
+.type-char {
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+}
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+/* LOADING SCREEN */
+#page-loader {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: #8B0000;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.8s ease-out;
+}
+#page-loader.loaded {
+    opacity: 0;
+    pointer-events: none;
+}
+.loader-content {
+    text-align: center;
+    color: #FFD700;
+}
+.loader-content h1 {
+    font-size: 4rem;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 20px;
+}
+.loader-bar {
+    width: 300px;
+    height: 6px;
+    background: rgba(255,215,0,0.3);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 20px auto;
+}
+.loader-bar::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #FFD700;
+    animation: loading 2s infinite;
+}
+@keyframes loading {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+
+/* ===== MODAL FIXED VERSION ===== */
+
+/* Overlay */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn 0.2s ease-out;
+}
+
+/* Modal Box */
+.modal-box {
+    background: #ffffff;
+    padding: 40px 45px; /* ✅ Balanced spacing */
+    border-radius: 16px;
+    width: 430px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    animation: popIn 0.22s ease-out;
+    position: relative;  /* ✅ para gumana yung absolute close button */
+}
+
+/* AYUSIN ANG TITLE (mas maliit, professional) */
+.modal-box h2 {
+    margin-top: 10px;
+    margin-bottom: 18px;
+    color: #800000;
+    font-weight: 600;
+    font-size: 1.35rem; /* ✅ Mas maliit na title */
+    text-align: center;
+}
+
+/* Content ng modal */
+.modal-body p {
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+/* Close Button (fixed + clickable 100%) */
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #444;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.modal-close:hover {
+    color: #800000;
+    transform: scale(1.15);
+}
+
+
+/* ===== MODAL CARD HOVER EFFECT (MARRON) ===== */
+.modal-box .modal-body p,
+.modal-box .team-list .team-item {
+    padding: 10px 15px;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+    cursor: default;
+}
+
+/* HOVER EFFECT (Maroon background + white text) */
+.modal-box .modal-body p:hover,
+.modal-box .team-list .team-item:hover {
+    background: #800000;
+    color: #ffffff;
+    transform: translateX(3px);
+}
+
+
+/* =========================================
+   UNIVERSAL TRANSITION (smooth movement)
+========================================= */
+.service-card,
+.feature
+.team-card,
+.mv-card,
+.info-card,
+.thanks-box,
+.motto-box {
+    transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+
+/* ✅ HOVER EFFECT FOR BOXES ONLY (no header, no images) */
+.feature:hover,
+.section-welcome,
+.mv-card:hover,
+.thanks-box:hover {
+    transform: translateY(-4px);                      /* konting angat */
+    background: #800020;              /* maroon tint */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);      /* subtle shadow */
+    cursor: pointer;
+}
+
+.service-card:hover,
+.team-card:hover,
+.info-card:hover,
+.motto-box:hover {
+    transform: translateY(-6px);                      /* konting angat */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);  
+    background: #fff;    /* subtle shadow */
+    cursor: pointer;
+}
+
+
+/* ❌ NO HOVER FOR IMAGES */
+img,
+.member-photo,
+.photo-box img {
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* ❌ NO HOVER FOR HEADER / HERO */
+.hero-header,
+.header-bg,
+.header-overlay,
+.header-content {
+    transition: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+.btn-close-header {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    background: #fff;
+    color: #800020;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+    z-index: 15;
+    transition: all 0.3s ease;
+}
+
+.btn-close-header:hover {
+    background: #800020;
+    color: #fff;
+    transform: scale(1.1);
+}
+
+
+/* ================== HIDE SCROLL AND MAIN CONTENT ================== */
+body {
+    overflow: hidden;      /* prevent scrolling initially */
+}
+
+.main-content {
+    display: none;          /* hide everything */
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.main-content.active {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+body.main-active {
+    overflow: auto;         /* allow scrolling after content is revealed */
+}
+
+/* BUTTON TO VIEW MAIN CONTENT */
+.view-btn-container {
+    text-align: center;
+    margin: 50px 0;
+    z-index: 10;
+    position: relative;
+}
+
+.btn-view {
+    padding: 14px 28px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    border: none;
+    background: #800020;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    transition: all 0.3s ease;
+}
+
+.btn-view:hover {
+    background: #800020;
+    transform: translateY(-4px);
+}

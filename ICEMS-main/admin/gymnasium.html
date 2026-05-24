@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICEMS - Gymnasium Dashboard</title>
+    <link rel="stylesheet" href="gymnasium.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <!-- Custom Modal -->
+    <div id="customModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div id="modalIcon" class="modal-icon"></div>
+                <h2 id="modalTitle" class="modal-title">Modal Title</h2>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage" class="modal-message">Modal message goes here</p>
+            </div>
+            <div class="modal-footer">
+                <button id="modalCancelBtn" class="modal-btn modal-btn-secondary">Cancel</button>
+                <button id="modalOkBtn" class="modal-btn modal-btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prompt Modal -->
+    <div id="promptModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon" style="color: #800020;">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h2 id="promptTitle" class="modal-title">Enter Information</h2>
+            </div>
+            <div class="modal-body">
+                <p id="promptMessage" class="modal-message">Please enter your response:</p>
+                <input type="text" id="promptInput" class="prompt-input" placeholder="Type here...">
+            </div>
+            <div class="modal-footer">
+                <button id="promptCancelBtn" class="modal-btn modal-btn-secondary">Cancel</button>
+                <button id="promptOkBtn" class="modal-btn modal-btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-full-width">
+        <div class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="PUP.png" alt="puplogo">
+                    </div>
+                    <div class="logo-text">
+                        <h2>ICEMS</h2>
+                        <p>PUP Santa Maria</p>
+                    </div>
+                </div>
+                <div class="header-greeting">
+                    <h1>Welcome back, <span>Gymnasium</span>!</h1>
+                    <p>Review and verify student-submitted clearances related to sports equipment or uniforms.</p>
+                </div>
+                <!-- Replace your entire profile-dropdown-container section with this -->
+                <div class="profile-dropdown-container">
+                    <div class="user-avatar-large" onclick="toggleProfileDropdown()">GS</div>
+                    <div class="profile-dropdown-content" id="profileDropdown">
+                        <div class="user-profile-info">
+                            <div class="user-avatar-large profile-avatar">GS</div>
+                            <div class="user-info-text">
+                                <div class="user-name-small">Gymnasium Staff</div>
+                                <div class="user-role-small">Equipment Manager</div>
+                            </div>
+                        </div>
+                        <button class="logout-btn" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ============================================
+     ADD THIS CSS TO YOUR gymnasium.css FILE
+     ============================================ -->
+                <style>
+                    /* Profile Dropdown Container */
+                    .profile-dropdown-container {
+                        position: relative;
+                    }
+
+                    /* User Avatar (Clickable Trigger) */
+                    .user-avatar-large {
+                        width: 50px;
+                        height: 50px;
+                        background: linear-gradient(135deg, #800020 0%, #600018 100%);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: white;
+                        font-size: 18px;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 2px 8px rgba(128, 0, 32, 0.2);
+                    }
+
+                    .user-avatar-large:hover {
+                        transform: scale(1.05);
+                        box-shadow: 0 4px 12px rgba(128, 0, 32, 0.3);
+                    }
+
+                    /* Dropdown Content */
+                    .profile-dropdown-content {
+                        position: absolute;
+                        top: calc(100% + 10px);
+                        right: 0;
+                        background: white;
+                        border-radius: 12px;
+                        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+                        min-width: 280px;
+                        display: none;
+                        opacity: 0;
+                        transform: translateY(-10px);
+                        transition: all 0.3s ease;
+                        z-index: 1000;
+                        border: 1px solid #e5e5e5;
+                        overflow: hidden;
+                    }
+
+                    /* Show dropdown when active */
+                    .profile-dropdown-content.show {
+                        display: block;
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+
+                    /* User Profile Info Section (Header) */
+                    .user-profile-info {
+                        display: flex;
+                        align-items: center;
+                        gap: 14px;
+                        padding: 20px;
+                        background: linear-gradient(135deg, #800020 0%, #600018 100%);
+                    }
+
+                    .user-profile-info .user-avatar-large.profile-avatar {
+                        width: 55px;
+                        height: 55px;
+                        background: rgba(255, 255, 255, 0.2);
+                        border: 2px solid rgba(255, 255, 255, 0.3);
+                        box-shadow: none;
+                        font-size: 20px;
+                    }
+
+                    .user-profile-info .user-avatar-large.profile-avatar:hover {
+                        transform: none;
+                        cursor: default;
+                    }
+
+                    /* User Info Text */
+                    .user-info-text {
+                        flex: 1;
+                        color: white;
+                    }
+
+                    .user-name-small {
+                        font-size: 16px;
+                        font-weight: 600;
+                        margin-bottom: 4px;
+                        color: white;
+                        line-height: 1.3;
+                    }
+
+                    .user-role-small {
+                        font-size: 13px;
+                        color: rgba(255, 255, 255, 0.9);
+                        line-height: 1.3;
+                    }
+
+                    /* LOGOUT BUTTON - REDESIGNED */
+                    .logout-btn {
+                        width: calc(100% - 24px);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 10px;
+                        padding: 14px 20px;
+                        margin: 12px;
+                        background: linear-gradient(135deg, #800020 0%, #600018 100%);
+                        color: white;
+                        border: none;
+                        border-radius: 10px;
+                        cursor: pointer;
+                        font-size: 15px;
+                        font-weight: 600;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 2px 8px rgba(128, 0, 32, 0.2);
+                        position: relative;
+                        overflow: hidden;
+                    }
+
+                    .logout-btn:hover {
+                        transform: translateY(-2px);
+                        box-shadow: 0 6px 16px rgba(128, 0, 32, 0.4);
+                        background: linear-gradient(135deg, #a00028 0%, #800020 100%);
+                    }
+
+                    .logout-btn:active {
+                        transform: translateY(0);
+                        box-shadow: 0 2px 8px rgba(128, 0, 32, 0.3);
+                    }
+
+                    .logout-btn i {
+                        font-size: 18px;
+                        transition: transform 0.3s ease;
+                    }
+
+                    .logout-btn:hover i {
+                        transform: translateX(-3px);
+                    }
+
+                    .logout-btn span {
+                        font-weight: 600;
+                        letter-spacing: 0.3px;
+                    }
+
+                    /* Ripple effect on click */
+                    .logout-btn::before {
+                        content: '';
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        width: 0;
+                        height: 0;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.2);
+                        transform: translate(-50%, -50%);
+                        transition: width 0.5s, height 0.5s;
+                    }
+
+                    .logout-btn:active::before {
+                        width: 300px;
+                        height: 300px;
+                    }
+
+                    /* Responsive */
+                    @media (max-width: 768px) {
+                        .profile-dropdown-content {
+                            min-width: 260px;
+                            right: -10px;
+                        }
+
+                        .logout-btn {
+                            font-size: 14px;
+                            padding: 12px 16px;
+                        }
+                    }
+                </style>
+
+                <!-- ============================================
+     ADD THIS JAVASCRIPT TO YOUR gymnasium.js FILE
+     ============================================ -->
+                <script>
+                    // Toggle Profile Dropdown
+                    function toggleProfileDropdown() {
+                        const dropdown = document.getElementById('profileDropdown');
+                        dropdown.classList.toggle('show');
+
+                        // Close dropdown when clicking outside
+                        if (dropdown.classList.contains('show')) {
+                            setTimeout(() => {
+                                document.addEventListener('click', closeDropdownOutside);
+                            }, 0);
+                        } else {
+                            document.removeEventListener('click', closeDropdownOutside);
+                        }
+                    }
+
+                    // Close dropdown when clicking outside
+                    function closeDropdownOutside(event) {
+                        const dropdown = document.getElementById('profileDropdown');
+                        const avatar = document.querySelector('.user-avatar-large');
+
+                        if (!dropdown.contains(event.target) && !avatar.contains(event.target)) {
+                            dropdown.classList.remove('show');
+                            document.removeEventListener('click', closeDropdownOutside);
+                        }
+                    }
+
+                    // Logout function
+                    function logout() {
+                        window.location.href = '../user/studentlogin.html';
+
+                    }
+                </script>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon pending"><span class="icon-circle"><i
+                                class="fa-solid fa-clipboard-list"></i></span></div>
+                    <span class="stat-change warning">Action Needed</span>
+                </div>
+                <div class="stat-value" id="pendingCount">0</div>
+                <div class="stat-label">Clearances to Verify</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon approved"><span class="icon-circle"><i class="fa-solid fa-trophy"></i></span>
+                    </div>
+                    <span class="stat-change success">This Week</span>
+                </div>
+                <div class="stat-value" id="approvedCount">0</div>
+                <div class="stat-label">Students Cleared</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon rejected"><span class="icon-circle"><i
+                                class="fa-solid fa-hand-holding-dollar"></i></span></div>
+                    <span class="stat-change danger">This Week</span>
+                </div>
+                <div class="stat-value" id="rejectedCount">0</div>
+                <div class="stat-label">Equipment/Uniform Fines</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon total"><span class="icon-circle"><i
+                                class="fa-solid fa-chart-column"></i></span></div>
+                    <span class="stat-change info">All Time</span>
+                </div>
+                <div class="stat-value" id="totalCount">0</div>
+                <div class="stat-label">Total Processed</div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card">
+            <div class="table-header">
+                <h2>Clearances</h2>
+                <input type="text" id="searchInput" onkeyup="searchTable()" placeholder="Search Student"
+                    class="filter-select search-input">
+                <div class="filter-group">
+                    <select class="filter-select" id="statusFilter" onchange="filterTable()">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                    <select class="filter-select" id="sectionsFilter" onchange="filterTable()">
+                        <option value="sections">Sections</option>
+                        <option value="1-1">1-1</option>
+                        <option value="1-2">1-2</option>
+                        <option value="2-1">2-1</option>
+                        <option value="2-2">2-2</option>
+                        <option value="3-1">3-1</option>
+                        <option value="3-2">3-2</option>
+                        <option value="4-1">4-1</option>
+                        <option value="4-2">4-2</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table id="clearanceTable">
+                    <thead>
+                        <tr>
+                            <th>Student No.</th>
+                            <th>Name</th>
+                            <th>Section</th>
+                            <th>Status</th>
+                            <th>Remarks</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="gymnasium.js"></script>
+</body>
+
+</html>

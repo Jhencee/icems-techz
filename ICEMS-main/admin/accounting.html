@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICEMS - Accounting Dashboard</title>
+    <link rel="stylesheet" href="accounting.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <!-- mobile toggle -->
+    <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+
+    <!-- sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo-section">
+            <div class="logo">
+                <img src="PUP.png" alt="puplogo">
+            </div>
+            <div class="logo-text">
+                <h2>ICEMS</h2>
+                <p>PUP Santa Maria</p>
+            </div>
+        </div>
+
+        <!-- inside Sidebar or somewhere visible -->
+        <div class="user-profile" onclick="openProfileModal()">
+            <div class="user-avatar-large">AD</div>
+            <div class="user-name">Accounting Dashboard</div>
+        </div>
+
+
+        <ul class="nav-menu">
+            <li class="nav-item"><a class="nav-link" onclick="showTab('dashboard')"><i
+                        class="fas fa-home nav-icon"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a class="nav-link active" onclick="showTab('clearances')"><i
+                        class="fas fa-list-check nav-icon"></i><span>Clearances</span></a></li>
+            <li class="nav-item"><a class="nav-link" onclick="showTab('students')"><i
+                        class="fas fa-user-graduate nav-icon"></i><span>Students</span></a></li>
+            <li class="nav-item"><a class="nav-link" onclick="showTab('payments')"><i
+                        class="fas fa-peso-sign nav-icon"></i><span>Payments</span></a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i><span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-wrapper">
+        <div id="dashboard-tab" class="tab-content hidden">
+            <div class="header">
+                <h1>Dashboard Overview</h1>
+                <p>Overview of system statistics</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon maroon"><i class="fas fa-clipboard-list"></i></div><span
+                            class="stat-change">Pending</span>
+                    </div>
+                    <div class="stat-value" id="dashPendingCount">0</div>
+                    <div class="stat-label">Pending Clearances</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon maroon"><i class="fa-solid fa-users"></i></div><span
+                            class="stat-change">Active</span>
+                    </div>
+                    <div class="stat-value" id="dashStudentCount">0</div>
+                    <div class="stat-label">Total Students</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon maroon"><i class="fas fa-peso-sign"></i></div><span
+                            class="stat-change">Collected</span>
+                    </div>
+                    <div class="stat-value" id="dashPaymentTotal">₱0</div>
+                    <div class="stat-label">Total Payments</div>
+                </div>
+            </div>
+            <div class="empty-state">
+                <div class="empty-icon maroon"><i class="fas fa-chart-line"></i></div>
+                <h2>No Data Available</h2>
+                <p>The system is ready. Start by adding students and events.</p>
+            </div>
+        </div>
+
+        <!-- clearances tab -->
+        <div id="clearances-tab" class="tab-content">
+            <div class="header">
+                <h1>Clearance Verification</h1>
+                <p>Review and verify student-submitted clearances. Approve or reject based on provided proof.</p>
+            </div>
+
+            <div class="content-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Course</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clearancesTableBody">
+                        <tr>
+                            <td colspan="6">
+                                <div class="table-empty">
+                                    <div class="table-empty-icon maroon"><i class="fas fa-clipboard-check"></i></div>
+                                    <h3>No Clearances Yet</h3>
+                                    <p>Clearance requests will appear here once students submit them.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="table-footer">
+                    Total Processed Clearances: <strong id="clearanceCount">0</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- students tab -->
+        <div id="students-tab" class="tab-content hidden">
+            <div class="header">
+                <h1>Student Management</h1>
+                <p>View and manage student information and progress</p>
+            </div>
+
+            <div class="content-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Course</th>
+                            <th>Email</th>
+                            <th>Progress</th>
+                            <th>Payments</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody">
+                        <tr>
+                            <td colspan="6">
+                                <div class="table-empty">
+                                    <div class="table-empty-icon maroon"><i class="fas fa-user-graduate"></i></div>
+                                    <h3>No Students Registered</h3>
+                                    <p>Student records will appear here once they register in the system.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- payments tab -->
+        <div id="payments-tab" class="tab-content hidden">
+            <div class="header"
+                style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
+                <div>
+                    <h1>Payment Management <i class="fas fa-peso-sign"></i></h1>
+                    <p>Create payment requirements and verify student submissions</p>
+                </div>
+                <button class="btn btn-primary" id="openPaymentSettings" onclick="openPaymentSettingsModal()">
+                    <i class="fa-solid fa-plus"></i> Create Payment Requirement
+                </button>
+            </div>
+
+            <div class="content-card">
+                <h3 style="margin-bottom: 15px;">Payment Submissions</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Payment Title</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paymentsTableBody">
+                        <tr>
+                            <td colspan="7">
+                                <div class="table-empty">
+                                    <div class="table-empty-icon maroon"><i class="fas fa-coins"></i></div>
+                                    <h3>No Payment Records</h3>
+                                    <p>Payment transactions will be displayed here once students make payments.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- profile modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeProfileModal()">&times;</span>
+            <h2 class="modal-title">Organization Profile</h2>
+            <div class="form-group">
+                <label>Organization Name</label>
+                <input type="text" class="form-input" value="Publication" readonly>
+            </div>
+            <div class="form-group">
+                <label>Organization Type</label>
+                <input type="text" class="form-input" value="Student Organization" readonly>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" class="form-input" value="publication@pupsmb.edu.ph" readonly>
+            </div>
+            <div class="form-group">
+                <label>Contact Number</label>
+                <input type="tel" class="form-input" value="+63 917 123 4567" readonly>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Settings Modal -->
+    <div class="modal" id="paymentSettingsModal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close-modal" onclick="closePaymentSettingsModal()">&times;</span>
+            <div class="modal-header">
+                <h2 class="modal-title"><i class="fas fa-cog"></i> Create Payment Requirement</h2>
+                <p style="color: #666; font-size: 0.9rem; margin-top: 5px;">Set up a new payment requirement for
+                    students</p>
+            </div>
+
+            <form id="paymentSettingsForm" style="margin-top: 20px;">
+                <div class="form-group">
+                    <label for="paymentTitle">Payment Title *</label>
+                    <input type="text" id="paymentTitle" class="form-input" placeholder="e.g., Student Council Fee"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentAmount">Amount (₱) *</label>
+                    <input type="number" id="paymentAmount" class="form-input" placeholder="0.00" step="0.01" min="0"
+                        required>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentDescription">Description</label>
+                    <textarea id="paymentDescription" class="form-input" rows="3"
+                        placeholder="Brief description of the payment requirement"></textarea>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label for="gcashName">GCash Account Name *</label>
+                        <input type="text" id="gcashName" class="form-input" placeholder="e.g., PUP Santa Maria"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gcashNumber">GCash Number *</label>
+                        <input type="text" id="gcashNumber" class="form-input" placeholder="09XX-XXX-XXXX" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentQR">GCash QR Code (Optional)</label>
+                    <input type="file" id="paymentQR" class="form-input" accept="image/*"
+                        onchange="handleQRPreview(event)">
+                    <small style="color: #666; font-size: 0.85rem;">Upload QR code image for easier payments (Max
+                        2MB)</small>
+                    <div id="qrPreview" style="display: none; text-align: center; margin-top: 10px;"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="paymentDueDate">Due Date *</label>
+                    <input type="date" id="paymentDueDate" class="form-input" required>
+                </div>
+
+                <div class="form-group" style="display: flex; align-items: center; gap: 10px;">
+                    <input type="checkbox" id="paymentMandatory" style="width: auto; margin: 0;">
+                    <label for="paymentMandatory" style="margin: 0; cursor: pointer;">Mandatory Payment</label>
+                </div>
+
+                <div
+                    style="display: flex; gap: 10px; margin-top: 25px; border-top: 1px solid #e5e7eb; padding-top: 20px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">
+                        <i class="fas fa-save"></i> Create Payment Requirement
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="closePaymentSettingsModal()"
+                        style="flex: 1;">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        /* Payment Settings Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s;
+        }
+
+        .close-modal:hover {
+            color: #800020;
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            color: #800020;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #800020;
+        }
+
+        textarea.form-input {
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .btn-primary {
+            background: #800020;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #600018;
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+        }
+    </style>
+
+    <!-- log out modal -->
+    <div class="logout-modal" id="logoutModal">
+        <div class="logout-modal-content">
+            <h2>Logout Confirmation</h2>
+            <p>Are you sure you want to logout?</p>
+
+            <div class="logout-btn-wrapper">
+                <button class="logout-confirm" onclick="confirmLogout()">Yes</button>
+                <button class="logout-cancel" onclick="closeLogoutModal()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="qraccounting.js"></script>
+    <script src="accounting.js"></script>
+</body>
+
+</html>

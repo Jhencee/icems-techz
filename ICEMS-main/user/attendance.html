@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICEMS - Attendance</title>
+    <link rel="stylesheet" href="studentdashboard.css">
+    <link rel="stylesheet" href="attendance.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Additional styles for the attendance table */
+        .attendance-table-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-box {
+            padding: 10px 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            width: 250px;
+        }
+
+        .filter-btn {
+            padding: 10px 15px;
+            background: #800020;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-btn:hover {
+            background: #600018;
+        }
+
+        .attendance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .attendance-table thead {
+            background: #f9fafb;
+        }
+
+        .attendance-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+            font-size: 0.9rem;
+        }
+
+        .attendance-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.9rem;
+            color: #4b5563;
+        }
+
+        .attendance-table tbody tr {
+            transition: background-color 0.2s;
+        }
+
+        .attendance-table tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-approved {
+            background: #dcfce7;
+            color: #059669;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #f59e0b;
+        }
+
+        .status-rejected {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            background: #800020;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .action-btn:hover {
+            background: #600018;
+        }
+
+        .event-title {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .event-date {
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .attendance-table {
+                font-size: 0.8rem;
+            }
+
+            .attendance-table th,
+            .attendance-table td {
+                padding: 10px 8px;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .table-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .table-actions {
+                flex-direction: column;
+            }
+
+            .filter-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="sidebar" id="sidebar">
+        <div class="logo-section">
+            <div class="logo">
+                <img src="PUP.png" alt="puplogo">
+            </div>
+            <div class="logo-text">
+                <h2>ICEMS</h2>
+                <p>PUP Santa Maria</p>
+            </div>
+        </div>
+
+        <div class="user-profile" onclick="openProfileModal()">
+            <div class="user-avatar-large" id="sidebarAvatar">JB</div>
+            <div class="user-name" id="sidebarName">Jhencee Borjal</div>
+            <div class="user-id" id="sidebarId">BSIT 3-2 | 2021-54321</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="studentdashboard.html" class="nav-link">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentclearance.html" class="nav-link">
+                    <i class="fas fa-list-check nav-icon"></i>
+                    <span>Clearances</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentevent.html" class="nav-link">
+                    <i class="fas fa-calendar-alt nav-icon"></i>
+                    <span>Events</span>
+                    <span class="nav-badge" id="eventsBadge">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentpayment.html" class="nav-link">
+                    <i class="fas fa-peso-sign nav-icon"></i>
+                    <span>Payments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="attendance.html" class="nav-link active">
+                    <i class="fas fa-user-check nav-icon"></i>
+                    <span>Attendance</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="header-left">
+                <h1>Attendance <i class="fas fa-user-check"></i></h1>
+                <p>Track your event attendance records</p>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon attendance"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="stat-value" id="presentCount">0</div>
+                <div class="stat-label">Present</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon clearance"><i class="fas fa-times"></i></div>
+                </div>
+                <div class="stat-value" id="absentCount">0</div>
+                <div class="stat-label">Absent</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon events"><i class="fas fa-hourglass-half"></i></div>
+                </div>
+                <div class="stat-value" id="pendingCount">0</div>
+                <div class="stat-label">Pending Verification</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon payments"><i class="fas fa-chart-line"></i></div>
+                </div>
+                <div class="stat-value" id="attendanceRate">0%</div>
+                <div class="stat-label">Attendance Rate</div>
+            </div>
+        </div>
+
+        <!-- Attendance Table -->
+        <div class="attendance-table-container">
+            <div class="table-header">
+                <div>
+                    <h2 style="color: #800020; margin: 0;">My Attendance Records</h2>
+                    <p style="color: #6b7280; font-size: 0.9rem; margin: 5px 0 0 0;" id="totalRecordsText">Loading...</p>
+                </div>
+                <div class="table-actions">
+                    <input type="text" class="search-box" id="searchBox" placeholder="Search events..." onkeyup="searchAttendance()">
+                    <select class="filter-btn" id="statusFilter" onchange="filterByStatus()" style="padding: 10px 15px;">
+                        <option value="all">All Status</option>
+                        <option value="approved">Present</option>
+                        <option value="pending">Pending</option>
+                        <option value="rejected">Absent</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="attendanceTableContent">
+                <!-- Table will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div class="logout-modal" id="logoutModal">
+        <div class="logout-modal-content">
+            <h2>Logout Confirmation</h2>
+            <p>Are you sure you want to logout?</p>
+            <div class="logout-btn-wrapper">
+                <button class="logout-confirm" onclick="confirmLogout()">Yes</button>
+                <button class="logout-cancel" onclick="closeLogoutModal()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeProfileModal()">&times;</span>
+            <div class="modal-header">
+                <h2 class="modal-title">Edit Profile</h2>
+            </div>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="editName" class="form-input">
+            </div>
+            <div class="form-group">
+                <label>Course & Year</label>
+                <input type="text" id="editCourse" class="form-input">
+            </div>
+            <div class="form-group">
+                <label>Student ID</label>
+                <input type="text" id="editStudentId" class="form-input" readonly>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="editEmail" class="form-input">
+            </div>
+            <button class="btn btn-primary btn-save-profile" onclick="saveProfile()">Save Changes</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        © 2025 PUP Santa Maria Campus - ICEMS |
+        <a href="../about us/about.html" target="_blank" class="footer-link">About Us</a>
+    </div>
+
+    <script src="studentdashboard.js"></script>
+    <script src="attendance.js"></script>
+</body>
+
+</html>

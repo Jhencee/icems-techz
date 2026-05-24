@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICEMS - Clearances</title>
+    <link rel="stylesheet" href="studentdashboard.css">
+   <link rel="stylesheet" href="studentclearance.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+     <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+
+     <div class="sidebar" id="sidebar">
+        <div class="logo-section">
+            <div class="logo">
+                <img src="PUP.png" alt="puplogo">
+            </div>
+            <div class="logo-text">
+                <h2>ICEMS</h2>
+                <p>PUP Santa Maria</p>
+            </div>
+        </div>
+
+         <div class="user-profile" onclick="openProfileModal()">
+            <div class="user-avatar-large" id="sidebarAvatar">JB</div>
+            <div class="user-name" id="sidebarName">Jhencee Borjal</div>
+            <div class="user-id" id="sidebarId">BSIT 3-2 | 2021-54321</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="studentdashboard.html" class="nav-link">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentclearance.html" class="nav-link active">
+                    <i class="fas fa-list-check nav-icon"></i>
+                    <span>Clearances</span>
+                    <span class="nav-badge" id="clearanceBadge">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentevent.html" class="nav-link">
+                    <i class="fas fa-calendar-alt nav-icon"></i>
+                    <span>Events</span>
+                    <span class="nav-badge" id="eventsBadge">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentpayment.html" class="nav-link">
+                    <i class="fas fa-peso-sign nav-icon"></i>
+                    <span>Payments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="attendance.html" class="nav-link">
+                    <i class="fas fa-user-check nav-icon"></i>
+                    <span>Attendance</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentnotification.html" class="nav-link">
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="header-left">
+                <h1>Clearances <i class="fas fa-list-check"></i></h1>
+                <p>Track and manage your clearance requirements</p>
+            </div>
+        </div>
+
+        <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon clearance"><i class="fas fa-check"></i></div>
+                </div>
+                <div class="stat-value" id="completedCount">0</div>
+                <div class="stat-label">Completed</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon events"><i class="fas fa-hourglass-half"></i></div>
+                </div>
+                <div class="stat-value" id="pendingCount">0</div>
+                <div class="stat-label">Pending</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon payments"><i class="fas fa-clipboard-list"></i></div>
+                </div>
+                <div class="stat-value" id="requiredCount">4</div>
+                <div class="stat-label">Required</div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <button class="filter-btn active" onclick="filterClearances('all')">All</button>
+            <button class="filter-btn" onclick="filterClearances('completed')">Completed</button>
+            <button class="filter-btn" onclick="filterClearances('pending')">Pending</button>
+            <button class="filter-btn" onclick="filterClearances('required')">Required</button>
+        </div>
+
+        <div class="clearance-grid" id="clearanceContainer">
+            <div class="clearance-card required" data-status="required">
+                <div class="clearance-header">
+                    <div class="clearance-title">Library Clearance</div>
+                    <span class="clearance-status required"><i class="fas fa-circle-exclamation"></i> Required</span>
+                </div>
+                <div class="clearance-details">
+                    Complete all library requirements before clearance approval
+                </div>
+                <div class="clearance-requirements">
+                    <h4>Requirements:</h4>
+                    <ul class="requirement-list">
+                        <li class="requirement-item">Return all borrowed books</li>
+                        <li class="requirement-item">Pay library fines (if any)</li>
+                        <li class="requirement-item">Clear lost book charges</li>
+                    </ul>
+                </div>
+                <div class="clearance-actions">
+                    <button class="btn btn-primary" onclick="edit('Library')">Edit</button>
+                    <button class="btn btn-secondary" onclick="submitRequirement('Library')">Submit Requirements</button>
+                </div>
+            </div>
+
+            <div class="clearance-card required" data-status="required">
+                <div class="clearance-header">
+                    <div class="clearance-title">Student Council Clearance</div>
+                    <span class="clearance-status required"><i class="fas fa-circle-exclamation"></i> Required</span>
+                </div>
+                <div class="clearance-details">
+                    Attend required Student Council events and activities
+                </div>
+                <div class="clearance-requirements">
+                    <h4>Requirements:</h4>
+                    <ul class="requirement-list">
+                        <li class="requirement-item">Attend 3 mandatory events</li>
+                        <li class="requirement-item">Submit photo proofs of attendance</li>
+                        <li class="requirement-item">Pay Student Council fees</li>
+                    </ul>
+                </div>
+                <div class="clearance-actions">
+                    <button class="btn btn-primary" onclick="edit('Student Council')">Edit</button>
+                    <button class="btn btn-secondary" onclick="window.location.href='events.html'">View Events</button>
+                </div>
+            </div>
+
+            <div class="clearance-card required" data-status="required">
+                <div class="clearance-header">
+                    <div class="clearance-title">Iskolarium Clearance</div>
+                    <span class="clearance-status required"><i class="fas fa-circle-exclamation"></i> Required</span>
+                </div>
+                <div class="clearance-details">
+                    Complete Iskolarium membership and event participation
+                </div>
+                <div class="clearance-requirements">
+                    <h4>Requirements:</h4>
+                    <ul class="requirement-list">
+                        <li class="requirement-item">Register for Iskolarium membership</li>
+                        <li class="requirement-item">Attend 2 Iskolarium events</li>
+                        <li class="requirement-item">Pay membership fee</li>
+                    </ul>
+                </div>
+                <div class="clearance-actions">
+                    <button class="btn btn-primary" onclick="edit('Iskolarium')">Edit</button>
+                    <button class="btn btn-secondary" onclick="window.location.href='payments.html'">Pay Fee</button>
+                </div>
+            </div>
+
+            <div class="clearance-card required" data-status="required">
+                <div class="clearance-header">
+                    <div class="clearance-title">Organization Clearance</div>
+                    <span class="clearance-status required"><i class="fas fa-circle-exclamation"></i> Required</span>
+                </div>
+                <div class="clearance-details">
+                    Complete organization requirements and dues
+                </div>
+                <div class="clearance-requirements">
+                    <h4>Requirements:</h4>
+                    <ul class="requirement-list">
+                        <li class="requirement-item">Attend organization meetings</li>
+                        <li class="requirement-item">Submit project contributions</li>
+                        <li class="requirement-item">Pay organization fees</li>
+                    </ul>
+                </div>
+                <div class="clearance-actions">
+                    <button class="btn btn-primary" onclick="edit('Organization')">Edit</button>
+                    <button class="btn btn-secondary" onclick="submitRequirement('Organization')">Submit Requirements</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeProfileModal()">&times;</span>
+            <div class="modal-header">
+                <h2 class="modal-title">Edit Profile</h2>
+            </div>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="editName" class="form-input" value="Jhencee Borjal">
+            </div>
+            <div class="form-group">
+                <label>Course & Year</label>
+                <input type="text" id="editCourse" class="form-input" value="BSIT 3-1">
+            </div>
+            <div class="form-group">
+                <label>Student ID</label>
+                <input type="text" id="editStudentId" class="form-input" value="2021-54321" readonly>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="editEmail" class="form-input" value="jhencee.borjal@pupsmb.edu.ph">
+            </div>
+            <button class="btn btn-primary" style="width: 100%; padding: 15px;" onclick="saveProfile()">Save Changes</button>
+        </div>
+    </div>
+
+       <!-- LOGOUT MODAL -->
+<div class="logout-modal" id="logoutModal">
+    <div class="logout-modal-content">
+        <h2>Logout Confirmation</h2>
+        <p>Are you sure you want to logout?</p>
+
+        <div class="logout-btn-wrapper">
+            <button class="logout-confirm" onclick="confirmLogout()">Yes</button>
+            <button class="logout-cancel" onclick="closeLogoutModal()">No</button>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+    © 2025 PUP Santa Maria Campus - ICEMS |
+   <a href="../about us/about.html" target="_blank" class="footer-link">About Us</a>
+
+</div>
+ <!--SCRIPTS--> 
+    <script src="studentdashboard.js"></script>
+    <script src="studentclearance.js"></script>
+    <script src="gymnasiumclearance.js"></script>
+    <script src="clearancelaboratory.js"></script>
+    <script src="libraryclearance.js"></script>
+    <script src="nurseclearance.js"></script>  
+
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICEMS - Director Dashboard</title>
+    <link rel="stylesheet" href="director.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- mobile toggle -->
+    <button class="mobile-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+
+    <!-- sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo-section">
+            <div class="logo">
+                <img src="PUP.png" alt="puplogo">
+            </div>
+            <div class="logo-text">
+                <h2>ICEMS</h2>
+                <p>PUP Santa Maria</p>
+            </div>
+        </div>
+
+        <div class="user-profile">
+            <div class="user-avatar-large">DR</div>
+            <div class="user-name">Director</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a class="nav-link active" onclick="showTab('clearances')">
+                    <i class="fas fa-list-check nav-icon"></i>
+                    <span>Clearances</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="showTab('reports')">
+                    <i class="fas fa-chart-bar nav-icon"></i>
+                    <span>Reports</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- main content -->
+    <div class="main-wrapper">
+        <!-- clearances tab -->
+        <div id="clearances-tab" class="tab-content">
+            <div class="header">
+                <h1>Clearance Verification</h1>
+                <p>Review and verify student-submitted clearances. Approve or reject based on provided proof.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon maroon"><i class="fa-solid fa-book"></i></div>
+                        <span class="stat-change">Total</span>
+                    </div>
+                    <div class="stat-value" id="totalClearances">0</div>
+                    <div class="stat-label">Total Clearances</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon red"><i class="fas fa-hourglass-half"></i></div>
+                        <span class="stat-change">Pending</span>
+                    </div>
+                    <div class="stat-value" id="pendingClearances">0</div>
+                    <div class="stat-label">Pending Review</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon burgundy"><i class="fa-solid fa-check"></i></div>
+                        <span class="stat-change">Approved</span>
+                    </div>
+                    <div class="stat-value" id="approvedClearances">0</div>
+                    <div class="stat-label">Approved</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon maroon"><i class="fa-solid fa-xmark"></i></div>
+                        <span class="stat-change">Rejected</span>
+                    </div>
+                    <div class="stat-value" id="rejectedClearances">0</div>
+                    <div class="stat-label">Rejected</div>
+                </div>
+            </div>
+
+            <div class="content-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Section</th>
+                            <th>Clearance Type</th>
+                            <th>Description</th>
+                            <th>Proof</th>
+                            <th>Status</th>
+                            <th>Remarks</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="clearancesTableBody">
+                        <tr>
+                            <td colspan="9">
+                                <div class="table-empty">
+                                    <div class="table-empty-icon"><i class="fas fa-clipboard-check"></i></div>
+                                    <h3>No Clearances Yet</h3>
+                                    <p>Clearance requests will appear here once students submit them.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="table-footer">
+                    Total Processed Clearances: <strong id="clearanceCount">0</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- reports tab -->
+        <div id="reports-tab" class="tab-content hidden">
+            <div class="header">
+                <h1>Reports</h1>
+                <p>View and download system reports</p>
+            </div>
+
+            <div class="report-card">
+                <div class="report-header">
+                    <div>
+                        <div class="report-title">Overall Clearance Summary</div>
+                        <div class="report-date">As of <span id="reportDate">October 24, 2025</span></div>
+                    </div>
+                    <button class="btn btn-download" onclick="downloadReport('summary')">
+                        <i class="fas fa-download"></i> Download Report
+                    </button>
+                </div>
+                <div class="report-stats">
+                    <div class="report-stat-item">
+                        <div class="report-stat-value" id="reportTotal">0</div>
+                        <div class="report-stat-label">Total Students</div>
+                    </div>
+                    <div class="report-stat-item">
+                        <div class="report-stat-value" id="reportCompleted">0</div>
+                        <div class="report-stat-label">Completed</div>
+                    </div>
+                    <div class="report-stat-item">
+                        <div class="report-stat-value" id="reportPending">0</div>
+                        <div class="report-stat-label">Pending</div>
+                    </div>
+                    <div class="report-stat-item">
+                        <div class="report-stat-value" id="reportPercentage">0%</div>
+                        <div class="report-stat-label">Completion Rate</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="report-card">
+                <div class="report-header">
+                    <div>
+                        <div class="report-title">BSIT Department - Section Clearance Status</div>
+                        <div class="report-date">Current Academic Year</div>
+                    </div>
+                    <button class="btn btn-download" onclick="downloadReport('section')">
+                        <i class="fas fa-download"></i> Download Report
+                    </button>
+                </div>
+                <div class="content-card" style="margin-top: 20px; box-shadow: none;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Section</th>
+                                <th>Total Students</th>
+                                <th>Cleared</th>
+                                <th>Pending</th>
+                                <th>Completion Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sectionReportBody">
+                            <tr>
+                                <td colspan="5">
+                                    <div class="table-empty">
+                                        <div class="table-empty-icon"><i class="fas fa-chart-bar"></i></div>
+                                        <h3>No Data Available</h3>
+                                        <p>Section reports will be generated once clearances are processed.</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-chart-line"></i></div>
+                <h2>Reports System Ready</h2>
+                <p>Detailed reports will be available once clearance data is processed.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LOGOUT MODAL -->
+<div class="logout-modal" id="logoutModal">
+    <div class="logout-modal-content">
+        <h2>Logout Confirmation</h2>
+        <p>Are you sure you want to logout?</p>
+
+        <div class="logout-btn-wrapper">
+            <button class="logout-confirm" onclick="confirmLogout()">Yes</button>
+            <button class="logout-cancel" onclick="closeLogoutModal()">No</button>
+        </div>
+    </div>
+</div>
+
+    <script src="director.js"></script>
+</body>
+</html>

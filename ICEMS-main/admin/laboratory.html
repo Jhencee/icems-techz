@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICEMS - Laboratory Dashboard</title>
+    <link rel="stylesheet" href="laboratory.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+
+    <!-- Custom Modal for Alerts/Confirmations -->
+    <div id="customModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div id="modalIcon" class="modal-icon"></div>
+                <h2 id="modalTitle" class="modal-title">Modal Title</h2>
+            </div>
+            <div class="modal-body">
+                <p id="modalMessage" class="modal-message">Modal message goes here</p>
+            </div>
+            <div class="modal-footer">
+                <button id="modalCancelBtn" class="modal-btn modal-btn-secondary">Cancel</button>
+                <button id="modalOkBtn" class="modal-btn modal-btn-primary">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prompt Modal for Text Input -->
+    <div id="promptModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon" style="color: #800020;">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <h2 id="promptTitle" class="modal-title">Enter Information</h2>
+            </div>
+            <div class="modal-body">
+                <p id="promptMessage" class="modal-message">Please enter your response:</p>
+                <input type="text" id="promptInput" class="prompt-input" placeholder="Type here...">
+            </div>
+            <div class="modal-footer">
+                <button id="promptCancelBtn" class="modal-btn modal-btn-secondary">Cancel</button>
+                <button id="promptOkBtn" class="modal-btn modal-btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-full-width">
+        <div class="header">
+            <div class="header-content">
+
+                <div class="logo-section">
+                    <div class="logo">
+                        <img src="PUP.png" alt="puplogo">
+                    </div>
+                    <div class="logo-text">
+                        <h2>ICEMS</h2>
+                        <p>PUP Santa Maria</p>
+                    </div>
+                </div>
+
+                <div class="header-greeting">
+                    <h1>Welcome back, <span>Laboratory</span>!</h1>
+                    <p>Review and verify student-submitted clearances.</p>
+                </div>
+
+                <div class="profile-and-actions">
+                    <div class="user-profile-small">
+                        <div class="user-avatar-small">LB</div>
+                        <div class="user-info">
+                            <div class="user-name-small">Laboratory Staff</div>
+                            <div class="user-role-small">Clearance Officer</div>
+                        </div>
+                    </div>
+
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon pending"><span class="icon-circle"><i class="fa-solid fa-file-pen"></i></span>
+                    </div>
+                    <span class="stat-change warning">Action Needed</span>
+                </div>
+                <div class="stat-value" id="pendingCount">0</div>
+                <div class="stat-label">Pending Clearances</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon approved"><span class="icon-circle"><i class="fa-solid fa-check"></i></span>
+                    </div>
+                    <span class="stat-change success">This Week</span>
+                </div>
+                <div class="stat-value" id="approvedCount">0</div>
+                <div class="stat-label">Approved Clearances</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon rejected"><span class="icon-circle"><i class="fa-solid fa-xmark"></i></span>
+                    </div>
+                    <span class="stat-change danger">This Week</span>
+                </div>
+                <div class="stat-value" id="rejectedCount">0</div>
+                <div class="stat-label">Rejected Clearances</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon total"><span class="icon-circle"><i
+                                class="fa-solid fa-chart-column"></i></span></div>
+                    <span class="stat-change info">All Time</span>
+                </div>
+                <div class="stat-value" id="totalCount">0</div>
+                <div class="stat-label">Total Processed</div>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <div class="table-header">
+                <h2>Clearances</h2>
+                <div class="filter-group">
+                    <select class="filter-select" id="statusFilter" onchange="filterTable()">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                    <select class="filter-select" id="sectionsFilter" onchange="filterTable()">
+                        <option value="sections">Sections</option>
+                        <option value="1-1">1-1</option>
+                        <option value="1-2">1-2</option>
+                        <option value="2-1">2-1</option>
+                        <option value="2-2">2-2</option>
+                        <option value="3-1">3-1</option>
+                        <option value="3-2">3-2</option>
+                        <option value="4-1">4-1</option>
+                        <option value="4-2">4-2</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table id="clearanceTable">
+                    <thead>
+                        <tr>
+                            <th>Student No.</th>
+                            <th>Name</th>
+                            <th>Section</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Remarks</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <div class="empty-icon"><span class="icon-circle"><i
+                                                class="fas fa-flask"></i></span></div>
+                                    <h3>No Clearances Yet</h3>
+                                    <p>Clearance submissions will appear here</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="total-processed">
+            <h3>Total Processed Clearances:</h3>
+            <span class="count" id="totalProcessed">0</span>
+        </div>
+
+        <div style="text-align: center; color: #666; font-size: 0.875rem; margin-top: 2rem; padding: 1rem;">
+            © 2025 PUP Santa Maria Campus - ICEMS
+        </div>
+    </div>
+
+    <script>
+        window.API_URL = 'http://localhost:8000'; // Laravel API URL
+    </script>
+    <script src="laboratory.js"></script>
+</body>
+
+</html>

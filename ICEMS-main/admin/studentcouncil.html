@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICEMS - Student Council Dashboard</title>
+    <link rel="stylesheet" href="studentcouncil.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo-section">
+            <div class="logo"><img src="PUP.png" alt="puplogo"></div>
+            <div class="logo-text">
+                <h2>ICEMS</h2>
+                <p>PUP Santa Maria</p>
+            </div>
+        </div>
+
+        <div class="org-profile" onclick="openProfileModal()">
+            <div class="org-avatar">SC</div>
+            <div class="org-name">Student Council</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link active" onclick="showSection('dashboard')">
+                    <i class="fa-solid fa-house nav-icon"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showSection('events')">
+                    <i class="fa-solid fa-calendar-days nav-icon"></i>
+                    <span>Events</span>
+                    <span class="nav-badge" id="eventsBadge">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showSection('clearance')">
+                    <i class="fas fa-list-check nav-icon"></i>
+                    <span>Clearance</span>
+                    <span class="nav-badge" id="clearanceBadge">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showSection('payments')">
+                    <i class="fas fa-peso-sign nav-icon"></i>
+                    <span>Payments</span>
+                    <span class="nav-badge" id="paymentsBadge">0</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="section active" id="dashboardSection">
+            <div class="header">
+                <h1>Dashboard <i class="fas fa-home"></i></h1>
+                <p>Welcome back, Student Council</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon events"><i class="fa-solid fa-calendar-days"></i></div>
+                    </div>
+                    <div class="stat-value" id="totalEvents">0</div>
+                    <div class="stat-label">Total Events</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon clearance"><i class="fa-solid fa-envelope-open-text"></i></div>
+                    </div>
+                    <div class="stat-value" id="totalClearance">0</div>
+                    <div class="stat-label">Clearance Requests</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon payments"><i class="fa-solid fa-peso-sign"></i></div>
+                    </div>
+                    <div class="stat-value" id="totalPayments">₱0</div>
+                    <div class="stat-label">Total Payments</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon students"><i class="fa-solid fa-user-graduate"></i></div>
+                    </div>
+                    <div class="stat-value" id="totalStudents">0</div>
+                    <div class="stat-label">Registered Students</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h2 class="table-title">Recent Activity</h2>
+                </div>
+                <div class="empty-state">
+                    <div class="empty-icon"><i class="fa-solid fa-chart-column"></i></div>
+                    <h2>No Recent Activity</h2>
+                    <p>Start creating events and managing clearances to see activity here</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="eventsSection" style="display: none;">
+            <div class="header">
+                <h1>Events Management <i class="fa-solid fa-calendar-days"></i></h1>
+                <p>Create and manage organization events</p>
+            </div>
+
+            <div class="calendar-view">
+                <div class="calendar-header">
+                    <h3>October 2025</h3>
+                    <div class="calendar-nav">
+                        <button>← Prev</button>
+                        <button>Today</button>
+                        <button>Next →</button>
+                    </div>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-day header">Sun</div>
+                    <div class="calendar-day header">Mon</div>
+                    <div class="calendar-day header">Tue</div>
+                    <div class="calendar-day header">Wed</div>
+                    <div class="calendar-day header">Thu</div>
+                    <div class="calendar-day header">Fri</div>
+                    <div class="calendar-day header">Sat</div>
+
+                    <div class="calendar-day"></div>
+                    <div class="calendar-day"></div>
+                    <div class="calendar-day"></div>
+
+                    <div class="calendar-day" data-date="2025-10-01">1</div>
+                    <div class="calendar-day" data-date="2025-10-02">2</div>
+                    <div class="calendar-day" data-date="2025-10-03">3</div>
+                    <div class="calendar-day" data-date="2025-10-04">4</div>
+                    <div class="calendar-day" data-date="2025-10-05">5</div>
+                    <div class="calendar-day" data-date="2025-10-06">6</div>
+                    <div class="calendar-day" data-date="2025-10-07">7</div>
+                    <div class="calendar-day" data-date="2025-10-08">8</div>
+                    <div class="calendar-day" data-date="2025-10-09">9</div>
+
+                    <div class="calendar-day event" data-date="2025-10-10">
+                        10
+                        <button class="edit-event-icon-btn" title="Edit Event" data-date="2025-10-10">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+
+                        <div class="event-back-face">...</div>
+                    </div>
+
+                    <div class="calendar-day" data-date="2025-10-11">11</div>
+                    <div class="calendar-day" data-date="2025-10-12">12</div>
+                    <div class="calendar-day" data-date="2025-10-13">13</div>
+                    <div class="calendar-day" data-date="2025-10-14">14</div>
+
+                    <div class="calendar-day event" data-date="2025-10-15">
+                        15
+                        <button class="edit-event-icon-btn" title="Edit Event" data-date="2025-10-15">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+                        <div class="event-back-face"></div>
+                    </div>
+
+                    <div class="calendar-day" data-date="2025-10-16">16</div>
+                    <div class="calendar-day" data-date="2025-10-17">17</div>
+                    <div class="calendar-day" data-date="2025-10-18">18</div>
+                    <div class="calendar-day" data-date="2025-10-19">19</div>
+
+                    <div class="calendar-day event" data-date="2025-10-20">
+                        20
+                        <button class="edit-event-icon-btn" title="Edit Event" data-date="2025-10-20">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+                        <div class="event-back-face"></div>
+                    </div>
+
+                    <div class="calendar-day" data-date="2025-10-21">21</div>
+                    <div class="calendar-day" data-date="2025-10-22">22</div>
+                    <div class="calendar-day" data-date="2025-10-23">23</div>
+                    <div class="calendar-day" data-date="2025-10-24">24</div>
+                    <div class="calendar-day" data-date="2025-10-25">25</div>
+                    <div class="calendar-day" data-date="2025-10-26">26</div>
+                    <div class="calendar-day" data-date="2025-10-27">27</div>
+                    <div class="calendar-day" data-date="2025-10-28">28</div>
+                    <div class="calendar-day" data-date="2025-10-29">29</div>
+                    <div class="calendar-day" data-date="2025-10-30">30</div>
+                    <div class="calendar-day" data-date="2025-10-31">31</div>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color legend-event"></div>
+                    <span>Upcoming Event</span>
+                </div>
+            </div>
+
+            <div class="modal" id="simpleEventModal">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closeSimpleEventModal()">&times;</span>
+                    <h2 class="modal-title">Post Quick Event on <span id="eventDateDisplay"></span></h2>
+
+                    <form id="simpleEventForm">
+                        <input type="hidden" id="simpleEventDate" value="">
+
+                        <div class="form-group">
+                            <label>Event Title *</label>
+                            <input type="text" class="form-input" id="simpleEventTitle" placeholder="Enter event title"
+                                required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Start Time *</label>
+                                <input type="time" class="form-input" id="simpleStartTime" required>
+                            </div>
+                            <div class="form-group">
+                                <label>End Time *</label>
+                                <input type="time" class="form-input" id="simpleEndTime" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Required Attendees/Audience *</label>
+                            <input type="text" class="form-input" id="simpleEventAudienceInput"
+                                placeholder="e.g., All Students, BSIT 3-1, Mandatory" required>
+                        </div>
+                        <div class="form-group" style="padding-top: 10px;">
+                            <input type="checkbox" id="simpleEventIsClearance" style="width: auto; margin-right: 10px;">
+                            <label for="simpleEventIsClearance" style="display: inline; font-weight: normal;">**Event
+                                counts toward Clearance Requirement**</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary"
+                            style="width: 100%; padding: 15px; margin-top: 10px;">
+                            <span><i class="fa-solid fa-calendar-plus"></i></span>
+                            <span>Post Event</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal" id="quickEditEventModal">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closeQuickEditEventModal()">&times;</span>
+                    <h2 class="modal-title">Quick Edit Event: <span id="quickEditTitleDisplay"></span></h2>
+
+                    <form id="quickEditEventForm">
+                        <input type="hidden" id="quickEditDate" value="">
+
+                        <div class="form-group">
+                            <label>Event Title *</label>
+                            <input type="text" class="form-input" id="quickEditEventTitle"
+                                placeholder="Enter event title" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Start Time *</label>
+                                <input type="time" class="form-input" id="quickEditStartTime" required>
+                            </div>
+                            <div class="form-group">
+                                <label>End Time *</label>
+                                <input type="time" class="form-input" id="quickEditEndTime" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Required Attendees/Audience *</label>
+                            <input type="text" class="form-input" id="quickEditEventAudienceInput"
+                                placeholder="e.g., All Students, BSIT 3-1, Mandatory" required>
+                        </div>
+
+                        <div class="form-group" style="padding-top: 10px;">
+                            <input type="checkbox" id="quickEditEventIsClearance"
+                                style="width: auto; margin-right: 10px;">
+                            <label for="quickEditEventIsClearance" style="display: inline; font-weight: normal;">**Event
+                                counts toward Clearance Requirement**</label>
+                        </div>
+
+                        <div class="modal-footer" style="margin-top: 10px; border-top: none; padding-top: 0;">
+                            <button type="button" class="btn btn-delete" id="deleteQuickEventBtn">
+                                <span><i class="fas fa-trash"></i></span>
+                                <span>Delete Event</span>
+                            </button>
+
+                            <button type="submit" class="btn btn-primary">
+                                <span><i class="fas fa-save"></i></span>
+                                <span>Save Quick Changes</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="openCreateEventModal()">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Create Event</span>
+                </button>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h2 class="table-title">All Events</h2>
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Search events..." id="eventSearch">
+                    </div>
+                </div>
+                <div id="eventsTableContent">
+                    <div class="empty-state">
+                        <div class="empty-icon"><i class="fa-solid fa-calendar-days"></i></div>
+                        <h2>No Events Created</h2>
+                        <p>Click "Create Event" to add your first event</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="clearanceSection" class="content-section" style="display: none;">
+
+            <div class="header">
+                <h1>Clearance Management <i class="fas fa-clipboard-check" style="color: #800020;"></i></h1>
+                <p>View and manage student organization clearance status.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <span class="stat-icon" style="background: #800020;">
+                            <i class="fa-solid fa-users"></i>
+                        </span>
+                        <span class="stat-change" style="background-color: #fee2e2; color: #800020;">2025-2026</span>
+                    </div>
+                    <div class="stat-value">3,540</div>
+                    <div class="stat-label">Total Students Monitored</div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-secondary">
+                    <i class="fa-solid fa-download"></i>
+                    EXPORT DATA
+                </button>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3 class="table-title">Student Clearance List</h3>
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass" style="color: #999;"></i>
+                        <input type="text" placeholder="Search by Student ID or Name">
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Student ID</th>
+                            <th>Name</th>
+                            <th>Course & Year</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div style="text-align: center; padding-top: 20px; color: #999;">
+                    Showing 1 to 50 of 3,540 students
+                </div>
+            </div>
+
+        </section>
+
+        <div class="section" id="paymentsSection" style="display: none;">
+            <div class="header"
+                style="display:flex; justify-content: space-between; align-items:center; flex-wrap:wrap;">
+                <div>
+                    <h1>Payment Management <i class="fa-solid fa-peso-sign"></i></h1>
+                    <p>Track and verify student payments</p>
+                </div>
+                <button class="btn btn-primary" id="openPaymentSettings">
+                    <i class="fa-solid fa-gear"></i> Payment Settings
+                </button>
+            </div>
+
+            <div class="stats-grid"
+                style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom:30px;">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon payments"><i class="fa-solid fa-piggy-bank"></i></div>
+                    </div>
+                    <div class="stat-value">₱0</div>
+                    <div class="stat-label">Total Collected</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon clearance"><i class="fa-solid fa-stopwatch"></i></i></div>
+                    </div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Pending Verification</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-icon events"><i class="fa-solid fa-sack-dollar"></i></div>
+                    </div>
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Verified Payments</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h2 class="table-title">Payment Transactions</h2>
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" placeholder="Search transactions...">
+                    </div>
+                </div>
+                <div class="empty-state">
+                    <div class="empty-icon"><i class="fa-solid fa-peso-sign"></i></div>
+                    <h2>No Payment Transactions</h2>
+                    <p>Student payment submissions will appear here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeProfileModal()">&times;</span>
+            <h2 class="modal-title">Organization Profile</h2>
+            <div class="form-group">
+                <label>Organization Name</label>
+                <input type="text" class="form-input" value="Student Council" readonly>
+            </div>
+            <div class="form-group">
+                <label>Organization Type</label>
+                <input type="text" class="form-input" value="Student Organization" readonly>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" class="form-input" value="sc@pupsmb.edu.ph" readonly>
+            </div>
+            <div class="form-group">
+                <label>Contact Number</label>
+                <input type="tel" class="form-input" value="+63 9xx xxx xxxx" readonly>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" id="createEventModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCreateEventModal()">&times;</span>
+            <h2 class="modal-title">Create New Event</h2>
+
+            <form id="createEventForm">
+                <div class="form-group">
+                    <label>Event Title *</label>
+                    <input type="text" class="form-input" id="eventTitle" placeholder="Enter event title" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Description *</label>
+                    <textarea class="form-textarea" id="eventDescription" placeholder="Enter event description"
+                        required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Location *</label>
+                    <input type="text" class="form-input" id="eventLocation" placeholder="Enter event location"
+                        required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date *</label>
+                        <input type="date" class="form-input" id="eventDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Start Time *</label>
+                        <input type="time" class="form-input" id="startTime" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>End Time *</label>
+                        <input type="time" class="form-input" id="endTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Duration (hours) *</label>
+                        <input type="number" class="form-input" id="eventDuration" placeholder="4" min="1" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select class="form-select" id="eventCategory" required>
+                            <option value="">Select category</option>
+                            <option value="mandatory">Mandatory</option>
+                            <option value="optional">Optional</option>
+                            <option value="special">Special</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Required Attendees/Audience *</label>
+                        <select class="form-select" id="eventAudience" onchange="toggleSpecificAudience('event')"
+                            required>
+                            <option value="">Select Audience</option>
+                            <option value="All Students">All Students</option>
+                            <option value="SC Members Only">SC Members Only</option>
+                            <option value="Other (Specify)">Specific Year Level/Section</option>
+                            <option value="Clearance Requirement">Clearance Requirement</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" id="specificEventAudienceGroup" style="display: none;">
+                    <label>Other:</label>
+                    <input type="text" class="form-input" id="specificEventAudience"
+                        placeholder="e.g., BSIT 3-1, All 4th Year Students">
+                </div>
+
+                <div class="form-group" style="padding-top: 10px;">
+                    <input type="checkbox" id="eventIsClearance" style="width: auto; margin-right: 10px;">
+                    <label for="eventIsClearance" style="display: inline; font-weight: normal;">**Event counts toward
+                        Clearance Requirement**</label>
+                </div>
+                <div class="form-group">
+                    <label>Organizer *</label>
+                    <select class="form-select" id="eventOrganizer" required>
+                        <option value="">Select organizer</option>
+                        <option value="Student Services Office">Student Services Office</option>
+                        <option value="Student Council">Student Council</option>
+                        <option value="Iskolarium">Iskolarium</option>
+                        <option value="Organization">Organization</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 15px; margin-top: 10px;">
+                    <span><i class="fa-solid fa-plus"></i></span>
+                    <span>Create Event</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="modal" id="paymentSettingsModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closePaymentSettingsModal()">&times;</span>
+            <h2 class="modal-title">Payment Settings</h2>
+            <form id="paymentSettingsForm">
+                <div class="form-group">
+                    <label>Title of Payment *</label>
+                    <input type="text" class="form-input" id="paymentTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Payment Amount (₱) *</label>
+                    <input type="number" class="form-input" id="paymentAmount" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label>Definition</label>
+                    <textarea class="form-textarea" id="paymentDefinition"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Upload QR</label>
+                    <input type="file" class="form-input" id="paymentQR" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>Gcash Number</label>
+                    <input type="text" class="form-input" id="gcashNumber">
+                </div>
+                <div class="form-group">
+                    <label>Gcash Name *</label>
+                    <input type="text" class="form-input" id="gcashName" required>
+                </div>
+                <div class="form-group">
+                    <label>Due Date</label>
+                    <input type="date" class="form-input" id="paymentDueDate">
+                </div>
+                <div class="form-group">
+                    <label>Mandatory</label>
+                    <select class="form-select" id="paymentMandatory">
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Other (Specific Student)</label>
+                    <input type="text" class="form-input" id="paymentOther">
+                </div>
+                <button type="submit" class="btn btn-primary save-payment-btn">Save Payment Settings</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="bulkUploadModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeBulkUploadModal()">&times;</span>
+            <h2 class="modal-title">Upload Clearance Status Sheet</h2>
+
+            <form id="bulkUploadForm">
+
+                <div class="form-group">
+                    <label for="uploadFile">Upload CSV/Excel File *</label>
+                    <input type="file" id="uploadFile" class="form-input"
+                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                        required>
+                    <small style="display: block; margin-top: 5px; color: #666; font-size: 0.85rem;">**Must include
+                        columns for Student ID and Clearance Status.**</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="uploadSemester">Select Academic Semester *</label>
+                    <select id="uploadSemester" class="form-select" required>
+                        <option value="">-- Select Semester --</option>
+                        <option value="1st">1st Semester 2025-2026</option>
+                        <option value="2nd">2nd Semester 2025-2026</option>
+                        <option value="Summer">Summer 2025-2026</option>
+                    </select>
+                </div>
+
+                <div class="modal-footer" style="justify-content: space-between;">
+                    <button type="button" class="btn btn-secondary" onclick="alert('Download Template Action')">
+                        <i class="fa-solid fa-download"></i> Download Template
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload and Process
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+    <div class="logout-modal" id="logoutModal">
+        <div class="logout-modal-content">
+            <h2>Logout Confirmation</h2>
+            <p>Are you sure you want to logout?</p>
+
+            <div class="logout-btn-wrapper">
+                <button class="logout-confirm" onclick="confirmLogout()">Yes</button>
+                <button class="logout-cancel" onclick="closeLogoutModal()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+
+    <!-- Student Council Scripts (in correct order) -->
+    <script src="studentcouncils.js"></script>
+    <script src="scevents.js"></script> <!-- ✅ Part 1 -->
+    <script src="sceventscreate.js"></script> <!-- ✅ Part 2 -->
+    <script src="qr-validation.js"></script>
+    <script src="studentcouncil.js"></script>
+</body>
+
+</html>
