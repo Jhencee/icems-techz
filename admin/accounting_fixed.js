@@ -1,10 +1,10 @@
-
+﻿
 
 // ============================================
 // ACCOUNTING.JS - CLEAN VERSION
 // ============================================
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:8000/api' : 'https://icems-techz-production.up.railway.app/api';
 
 let clearances = [];
 let students = [];
@@ -14,7 +14,7 @@ let events = [];
 let currentStudentPayments = [];
 
 // ============================================
-// INITIALIZE — runs ONCE on page load
+// INITIALIZE â€” runs ONCE on page load
 // ============================================
 document.addEventListener('DOMContentLoaded', async () => {
   // Show dashboard tab by default
@@ -214,7 +214,7 @@ function updateDashboard() {
 
   if (dashPendingCount) dashPendingCount.textContent = newCount + pendingCount;
   if (dashStudentCount) dashStudentCount.textContent = students.length;
-  if (dashPaymentTotal) dashPaymentTotal.textContent = '₱' + totalPayments.toLocaleString();
+  if (dashPaymentTotal) dashPaymentTotal.textContent = 'â‚±' + totalPayments.toLocaleString();
 
   displayDashboardEvents();
 }
@@ -290,7 +290,7 @@ function updateStudentsTable() {
                         <span class="progress-text">${s.clearanceProgress}%</span>
                     </div>
                 </td>
-                <td>₱${s.totalPayments.toLocaleString()}</td>
+                <td>â‚±${s.totalPayments.toLocaleString()}</td>
             </tr>`).join('');
   }
 }
@@ -317,7 +317,7 @@ function updatePaymentsTable() {
                 <td>${p.studentId}</td>
                 <td style="font-weight:500;">${p.name}</td>
                 <td>${p.description}</td>
-                <td>₱${p.amount.toLocaleString()}</td>
+                <td>â‚±${p.amount.toLocaleString()}</td>
                 <td>${p.date}</td>
                 <td><span class="status-badge status-${p.status.toLowerCase()}">${p.status}</span></td>
                 <td>
@@ -415,14 +415,14 @@ async function approveSubmission(submissionId) {
     const data = await response.json();
 
     if (data.success) {
-      alert('✅ Clearance approved successfully!');
+      alert('âœ… Clearance approved successfully!');
       closeClearanceDetailsModal();
       await loadClearanceSubmissions();
     } else {
-      alert('❌ Failed to approve: ' + (data.message || 'Unknown error'));
+      alert('âŒ Failed to approve: ' + (data.message || 'Unknown error'));
     }
   } catch (error) {
-    alert('❌ Server error. Please try again.');
+    alert('âŒ Server error. Please try again.');
     console.error(error);
   }
 }
@@ -445,14 +445,14 @@ async function markAsPending(submissionId) {
     const data = await response.json();
 
     if (data.success) {
-      alert('📋 Clearance marked as pending!');
+      alert('ðŸ“‹ Clearance marked as pending!');
       closeClearanceDetailsModal();
       await loadClearanceSubmissions();
     } else {
-      alert('❌ Failed to update: ' + (data.message || 'Unknown error'));
+      alert('âŒ Failed to update: ' + (data.message || 'Unknown error'));
     }
   } catch (error) {
-    alert('❌ Server error. Please try again.');
+    alert('âŒ Server error. Please try again.');
     console.error(error);
   }
 }
@@ -480,14 +480,14 @@ async function rejectSubmission(submissionId) {
     const data = await response.json();
 
     if (data.success) {
-      alert('❌ Clearance rejected.');
+      alert('âŒ Clearance rejected.');
       closeClearanceDetailsModal();
       await loadClearanceSubmissions();
     } else {
-      alert('❌ Failed to reject: ' + (data.message || 'Unknown error'));
+      alert('âŒ Failed to reject: ' + (data.message || 'Unknown error'));
     }
   } catch (error) {
-    alert('❌ Server error. Please try again.');
+    alert('âŒ Server error. Please try again.');
     console.error(error);
   }
 }
@@ -601,7 +601,7 @@ function generatePaymentTableHTML(studentPayments) {
   const rows = studentPayments.map(p => `
         <tr style="border-bottom:1px solid #e5e7eb;">
             <td style="padding:10px;">${p.requirement_title || p.description || '-'}</td>
-            <td style="padding:10px;">₱${parseFloat(p.amount).toLocaleString()}</td>
+            <td style="padding:10px;">â‚±${parseFloat(p.amount).toLocaleString()}</td>
             <td style="padding:10px;">${new Date(p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</td>
             <td style="padding:10px;"><span class="status-badge status-${(p.status || '').toLowerCase()}">${capitalizeFirst(p.status)}</span></td>
         </tr>`).join('');
@@ -691,14 +691,14 @@ if (paymentForm) {
       const data = await response.json();
 
       if (data.success) {
-        alert('✅ Payment requirement created successfully!');
+        alert('âœ… Payment requirement created successfully!');
         closePaymentSettingsModal();
         await loadPaymentsFromDatabase();
       } else {
-        alert('❌ Failed: ' + (data.message || 'Unknown error'));
+        alert('âŒ Failed: ' + (data.message || 'Unknown error'));
       }
     } catch (error) {
-      alert('❌ Server error. Please try again.');
+      alert('âŒ Server error. Please try again.');
       console.error(error);
     }
   });
@@ -727,3 +727,4 @@ function showEmptyClearanceState(message) {
             </div>
         </td></tr>`;
 }
+

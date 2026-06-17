@@ -1,11 +1,11 @@
-// ============================================
+﻿// ============================================
 // NURSE ADMIN DASHBOARD - WITH API INTEGRATION
 // ============================================
 
 // Configure API URL
 if (typeof window.API_URL === 'undefined') {
-    window.API_URL = 'http://localhost:8000/api';
-    console.log('⚙️ Using default API_URL:', window.API_URL);
+    window.API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'http://localhost:8000/api' : 'https://icems-techz-production.up.railway.app/api';
+    console.log('âš™ï¸ Using default API_URL:', window.API_URL);
 }
 
 let clearances = [];
@@ -17,7 +17,7 @@ let currentStudentId = null;
 // ============================================
 async function fetchNurseClearances() {
     try {
-        console.log('🔍 Fetching clearances from:', `${window.API_URL}/nurse/all-clearances`);
+        console.log('ðŸ” Fetching clearances from:', `${window.API_URL}/nurse/all-clearances`);
         const response = await fetch(`${window.API_URL}/nurse/all-clearances`);
         
         if (!response.ok) {
@@ -25,7 +25,7 @@ async function fetchNurseClearances() {
         }
         
         const data = await response.json();
-        console.log('📦 Clearances response:', data);
+        console.log('ðŸ“¦ Clearances response:', data);
 
         if (data.success && data.clearances) {
             clearances = data.clearances.map(clearance => ({
@@ -42,15 +42,15 @@ async function fetchNurseClearances() {
                 submittedAt: clearance.submitted_at
             }));
 
-            console.log('✅ Loaded', clearances.length, 'nurse clearances');
+            console.log('âœ… Loaded', clearances.length, 'nurse clearances');
             return clearances;
         } else {
-            console.warn('⚠️ No clearances found');
+            console.warn('âš ï¸ No clearances found');
             clearances = [];
             return [];
         }
     } catch (error) {
-        console.error('❌ Error fetching nurse clearances:', error);
+        console.error('âŒ Error fetching nurse clearances:', error);
         clearances = [];
         return [];
     }
@@ -61,7 +61,7 @@ async function fetchNurseClearances() {
 // ============================================
 async function fetchHealthQuestions() {
     try {
-        console.log('🔍 Fetching questions from:', `${window.API_URL}/nurse/questions`);
+        console.log('ðŸ” Fetching questions from:', `${window.API_URL}/nurse/questions`);
         const response = await fetch(`${window.API_URL}/nurse/questions`);
         
         if (!response.ok) {
@@ -69,19 +69,19 @@ async function fetchHealthQuestions() {
         }
         
         const data = await response.json();
-        console.log('📦 Questions response:', data);
+        console.log('ðŸ“¦ Questions response:', data);
 
         if (data.success && data.questions) {
             questions = data.questions;
-            console.log('✅ Loaded', questions.length, 'health questions');
+            console.log('âœ… Loaded', questions.length, 'health questions');
             return questions;
         } else {
-            console.warn('⚠️ No questions found');
+            console.warn('âš ï¸ No questions found');
             questions = [];
             return [];
         }
     } catch (error) {
-        console.error('❌ Error fetching questions:', error);
+        console.error('âŒ Error fetching questions:', error);
         questions = [];
         return [];
     }
@@ -91,7 +91,7 @@ async function fetchHealthQuestions() {
 // INITIALIZE DASHBOARD
 // ============================================
 async function initDashboard() {
-    console.log('🏥 Initializing Nurse Dashboard...');
+    console.log('ðŸ¥ Initializing Nurse Dashboard...');
     
     // Show loading state
     const tableBody = document.getElementById('tableBody');
@@ -128,7 +128,7 @@ async function initDashboard() {
     renderQASTable(questions);
     showSection('dashboard');
     
-    console.log('✅ Nurse Dashboard initialized');
+    console.log('âœ… Nurse Dashboard initialized');
 }
 
 // ============================================
@@ -272,11 +272,11 @@ async function confirmApprove() {
             closeApproveModal();
             showSuccessMessage('Clearance approved successfully!');
         } else {
-            alert('❌ Failed to approve clearance: ' + (data.message || 'Unknown error'));
+            alert('âŒ Failed to approve clearance: ' + (data.message || 'Unknown error'));
         }
     } catch (error) {
         console.error('Error approving clearance:', error);
-        alert('❌ Failed to approve clearance. Please try again.');
+        alert('âŒ Failed to approve clearance. Please try again.');
     }
 }
 
@@ -331,11 +331,11 @@ async function confirmReject() {
             closeRejectModal();
             showSuccessMessage('Clearance rejected successfully.');
         } else {
-            alert('❌ Failed to reject clearance: ' + (data.message || 'Unknown error'));
+            alert('âŒ Failed to reject clearance: ' + (data.message || 'Unknown error'));
         }
     } catch (error) {
         console.error('Error rejecting clearance:', error);
-        alert('❌ Failed to reject clearance. Please try again.');
+        alert('âŒ Failed to reject clearance. Please try again.');
     }
 }
 
@@ -699,7 +699,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     type: backendType
                 };
 
-                console.log('📤 Sending question data:', payload);
+                console.log('ðŸ“¤ Sending question data:', payload);
 
                 let response;
                 if (questionId) {
@@ -719,15 +719,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 const data = await response.json();
-                console.log('📥 Response from server:', data);
-                console.log('📥 Response status:', response.status);
+                console.log('ðŸ“¥ Response from server:', data);
+                console.log('ðŸ“¥ Response status:', response.status);
 
                 if (!response.ok) {
-                    console.error('❌ Server error details:', data);
+                    console.error('âŒ Server error details:', data);
                     if (data.errors) {
-                        console.error('❌ Validation errors:', data.errors);
+                        console.error('âŒ Validation errors:', data.errors);
                     }
-                    alert('❌ Failed to save question:\n' + JSON.stringify(data, null, 2));
+                    alert('âŒ Failed to save question:\n' + JSON.stringify(data, null, 2));
                     return;
                 }
 
@@ -737,11 +737,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     closeQASModal();
                     showSuccessMessage(questionId ? 'Question updated successfully!' : 'Question added successfully!');
                 } else {
-                    alert('❌ ' + (data.message || 'Failed to save question'));
+                    alert('âŒ ' + (data.message || 'Failed to save question'));
                 }
             } catch (error) {
                 console.error('Error saving question:', error);
-                alert('❌ Failed to save question. Please try again.');
+                alert('âŒ Failed to save question. Please try again.');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;

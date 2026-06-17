@@ -1,8 +1,8 @@
-// ============================================
+﻿// ============================================
 // PUBLICATIONPAYMENT.JS - PUBLICATION PAYMENT HANDLER
 // ============================================
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:8000/api' : 'https://icems-techz-production.up.railway.app/api';
 
 // Data storage
 window.payments = [];
@@ -15,7 +15,7 @@ let paymentRequirements = [];
 
 // Load payment submissions from database (filtered by Publication requirements only)
 async function loadPaymentsFromDatabase() {
-    console.log('🔍 [Publication] Loading payment submissions...');
+    console.log('ðŸ” [Publication] Loading payment submissions...');
 
     const tbody = document.getElementById('paymentsTableBody');
     if (tbody) {
@@ -39,7 +39,7 @@ async function loadPaymentsFromDatabase() {
 
         // Get all payment requirement IDs created by Publication
         const publicationRequirementIds = paymentRequirements.map(req => req.id);
-        console.log('📋 [Publication] Filtering by requirement IDs:', publicationRequirementIds);
+        console.log('ðŸ“‹ [Publication] Filtering by requirement IDs:', publicationRequirementIds);
 
         const response = await fetch(`${API_BASE_URL}/payments`);
         const data = await response.json();
@@ -71,35 +71,35 @@ async function loadPaymentsFromDatabase() {
                 year: payment.year
             }));
 
-            console.log('✅ [Publication] Loaded', payments.length, 'payment submissions (filtered from', allPayments.length, 'total)');
+            console.log('âœ… [Publication] Loaded', payments.length, 'payment submissions (filtered from', allPayments.length, 'total)');
             updatePaymentsDisplay();
 
-            // 🆕 Update clearance display if function exists
+            // ðŸ†• Update clearance display if function exists
             if (typeof refreshClearanceDisplay === 'function') {
                 refreshClearanceDisplay();
             }
 
             return payments;
         } else {
-            console.error('❌ [Publication] Failed to load payments:', data.message);
+            console.error('âŒ [Publication] Failed to load payments:', data.message);
             showEmptyPaymentState('Failed to load payment data from server');
             return [];
         }
     } catch (error) {
-        console.error('❌ [Publication] Error loading payments:', error);
+        console.error('âŒ [Publication] Error loading payments:', error);
         showEmptyPaymentState('Cannot connect to server. Please check if Laravel is running.');
         return [];
     }
 }
 
 function refreshClearanceDisplay() {
-  console.log('🔄 [Publication Clearance] Refreshing clearance display...');
+  console.log('ðŸ”„ [Publication Clearance] Refreshing clearance display...');
   updateClearanceDisplay();
 }
 
 // Load students from database
 async function loadStudentsFromDatabase() {
-    console.log('🔍 [Publication] Loading students...');
+    console.log('ðŸ” [Publication] Loading students...');
 
     try {
         const response = await fetch(`${API_BASE_URL}/students`);
@@ -114,43 +114,43 @@ async function loadStudentsFromDatabase() {
                 year: student.year
             }));
 
-            console.log('✅ [Publication] Loaded', students.length, 'students');
+            console.log('âœ… [Publication] Loaded', students.length, 'students');
             return students;
         } else {
-            console.error('❌ [Publication] Failed to load students:', data.message);
+            console.error('âŒ [Publication] Failed to load students:', data.message);
             return [];
         }
     } catch (error) {
-        console.error('❌ [Publication] Error loading students:', error);
+        console.error('âŒ [Publication] Error loading students:', error);
         return [];
     }
 }
 
 // Load payment requirements (only Publication's)
 async function loadPaymentRequirements() {
-    console.log('🔍 [Publication] Loading payment requirements...');
+    console.log('ðŸ” [Publication] Loading payment requirements...');
 
     try {
         const response = await fetch(`${API_BASE_URL}/payment-requirements`);
         const data = await response.json();
 
         if (data.success) {
-            // ⭐ FILTER: Only get payment requirements created by Publication
+            // â­ FILTER: Only get payment requirements created by Publication
             const allRequirements = data.requirements || [];
             paymentRequirements = allRequirements.filter(req => req.organization === 'publication');
 
-            console.log('✅ [Publication] Loaded', paymentRequirements.length, 'payment requirements (filtered from', allRequirements.length, 'total)');
+            console.log('âœ… [Publication] Loaded', paymentRequirements.length, 'payment requirements (filtered from', allRequirements.length, 'total)');
 
             // Update display if there's a requirements table
             displayPaymentRequirements();
 
             return paymentRequirements;
         } else {
-            console.error('❌ [Publication] Failed to load payment requirements');
+            console.error('âŒ [Publication] Failed to load payment requirements');
             return [];
         }
     } catch (error) {
-        console.error('❌ [Publication] Error loading payment requirements:', error);
+        console.error('âŒ [Publication] Error loading payment requirements:', error);
         return [];
     }
 }
@@ -190,7 +190,7 @@ function displayPaymentRequirements() {
         return `
       <tr>
         <td style="font-weight: 500;">${req.title}</td>
-        <td style="font-weight: 600; color: #800020;">₱${parseFloat(req.amount).toLocaleString()}</td>
+        <td style="font-weight: 600; color: #800020;">â‚±${parseFloat(req.amount).toLocaleString()}</td>
         <td>${req.description || '-'}</td>
         <td>${dueDate}</td>
         <td>${typeBadge}</td>
@@ -229,7 +229,7 @@ function viewRequirementDetails(requirementId) {
         
         <div style="background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
           <h3 style="color: #800020; margin-bottom: 15px;">${requirement.title}</h3>
-          <p><strong>Amount:</strong> <span style="color: #800020; font-size: 1.2rem; font-weight: 600;">₱${parseFloat(requirement.amount).toLocaleString()}</span></p>
+          <p><strong>Amount:</strong> <span style="color: #800020; font-size: 1.2rem; font-weight: 600;">â‚±${parseFloat(requirement.amount).toLocaleString()}</span></p>
           <p><strong>Description:</strong> ${requirement.description || 'N/A'}</p>
           <p><strong>Due Date:</strong> ${dueDate}</p>
           <p><strong>Type:</strong> ${requirement.is_mandatory ? 'Mandatory' : 'Optional'}</p>
@@ -269,7 +269,7 @@ function closeRequirementDetailsModal() {
 
 // Get student payment history
 async function getStudentPaymentHistory(studentNumber) {
-    console.log('🔍 [Publication] Loading payment history for student:', studentNumber);
+    console.log('ðŸ” [Publication] Loading payment history for student:', studentNumber);
 
     try {
         const response = await fetch(`${API_BASE_URL}/payments/student/${studentNumber}`);
@@ -278,11 +278,11 @@ async function getStudentPaymentHistory(studentNumber) {
         if (data.success) {
             return data.payments || [];
         } else {
-            console.error('❌ [Publication] Failed to load student payment history');
+            console.error('âŒ [Publication] Failed to load student payment history');
             return [];
         }
     } catch (error) {
-        console.error('❌ [Publication] Error loading student payment history:', error);
+        console.error('âŒ [Publication] Error loading student payment history:', error);
         return [];
     }
 }
@@ -309,15 +309,15 @@ async function verifyPayment(paymentId) {
         const data = await response.json();
 
         if (data.success) {
-            alert('✅ Payment verified successfully!');
+            alert('âœ… Payment verified successfully!');
             closePaymentDetailsModal();
             await loadPaymentsFromDatabase();
         } else {
-            alert('❌ Failed to verify payment: ' + data.message);
+            alert('âŒ Failed to verify payment: ' + data.message);
         }
     } catch (error) {
-        console.error('❌ [Publication] Error verifying payment:', error);
-        alert('❌ Failed to verify payment. Please try again.');
+        console.error('âŒ [Publication] Error verifying payment:', error);
+        alert('âŒ Failed to verify payment. Please try again.');
     }
 }
 
@@ -347,15 +347,15 @@ async function rejectPayment(paymentId) {
         const data = await response.json();
 
         if (data.success) {
-            alert('❌ Payment rejected.');
+            alert('âŒ Payment rejected.');
             closePaymentDetailsModal();
             await loadPaymentsFromDatabase();
         } else {
-            alert('❌ Failed to reject payment: ' + data.message);
+            alert('âŒ Failed to reject payment: ' + data.message);
         }
     } catch (error) {
-        console.error('❌ [Publication] Error rejecting payment:', error);
-        alert('❌ Failed to reject payment. Please try again.');
+        console.error('âŒ [Publication] Error rejecting payment:', error);
+        alert('âŒ Failed to reject payment. Please try again.');
     }
 }
 
@@ -393,7 +393,7 @@ function updatePaymentsDisplay() {
         <td>${payment.studentId}</td>
         <td style="font-weight: 500;">${payment.name}</td>
         <td>${payment.description}</td>
-        <td style="font-weight: 600; color: #800020;">₱${payment.amount.toLocaleString()}</td>
+        <td style="font-weight: 600; color: #800020;">â‚±${payment.amount.toLocaleString()}</td>
         <td>${payment.date}</td>
         <td>
           <span class="status-badge ${statusColors[payment.status]}">${payment.status}</span>
@@ -406,7 +406,7 @@ function updatePaymentsDisplay() {
     // Update statistics
     updatePaymentStats();
 
-    // 🆕 Update clearance display if function exists
+    // ðŸ†• Update clearance display if function exists
     if (typeof refreshClearanceDisplay === 'function') {
         refreshClearanceDisplay();
     }
@@ -426,7 +426,7 @@ function updatePaymentStats() {
 
     if (pendingCountEl) pendingCountEl.textContent = pendingCount;
     if (verifiedCountEl) verifiedCountEl.textContent = verifiedCount;
-    if (totalAmountEl) totalAmountEl.textContent = '₱' + totalAmount.toLocaleString();
+    if (totalAmountEl) totalAmountEl.textContent = 'â‚±' + totalAmount.toLocaleString();
 }
 
 // Show empty state
@@ -486,7 +486,7 @@ async function viewPaymentDetails(paymentId) {
             <h3 style="color: #800020; margin-bottom: 10px;">Payment Information</h3>
             <div style="background: #f9fafb; padding: 15px; border-radius: 8px;">
               <p><strong>Description:</strong> ${payment.description}</p>
-              <p><strong>Amount:</strong> <span style="color: #800020; font-weight: 600;">₱${payment.amount.toLocaleString()}</span></p>
+              <p><strong>Amount:</strong> <span style="color: #800020; font-weight: 600;">â‚±${payment.amount.toLocaleString()}</span></p>
               <p><strong>Date:</strong> ${payment.date}</p>
               <p><strong>Status:</strong> <span style="color: ${statusColor}; font-weight: 600;">${payment.status}</span></p>
             </div>
@@ -551,7 +551,7 @@ async function viewPaymentDetailsForReview(paymentId) {
             <h3 style="color: #800020; margin-bottom: 10px;">Payment Information</h3>
             <div style="background: #f9fafb; padding: 15px; border-radius: 8px;">
               <p><strong>Description:</strong> ${payment.description}</p>
-              <p><strong>Amount:</strong> <span style="color: #800020; font-weight: 600;">₱${payment.amount.toLocaleString()}</span></p>
+              <p><strong>Amount:</strong> <span style="color: #800020; font-weight: 600;">â‚±${payment.amount.toLocaleString()}</span></p>
               <p><strong>Date:</strong> ${payment.date}</p>
               <p><strong>Status:</strong> <span style="color: ${statusColor}; font-weight: 600;">${payment.status}</span></p>
             </div>
@@ -747,7 +747,7 @@ function capitalizeFirst(str) {
 // INITIALIZE
 // ============================================
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🚀 [Publication] Initializing Publication Payment System...');
+    console.log('ðŸš€ [Publication] Initializing Publication Payment System...');
 
     // Set default section to 'payment' on load
     showSection('payment');
@@ -848,11 +848,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Create FormData from the form
             const formData = new FormData(paymentForm);
 
-            // ⭐ ADD ORGANIZATION IDENTIFIER
+            // â­ ADD ORGANIZATION IDENTIFIER
             formData.append('organization', 'publication');
 
             try {
-                console.log('📤 [Publication] Submitting payment requirement...');
+                console.log('ðŸ“¤ [Publication] Submitting payment requirement...');
 
                 const response = await fetch(`${API_BASE_URL}/payment-requirements`, {
                     method: 'POST',
@@ -862,7 +862,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const data = await response.json();
 
                 if (data.success) {
-                    alert('✅ Payment requirement created successfully!');
+                    alert('âœ… Payment requirement created successfully!');
                     closePaymentSettingsModal();
                     paymentForm.reset();
 
@@ -870,24 +870,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                     await loadPaymentRequirements();
                     await loadPaymentsFromDatabase();
                 } else {
-                    alert('❌ Failed to create payment requirement: ' + (data.message || 'Unknown error'));
+                    alert('âŒ Failed to create payment requirement: ' + (data.message || 'Unknown error'));
                 }
             } catch (error) {
-                console.error('❌ [Publication] Error creating payment requirement:', error);
-                alert('❌ Failed to create payment requirement. Please try again.');
+                console.error('âŒ [Publication] Error creating payment requirement:', error);
+                alert('âŒ Failed to create payment requirement. Please try again.');
             }
         });
     }
 
     // Load payment data - IMPORTANT: Load requirements FIRST, then payments
-    console.log('📦 [Publication] Loading payment requirements first...');
+    console.log('ðŸ“¦ [Publication] Loading payment requirements first...');
     await loadPaymentRequirements();
 
-    console.log('📦 [Publication] Now loading payment submissions...');
+    console.log('ðŸ“¦ [Publication] Now loading payment submissions...');
     await loadPaymentsFromDatabase();
 
-    console.log('📦 [Publication] Loading students data...');
+    console.log('ðŸ“¦ [Publication] Loading students data...');
     await loadStudentsFromDatabase();
 
-    console.log('✅ [Publication] Payment system initialized successfully');
+    console.log('âœ… [Publication] Payment system initialized successfully');
 });
