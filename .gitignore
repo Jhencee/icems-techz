@@ -7,3 +7,6 @@ icems-app/.dart_tool/
 *.log
 claude_dump.txt
 claude_dump2.txt
+
+downloads/ICEMS.apk
+backend/downloads/ICEMS.apk
