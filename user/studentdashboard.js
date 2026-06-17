@@ -1,4 +1,4 @@
-// Block Live Server auto-reload
+﻿// Block Live Server auto-reload
 if (typeof WebSocket !== 'undefined') {
   const _OrigWS = WebSocket;
   window.WebSocket = function (url) {
@@ -21,7 +21,7 @@ if (typeof EventSource !== 'undefined') {
 // ============================================
 // GLOBAL CONFIGURATION
 // ============================================
-window.API_URL = `${window.location.protocol}//${window.location.hostname}:8000`;
+window.API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? `${window.location.protocol}//${window.location.hostname}:8000` : 'https://icems-techz-production.up.railway.app';
 
 // Store fetched events
 let allEvents = [];
@@ -83,7 +83,7 @@ async function loadUserProfileData() {
 function displayUserProfile(user) {
     if (!user) return;
 
-    // Full name — combines first_name + last_name from DB
+    // Full name â€” combines first_name + last_name from DB
     const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ')
         || user.name || user.full_name || '';
 
@@ -106,34 +106,34 @@ function displayUserProfile(user) {
         el.textContent = user.email || '';
     });
 
-    // Student Number — DB column: student_number
+    // Student Number â€” DB column: student_number
     document.querySelectorAll('.student-id, #studentId, .student-number, #studentNumber').forEach(el => {
         el.textContent = user.student_number || '';
     });
 
-    // Course — DB column: course
+    // Course â€” DB column: course
     document.querySelectorAll('.student-course, #studentCourse').forEach(el => {
         el.textContent = user.course || '';
     });
 
-    // Year Level — DB column: year
+    // Year Level â€” DB column: year
     document.querySelectorAll('.student-year, #studentYear').forEach(el => {
         el.textContent = user.year || '';
     });
 
-    // Section — DB column: section (from students table)
+    // Section â€” DB column: section (from students table)
     document.querySelectorAll('.student-section, #studentSection').forEach(el => {
         el.textContent = user.section || '';
     });
 
-    // Profile picture — DB column: profile_picture
+    // Profile picture â€” DB column: profile_picture
     document.querySelectorAll('.student-avatar, #studentAvatar').forEach(el => {
         if (user.profile_picture) {
             el.src = user.profile_picture;
         }
     });
 
-    console.log('✅ Dashboard UI updated:', {
+    console.log('âœ… Dashboard UI updated:', {
         name: fullName,
         student_number: user.student_number,
         email: user.email,
@@ -148,7 +148,7 @@ function displayUserProfile(user) {
 // ============================================
 
 async function loadEventsFromDatabase() {
-    console.log('🔍 Fetching real events from database...');
+    console.log('ðŸ” Fetching real events from database...');
 
     const eventsContainer = document.getElementById('eventsContainer');
     if (eventsContainer) {
@@ -160,19 +160,19 @@ async function loadEventsFromDatabase() {
         const data = await response.json();
 
         if (data.success) {
-            console.log('✅ Real events fetched from database:', data.events.length);
+            console.log('âœ… Real events fetched from database:', data.events.length);
             allEvents = data.events;
             filteredEvents = allEvents;
             displayEvents(filteredEvents);
             updateEventCounts();
             return data.events;
         } else {
-            console.error('❌ Failed to fetch events:', data.message);
+            console.error('âŒ Failed to fetch events:', data.message);
             showEmptyState('Failed to load events from database');
             return [];
         }
     } catch (error) {
-        console.error('❌ Error connecting to database:', error);
+        console.error('âŒ Error connecting to database:', error);
         showEmptyState('Cannot connect to server. Make sure Laravel is running at ' + window.API_URL);
         return [];
     }
@@ -186,7 +186,7 @@ function displayEvents(events) {
     const eventsContainer = document.getElementById('eventsContainer');
 
     if (!eventsContainer) {
-        console.warn('⚠️ Events container not found - this is normal for dashboard page');
+        console.warn('âš ï¸ Events container not found - this is normal for dashboard page');
         return;
     }
 
@@ -202,7 +202,7 @@ function displayEvents(events) {
         return new Date(b.event_date) - new Date(a.event_date);
     });
 
-    console.log('📅 Displaying', sortedEvents.length, 'real events from database');
+    console.log('ðŸ“… Displaying', sortedEvents.length, 'real events from database');
 
     sortedEvents.forEach(event => {
         const eventCard = createEventCard(event);
@@ -314,7 +314,7 @@ function createEventCard(event) {
 
 function filterEvents(filterType) {
     currentFilter = filterType;
-    console.log('🔍 Filtering events:', filterType);
+    console.log('ðŸ” Filtering events:', filterType);
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -380,7 +380,7 @@ function updateEventCounts() {
     if (upcomingBadge) upcomingBadge.textContent = upcomingEvents;
     if (mandatoryBadge) mandatoryBadge.textContent = mandatoryEvents;
 
-    console.log('📊 Event counts:', { totalEvents, upcomingEvents, mandatoryEvents });
+    console.log('ðŸ“Š Event counts:', { totalEvents, upcomingEvents, mandatoryEvents });
 }
 
 function showEmptyState(message) {
@@ -496,7 +496,7 @@ function searchEvents(searchTerm) {
     }
 
     displayEvents(filteredEvents);
-    console.log('🔍 Search results:', filteredEvents.length);
+    console.log('ðŸ” Search results:', filteredEvents.length);
 }
 
 // ============================================
@@ -504,7 +504,7 @@ function searchEvents(searchTerm) {
 // ============================================
 
 async function refreshEvents() {
-    console.log('🔄 Refreshing events from database...');
+    console.log('ðŸ”„ Refreshing events from database...');
     await loadEventsFromDatabase();
     filterEvents(currentFilter);
 }
@@ -514,19 +514,19 @@ async function refreshEvents() {
 // ============================================
 
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('📅 Student Dashboard/Events Page Loading...');
+    console.log('ðŸ“… Student Dashboard/Events Page Loading...');
     // Skip if studentdashboard.html handles its own init
     if (document.getElementById('dashboardPaymentsContainer')) return;
 
     // Check if user is logged in
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser) {
-        console.error('❌ No user logged in');
+        console.error('âŒ No user logged in');
         window.location.href = 'studentlogin.html';
         return;
     }
 
-    console.log('✅ User logged in:', currentUser.email);
+    console.log('âœ… User logged in:', currentUser.email);
 
     // Always load fresh user profile data from DB
     await loadUserProfileData();
@@ -569,7 +569,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         `;
         document.head.appendChild(style);
 
-        console.log('✅ Student Events Page Initialized - Showing REAL events from database');
+        console.log('âœ… Student Events Page Initialized - Showing REAL events from database');
     }
 });
 
