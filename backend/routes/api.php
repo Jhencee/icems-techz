@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 // Add CORS headers manually for all API responses
 
@@ -25,8 +25,16 @@ use App\Http\Controllers\Api\AllowedStudentController;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\DirectorClearanceController;
 
+Route::options('{any}', function () {
+    return response('', 204)
+        ->header('Access-Control-Allow-Origin', '*')
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
+        ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept');
+})->where('any', '.*');
 
-// RATE LIMITING ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â raise limit to prevent 429s during dev
+
+
+// RATE LIMITING ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â raise limit to prevent 429s during dev
 // Add this in app/Providers/RouteServiceProvider.php instead,
 // but wrapping all routes in throttle:300,1 works too for local dev:
 
@@ -80,7 +88,7 @@ Route::middleware(['throttle:300,1'])->group(function () {
     Route::delete('/events/{id}', [AdminEventController::class, 'destroy']);
 
     
-    // CLEARANCE ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â EVENT ATTENDANCE (student-facing)
+    // CLEARANCE ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â EVENT ATTENDANCE (student-facing)
     
     Route::prefix('clearance')->group(function () {
         Route::get('student/{email}', [ClearanceController::class, 'getStudentSubmissions']);
@@ -105,7 +113,7 @@ Route::middleware(['throttle:300,1'])->group(function () {
     });
 
     
-    // CLEARANCE ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â LABORATORY
+    // CLEARANCE ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â LABORATORY
     
     Route::prefix('laboratory')->group(function () {
         Route::get('clearance/{studentNumber}', [ClearanceController::class, 'getLaboratoryClearance']);
@@ -128,7 +136,7 @@ Route::middleware(['throttle:300,1'])->group(function () {
     });
 
     
-    // CLEARANCE ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â NURSE
+    // CLEARANCE ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â NURSE
     
     Route::prefix('nurse')->group(function () {
         Route::get('questions', [ClearanceController::class, 'getHealthQuestions']);
@@ -282,3 +290,4 @@ Route::post('/gymnasium/submit-clearance', [App\Http\Controllers\Api\GymnasiumCo
 
 
 Route::get('/auth/me', [App\Http\Controllers\AuthController::class, 'me']);
+

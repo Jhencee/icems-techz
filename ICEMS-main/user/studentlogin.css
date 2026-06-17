@@ -1,0 +1,847 @@
+/* ========================================
+   RESET & BASE STYLES
+   ======================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: url('login-bg.jpg') no-repeat center center fixed;
+    background-color: #f0f2f5;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    filter: blur(6px);
+    z-index: -1;
+}
+
+/* ========================================
+   AUTHENTICATION CONTAINER
+   ======================================== */
+.auth-container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(128, 0, 32, 0.3);
+    overflow: hidden;
+    max-width: 1000px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+/* ========================================
+   LEFT PANEL - BRANDING & FEATURES
+   ======================================== */
+.auth-left {
+    background: linear-gradient(135deg, #800020 0%, #600018 100%);
+    color: white;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Logo Section */
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 5px;
+}
+
+.logo-text h1 {
+    font-size: 1.35rem;
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+}
+
+.logo-text p {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+/* Welcome Text */
+.welcome-text {
+    margin-bottom: 2rem;
+}
+
+.welcome-text h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+}
+
+.welcome-text p {
+    opacity: 0.9;
+    line-height: 1.6;
+}
+
+/* Features List */
+.features {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.feature-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+/* ========================================
+   RIGHT PANEL - FORM CONTAINER
+   ======================================== */
+.auth-right {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: auto;
+    overflow-y: auto;
+    max-height: 100vh;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* ========================================
+   FORM SECTIONS & ANIMATIONS
+   ======================================== */
+.form-container {
+    position: relative;
+}
+
+.form-section {
+    display: none;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.form-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   FORM GROUPS & LAYOUTS
+   ======================================== */
+.form-group {
+    position: relative;
+    margin-bottom: 0.1rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: -0.1rem;
+}
+
+/* ========================================
+   INPUT FIELDS
+   ======================================== */
+.input-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 2.5rem;
+}
+
+.input-wrapper input {
+    width: 100%;
+    height: 3.2rem;
+    padding: 0.85rem 1rem;
+    border: 2px solid #e5e5e5;
+    border-radius: 10px;
+    font-size: 1rem;
+    line-height: 1.4;
+    transition: all 0.3s;
+    background: white;
+}
+
+.input-wrapper.with-icon input {
+    padding-left: 2.8rem;
+}
+
+.input-wrapper input:focus {
+    outline: none;
+    border-color: #800020;
+    box-shadow: 0 0 0 3px rgba(128, 0, 32, 0.1);
+}
+
+/* Input Icons */
+.input-wrapper > i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 1.1rem;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* ========================================
+   FLOATING LABELS
+   ======================================== */
+.input-wrapper label {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    font-size: 1rem;
+    background: white;
+    padding: 0 0.25rem;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.input-wrapper.with-icon label {
+    left: 2.8rem;
+}
+
+/* Label Animation - Active State */
+.input-wrapper input:focus + i + label,
+.input-wrapper input:not(:placeholder-shown) + i + label,
+.input-wrapper input:focus + label,
+.input-wrapper input:not(:placeholder-shown) + label {
+    top: 0;
+    font-size: 0.75rem;
+    color: #800020;
+    font-weight: 600;
+    background: white;
+    padding: 0 0.25rem;
+    left: 1rem;
+}
+
+/* ========================================
+   AUTOFILL STYLES
+   ======================================== */
+.input-wrapper input:-webkit-autofill,
+.input-wrapper input:-webkit-autofill:hover,
+.input-wrapper input:-webkit-autofill:focus,
+.input-wrapper input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+    -webkit-text-fill-color: #333 !important;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ========================================
+   PASSWORD FIELDS
+   ======================================== */
+.password-wrapper {
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.password-wrapper.has-error {
+    margin-bottom: 3rem;
+}
+
+.password-wrapper input {
+    padding-right: 50px !important;
+}
+
+.input-wrapper.with-icon.password-wrapper input {
+    padding-left: 2.8rem !important;
+    padding-right: 50px !important;
+}
+
+/* Password Toggle Icon */
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 100;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 32px;
+    height: 32px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.toggle-password::before,
+.toggle-password::after {
+    content: none !important;
+    display: none !important;
+    background: none !important;
+}
+
+.toggle-password > *:not(i) {
+    display: none !important;
+}
+
+.toggle-password i {
+    color: #666 !important;
+    font-size: 18px !important;
+    pointer-events: none !important;
+    font-weight: 400 !important;
+    line-height: 1 !important;
+    display: block !important;
+    background: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.toggle-password:hover i {
+    color: #800020 !important;
+}
+
+/* Hide browser's default password controls */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* ========================================
+   ERROR MESSAGES
+   ======================================== */
+.error-msg {
+    position: absolute;
+    left: 0;
+    bottom: -1.5rem;
+    font-size: 0.85rem;
+    color: #e74c3c;
+    font-weight: 500;
+    display: block;
+}
+
+.input-wrapper .error-msg {
+    bottom: -1.5rem;
+}
+
+.password-wrapper .error-msg {
+    bottom: -1.8rem;
+}
+
+.input-wrapper.error input {
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+/* ========================================
+   TERMS CHECKBOX & ERROR
+   ======================================== */
+.terms-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.terms-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    cursor: pointer;
+    accent-color: #800020;
+    margin-top: 2px;
+}
+
+.terms-checkbox input[type="checkbox"]:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.terms-checkbox label {
+    font-size: 0.875rem;
+    color: #555;
+    cursor: pointer;
+    line-height: 1.5;
+}
+
+.terms-checkbox a {
+    color: #800020;
+    text-decoration: underline;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.terms-checkbox a:hover {
+    color: #a00028;
+}
+
+.terms-error-msg {
+    display: block;
+    font-size: 0.85rem;
+    color: #e74c3c;
+    font-weight: 500;
+    min-height: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+/* ========================================
+   CHECKBOXES & LINKS
+   ======================================== */
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #800020;
+}
+
+.remember-me label {
+    font-size: 0.875rem;
+    color: #666;
+    cursor: pointer;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 1.5rem;
+}
+
+.forgot-password a {
+    color: #800020;
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+.btn-submit {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #800020 0%, #600018 100%);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(128, 0, 32, 0.3);
+}
+
+.btn-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ========================================
+   SUCCESS & ERROR MESSAGES
+   ======================================== */
+.success-message,
+.error-message {
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    text-align: center;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    animation: fadeIn 0.5s ease;
+}
+
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error-message {
+    background: #f8d7da;
+    color: #800020;
+    border: 1px solid #800020;
+}
+
+/* ========================================
+   MODAL STYLES
+   ======================================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(4px);
+    z-index: 99999;
+}
+
+.modal-box {
+    width: 650px;
+    max-height: 85vh;
+    background: #ffffff;
+    padding: 35px 45px;
+    border-radius: 14px;
+    overflow-y: auto;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    line-height: 1.7;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Combined modal overrides — flex layout so footer stays fixed at bottom */
+.combined-modal-box {
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+    padding: 0;
+    max-height: 88vh;
+}
+
+.combined-modal-box .close-btn {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    float: none;
+}
+
+.combined-modal-box > h2 {
+    padding: 28px 40px 16px;
+    margin: 0;
+    border-bottom: 1px solid #e5e7eb;
+    position: relative;
+}
+
+.close-btn {
+    float: right;
+    font-size: 26px;
+    cursor: pointer;
+    color: #555;
+    transition: 0.2s ease;
+}
+
+.close-btn:hover {
+    color: #a00000;
+}
+
+.modal-box h2 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 22px;
+    color: #800020;
+    border-left: 5px solid #800020;
+    padding-left: 10px;
+}
+
+.modal-box h3 {
+    margin-top: 22px;
+    font-size: 16px;
+    color: #333;
+    font-weight: 700;
+}
+
+.modal-box p,
+.modal-box li {
+    font-size: 14.5px;
+    margin-bottom: 10px;
+    color: #4a4a4a;
+}
+
+.modal-box ul {
+    margin-left: 25px;
+    margin-bottom: 10px;
+}
+
+.modal-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-box::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 6px;
+}
+
+.modal-box::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+
+/* ========================================
+   MODAL TABS
+   ======================================== */
+.modal-tabs {
+    display: flex;
+    border-bottom: 2px solid #e5e7eb;
+    padding: 0 40px;
+    background: #fafafa;
+    flex-shrink: 0;
+}
+
+.modal-tab-btn {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.modal-tab-btn:hover {
+    color: #800020;
+}
+
+.modal-tab-btn.active {
+    color: #800020;
+    border-bottom-color: #800020;
+}
+
+/* ========================================
+   MODAL TAB PANELS
+   ======================================== */
+.modal-tab-panel {
+    display: none;
+    padding: 24px 40px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-tab-panel.active {
+    display: block;
+}
+
+.modal-tab-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-tab-panel::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 6px;
+}
+
+.modal-tab-panel::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+
+.modal-tab-panel h3 {
+    margin-top: 20px;
+    font-size: 15px;
+    color: #333;
+    font-weight: 700;
+}
+
+.modal-tab-panel p,
+.modal-tab-panel li {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #4a4a4a;
+    line-height: 1.7;
+}
+
+.modal-tab-panel ul {
+    margin-left: 22px;
+    margin-bottom: 10px;
+}
+
+/* ========================================
+   MODAL ACCEPT FOOTER
+   ======================================== */
+.modal-accept-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 16px 40px;
+    border-top: 2px solid #e5e7eb;
+    background: #fafafa;
+    border-radius: 0 0 14px 14px;
+    flex-shrink: 0;
+}
+
+.modal-accept-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.875rem;
+    color: #374151;
+    cursor: pointer;
+    line-height: 1.5;
+    flex: 1;
+}
+
+.modal-accept-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    cursor: pointer;
+    accent-color: #800020;
+    margin-top: 2px;
+}
+
+.btn-modal-accept {
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #800020 0%, #600018 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.btn-modal-accept:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(128, 0, 32, 0.3);
+}
+
+.btn-modal-accept:disabled {
+    background: #d1d5db;
+    color: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+@media (max-width: 768px) {
+    .auth-container {
+        grid-template-columns: 1fr;
+    }
+
+    .auth-left,
+    .auth-right {
+        padding: 1.5rem;
+    }
+
+    .welcome-text h2 {
+        font-size: 1.5rem;
+    }
+
+    .features {
+        display: none;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-box,
+    .combined-modal-box {
+        width: 92%;
+    }
+
+    .modal-tabs {
+        padding: 0 16px;
+    }
+
+    .combined-modal-box > h2 {
+        padding: 20px 16px 14px;
+        font-size: 17px;
+    }
+
+    .modal-tab-panel {
+        padding: 16px;
+    }
+
+    .modal-accept-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px 16px;
+        gap: 12px;
+    }
+
+    .btn-modal-accept {
+        width: 100%;
+        justify-content: center;
+    }
+}

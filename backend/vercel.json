@@ -14,6 +14,16 @@
       "dest": "/downloads/$1.apk"
     },
     { "src": "/build/(.*)", "dest": "/public/build/$1" },
+    {
+      "src": "/api/(.*)",
+      "methods": ["OPTIONS"],
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With, Accept"
+      },
+      "dest": "/api/index.php"
+    },
     { "src": "/(.*)", "dest": "/api/index.php" }
   ],
   "env": {

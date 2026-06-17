@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICEMS - Notifications</title>
+    <link rel="stylesheet" href="studentdashboard.css">
+    <link rel="stylesheet" href="studentnotifications.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo-section">
+            <div class="logo">
+                <img src="PUP.png" alt="puplogo">
+            </div>
+            <div class="logo-text">
+                <h2>ICEMS</h2>
+                <p>PUP Santa Maria</p>
+            </div>
+        </div>
+
+        <div class="user-profile" onclick="openProfileModal()">
+            <div class="user-avatar-large" id="sidebarAvatar">JB</div>
+            <div class="user-name" id="sidebarName">Jhencee Borjal</div>
+            <div class="user-id" id="sidebarId">BSIT 3-2 | 2021-54321</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="studentdashboard.html" class="nav-link">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentclearance.html" class="nav-link">
+                    <i class="fas fa-list-check nav-icon"></i>
+                    <span>Clearances</span>
+                    <span class="nav-badge" id="clearanceBadge">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentevent.html" class="nav-link">
+                    <i class="fas fa-calendar-alt nav-icon"></i>
+                    <span>Events</span>
+                    <span class="nav-badge" id="eventsBadge">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentpayment.html" class="nav-link">
+                    <i class="fas fa-peso-sign nav-icon"></i>
+                    <span>Payments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="attendance.html" class="nav-link">
+                    <i class="fas fa-user-check nav-icon"></i>
+                    <span>Attendance</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="header-left">
+                <h1>Notifications <i class="fas fa-bell"></i></h1>
+                <p>Stay updated with your clearance progress</p>
+            </div>
+        </div>
+
+        <div class="bulk-actions">
+            <button class="btn btn-secondary" onclick="markAllRead()"><i class="fas fa-book-open"></i> Mark All as Read</button>
+            <button class="btn btn-secondary" onclick="clearAll()"><i class="fas fa-trash-alt"></i> Clear All</button>
+        </div>
+
+        <div class="notif-filters">
+            <div class="filter-chip active" onclick="filterNotifs('all')">All</div>
+            <div class="filter-chip" onclick="filterNotifs('unread')">Unread</div>
+            <div class="filter-chip" onclick="filterNotifs('clearance')">Clearance</div>
+            <div class="filter-chip" onclick="filterNotifs('events')">Events</div>
+            <div class="filter-chip" onclick="filterNotifs('payments')">Payments</div>
+        </div>
+
+        <div class="notif-list" id="notifList">
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-bell-slash"></i></div>
+                <h2>No Notifications</h2>
+                <p>You're all caught up! Notifications will appear here when you have updates</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeProfileModal()">&times;</span>
+            <div class="modal-header">
+                <h2 class="modal-title">Edit Profile</h2>
+            </div>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="editName" class="form-input" value="Jhencee Borjal">
+            </div>
+            <div class="form-group">
+                <label>Course & Year</label>
+                <input type="text" id="editCourse" class="form-input" value="BSIT 3-1">
+            </div>
+            <div class="form-group">
+                <label>Student ID</label>
+                <input type="text" id="editStudentId" class="form-input" value="2021-54321" readonly>
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="editEmail" class="form-input" value="jhencee.borjal@pupsmb.edu.ph">
+            </div>
+            <button class="btn btn-primary" style="width: 100%; padding: 15px;" onclick="saveProfile()">Save Changes</button>
+        </div>
+    </div>
+
+<!-- FOOTER -->
+<div class="footer">
+    © 2025 PUP Santa Maria Campus - ICEMS |
+   <a href="../about us/about.html" target="_blank" class="footer-link">About Us</a>
+
+</div>
+
+       <!-- LOGOUT MODAL -->
+<div class="logout-modal" id="logoutModal">
+    <div class="logout-modal-content">
+        <h2>Logout Confirmation</h2>
+        <p>Are you sure you want to logout?</p>
+
+        <div class="logout-btn-wrapper">
+            <button class="logout-confirm" onclick="confirmLogout()">Yes</button>
+            <button class="logout-cancel" onclick="closeLogoutModal()">No</button>
+        </div>
+    </div>
+</div>
+
+    <script src="studentdashboard.js"></script>
+    <script src = "studentnotifications.js"></script>
+    
+</body>
+</html> 
