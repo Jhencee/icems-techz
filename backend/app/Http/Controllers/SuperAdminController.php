@@ -155,7 +155,7 @@ class SuperAdminController extends Controller
         ]);
 
         // Log the action
-        $superAdminName = Session::get('super_admin_name', 'Super Admin');
+        $superAdminName = $superAdminEmail ?? 'Super Admin';
         $this->logAudit(
             $superAdminName,
             'Password Reset',
