@@ -1,9 +1,8 @@
-// ============================================
+﻿// ============================================
 // REPORTS OVERVIEW - reportsoverview.js
 // ============================================
 
-const REPORTS_API_URL = 'http://127.0.0.1:8000/api';
-
+const REPORTS_API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? `${window.location.protocol}//${window.location.hostname}:8000/api` : 'https://icems-techz-production.up.railway.app/api';
 let userChart = null;
 let adminChart = null;
 
@@ -11,7 +10,7 @@ let adminChart = null;
 // INITIALIZE REPORTS
 // ============================================
 async function initializeReports() {
-    console.log('🚀 Initializing Reports Overview...');
+    console.log('ðŸš€ Initializing Reports Overview...');
     
     try {
         // Load statistics
@@ -21,11 +20,11 @@ async function initializeReports() {
         if (typeof Chart !== 'undefined') {
             initializeReportCharts();
         } else {
-            console.log('⏳ Waiting for Chart.js to load...');
+            console.log('â³ Waiting for Chart.js to load...');
             setTimeout(initializeReports, 100);
         }
     } catch (error) {
-        console.error('❌ Error initializing reports:', error);
+        console.error('âŒ Error initializing reports:', error);
     }
 }
 
@@ -34,7 +33,7 @@ async function initializeReports() {
 // ============================================
 async function loadReportStatistics() {
     try {
-        console.log('📊 Loading comprehensive report statistics from backend...');
+        console.log('ðŸ“Š Loading comprehensive report statistics from backend...');
 
         // Fetch data from all controllers in parallel
         const [
@@ -72,7 +71,7 @@ async function loadReportStatistics() {
                 adminsData = { success: false, admins: [] };
             }
         } else {
-            console.warn('⚠️ Admins endpoint failed, using fallback data');
+            console.warn('âš ï¸ Admins endpoint failed, using fallback data');
             // Fallback admin data
             adminsData = {
                 success: true,
@@ -99,7 +98,7 @@ async function loadReportStatistics() {
         const nurseData = nurseResponse.ok ? await nurseResponse.json() : { success: false, clearances: [] };
         const organizationsData = organizationsResponse.ok ? await organizationsResponse.json() : { success: false, organizations: [] };
 
-        console.log('📥 Data received:', {
+        console.log('ðŸ“¥ Data received:', {
             students: studentsData.students?.length || 0,
             admins: adminsData.admins?.length || 0,
             events: eventsData.events?.length || 0,
@@ -143,7 +142,7 @@ async function loadReportStatistics() {
 
         const clearancesIssued = approvedSSO + approvedGym + approvedLab + approvedLibrary + approvedNurse;
 
-        console.log('✅ Statistics calculated:', {
+        console.log('âœ… Statistics calculated:', {
             totalUsers,
             registeredUsers,
             notRegisteredUsers,
@@ -183,10 +182,10 @@ async function loadReportStatistics() {
             }
         };
 
-        console.log('✅ Report data stored globally');
+        console.log('âœ… Report data stored globally');
 
     } catch (error) {
-        console.error('❌ Error loading report statistics:', error);
+        console.error('âŒ Error loading report statistics:', error);
         
         // Set default values on error
         updateStatCard('Total Users', 0);
@@ -240,7 +239,7 @@ function animateValue(element, start, end, duration) {
 // INITIALIZE REPORT CHARTS
 // ============================================
 function initializeReportCharts() {
-    console.log('📊 Initializing report charts...');
+    console.log('ðŸ“Š Initializing report charts...');
     
     // Destroy ALL existing Chart.js instances on these canvases
     const userCanvas = document.getElementById('userChart');
@@ -250,7 +249,7 @@ function initializeReportCharts() {
         const existingUserChart = Chart.getChart(userCanvas);
         if (existingUserChart) {
             existingUserChart.destroy();
-            console.log('🗑️ Destroyed existing user chart');
+            console.log('ðŸ—‘ï¸ Destroyed existing user chart');
         }
     }
     
@@ -258,7 +257,7 @@ function initializeReportCharts() {
         const existingAdminChart = Chart.getChart(adminCanvas);
         if (existingAdminChart) {
             existingAdminChart.destroy();
-            console.log('🗑️ Destroyed existing admin chart');
+            console.log('ðŸ—‘ï¸ Destroyed existing admin chart');
         }
     }
     
@@ -294,7 +293,7 @@ function initializeUserChart() {
     const userCtx = document.getElementById('userChart');
     
     if (!userCtx) {
-        console.error('❌ User chart canvas not found');
+        console.error('âŒ User chart canvas not found');
         return;
     }
 
@@ -394,9 +393,9 @@ function initializeUserChart() {
             }
         });
 
-        console.log('✅ User chart created successfully');
+        console.log('âœ… User chart created successfully');
     } catch (error) {
-        console.error('❌ Error creating user chart:', error);
+        console.error('âŒ Error creating user chart:', error);
     }
 }
 
@@ -407,7 +406,7 @@ function initializeAdminChart() {
     const adminCtx = document.getElementById('adminChart');
     
     if (!adminCtx) {
-        console.error('❌ Admin chart canvas not found');
+        console.error('âŒ Admin chart canvas not found');
         return;
     }
 
@@ -513,9 +512,9 @@ function initializeAdminChart() {
             }
         });
 
-        console.log('✅ Admin chart created successfully');
+        console.log('âœ… Admin chart created successfully');
     } catch (error) {
-        console.error('❌ Error creating admin chart:', error);
+        console.error('âŒ Error creating admin chart:', error);
     }
 }
 
@@ -523,7 +522,7 @@ function initializeAdminChart() {
 // REFRESH REPORTS
 // ============================================
 async function refreshReports() {
-    console.log('🔄 Refreshing reports...');
+    console.log('ðŸ”„ Refreshing reports...');
     await loadReportStatistics();
     initializeReportCharts();
 }
@@ -535,7 +534,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check if we're on the reports page
     const reportsSection = document.getElementById('reports');
     if (reportsSection) {
-        console.log('📋 Reports section found, initializing...');
+        console.log('ðŸ“‹ Reports section found, initializing...');
         
         // Wait a bit for Chart.js to load
         setTimeout(initializeReports, 500);
@@ -548,7 +547,7 @@ document.addEventListener('DOMContentLoaded', function() {
 const reportsNavItem = document.querySelector('[data-section="reports"]');
 if (reportsNavItem) {
     reportsNavItem.addEventListener('click', function() {
-        console.log('📊 Reports tab clicked, loading reports...');
+        console.log('ðŸ“Š Reports tab clicked, loading reports...');
         setTimeout(initializeReports, 300);
     });
 }
@@ -557,4 +556,4 @@ if (reportsNavItem) {
 window.initializeReports = initializeReports;
 window.refreshReports = refreshReports;
 
-console.log('✅ Reports Overview module loaded');
+console.log('âœ… Reports Overview module loaded');

@@ -280,3 +280,11 @@ CREATE TABLE IF NOT EXISTS `personal_access_tokens` (
 -- ============================================================
 --  END OF SCHEMA
 -- ============================================================
+
+--cd C:\Users\Acer2018\Downloads\ICEMS-main\ICEMS-main\backend
+--php artisan serve
+
+
+
+
+C: \ Users \ Acer2018 \ Downloads \ ICEMS - main > $env :Path = [System.Environment]::GetEnvironmentVariable("Path", "User") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "Machine")

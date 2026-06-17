@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
-class AllowedStudent extends Model
+class AllowedStudent extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens;
 
     protected $table = 'allowed_students';
 
@@ -20,13 +21,15 @@ class AllowedStudent extends Model
         'year',
         'password',
         'is_registered',
+        'auto_registered',
+        'password_changed',
     ];
 
-    protected $hidden = [
-        'password',
-    ];
+    protected $hidden = ['password'];
 
     protected $casts = [
-        'is_registered' => 'boolean',
+        'is_registered'    => 'boolean',
+        'auto_registered'  => 'boolean',
+        'password_changed' => 'boolean',
     ];
 }

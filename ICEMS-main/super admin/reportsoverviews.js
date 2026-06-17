@@ -1,14 +1,13 @@
-// ============================================
+﻿// ============================================
 // REPORTS OVERVIEW - reportsoverviews.js (FIXED)
 // ============================================
 
-const REPORTS_API_URL = 'http://127.0.0.1:8000/api';
-
+const REPORTS_API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? `${window.location.protocol}//${window.location.hostname}:8000/api` : 'https://icems-techz-production.up.railway.app/api';
 let userChart = null;
 let adminChart = null;
 
 // ============================================
-// SAFE FETCH — handles 405 / 429 / network errors
+// SAFE FETCH â€” handles 405 / 429 / network errors
 // ============================================
 async function safeFetch(url, retries = 2, delayMs = 600) {
     for (let attempt = 0; attempt <= retries; attempt++) {
@@ -16,21 +15,21 @@ async function safeFetch(url, retries = 2, delayMs = 600) {
             const res = await fetch(url);
 
             if (res.status === 405) {
-                console.warn(`⚠️ 405 Method Not Allowed: ${url} — skipping.`);
+                console.warn(`âš ï¸ 405 Method Not Allowed: ${url} â€” skipping.`);
                 return null;
             }
             if (res.status === 429) {
                 if (attempt < retries) {
                     const wait = delayMs * (attempt + 1);
-                    console.warn(`⚠️ 429 Too Many Requests: ${url} — retrying in ${wait}ms...`);
+                    console.warn(`âš ï¸ 429 Too Many Requests: ${url} â€” retrying in ${wait}ms...`);
                     await sleep(wait);
                     continue;
                 }
-                console.warn(`❌ 429: ${url} — giving up after ${retries} retries.`);
+                console.warn(`âŒ 429: ${url} â€” giving up after ${retries} retries.`);
                 return null;
             }
             if (!res.ok) {
-                console.warn(`⚠️ HTTP ${res.status} for ${url} — skipping.`);
+                console.warn(`âš ï¸ HTTP ${res.status} for ${url} â€” skipping.`);
                 return null;
             }
 
@@ -39,7 +38,7 @@ async function safeFetch(url, retries = 2, delayMs = 600) {
             if (attempt < retries) {
                 await sleep(delayMs * (attempt + 1));
             } else {
-                console.error(`❌ Failed to fetch ${url}:`, err.message);
+                console.error(`âŒ Failed to fetch ${url}:`, err.message);
                 return null;
             }
         }
@@ -52,7 +51,7 @@ function sleep(ms) {
 }
 
 // ============================================
-// FETCH IN BATCHES — avoids rate limiting
+// FETCH IN BATCHES â€” avoids rate limiting
 // ============================================
 async function fetchInBatches(requests, batchSize = 3, batchDelay = 400) {
     const results = [];
@@ -69,7 +68,7 @@ async function fetchInBatches(requests, batchSize = 3, batchDelay = 400) {
 // INITIALIZE REPORTS
 // ============================================
 async function initializeReports() {
-    console.log('🚀 Initializing Reports Overview...');
+    console.log('ðŸš€ Initializing Reports Overview...');
     try {
         await loadReportStatistics();
 
@@ -79,7 +78,7 @@ async function initializeReports() {
             waitForChartJSThenInit();
         }
     } catch (error) {
-        console.error('❌ Error initializing reports:', error);
+        console.error('âŒ Error initializing reports:', error);
     }
 }
 
@@ -95,7 +94,7 @@ function waitForChartJSThenInit() {
 // LOAD STATISTICS
 // ============================================
 async function loadReportStatistics() {
-    console.log('📊 Loading report statistics (batched)...');
+    console.log('ðŸ“Š Loading report statistics (batched)...');
 
     const endpoints = [
         { key: 'students', url: `${REPORTS_API_URL}/admin/allowed-students` },
@@ -117,7 +116,7 @@ async function loadReportStatistics() {
     // Admins fallback
     let adminsData = byKey.admins;
     if (!adminsData || !adminsData.success) {
-        console.warn('⚠️ Admins endpoint unavailable — using fallback.');
+        console.warn('âš ï¸ Admins endpoint unavailable â€” using fallback.');
         adminsData = {
             success: true,
             admins: [
@@ -152,7 +151,7 @@ async function loadReportStatistics() {
     const approvedNurse = (byKey.nurse?.success ? byKey.nurse.clearances : []).filter(c => c.status === 'approved').length;
     const clearancesIssued = approvedSSO + approvedGym + approvedLab + approvedLibrary + approvedNurse;
 
-    console.log('✅ Statistics:', { totalUsers, registeredUsers, notRegisteredUsers, totalAdmins, totalEvents, clearancesIssued });
+    console.log('âœ… Statistics:', { totalUsers, registeredUsers, notRegisteredUsers, totalAdmins, totalEvents, clearancesIssued });
 
     updateStatCard('Total Users', totalUsers);
     updateStatCard('Total Admins', totalAdmins);
@@ -165,7 +164,7 @@ async function loadReportStatistics() {
         clearanceBreakdown: { sso: approvedSSO, gym: approvedGym, lab: approvedLab, library: approvedLibrary, nurse: approvedNurse }
     };
 
-    console.log('✅ Report data stored globally');
+    console.log('âœ… Report data stored globally');
 }
 
 // ============================================
@@ -195,13 +194,13 @@ function animateValue(element, start, end, duration) {
 // INITIALIZE CHARTS
 // ============================================
 function initializeReportCharts() {
-    console.log('📊 Initializing report charts...');
+    console.log('ðŸ“Š Initializing report charts...');
 
     ['userChart', 'adminChart'].forEach(id => {
         const canvas = document.getElementById(id);
         if (canvas) {
             const existing = Chart.getChart(canvas);
-            if (existing) { existing.destroy(); console.log(`🗑️ Destroyed existing ${id}`); }
+            if (existing) { existing.destroy(); console.log(`ðŸ—‘ï¸ Destroyed existing ${id}`); }
         }
     });
 
@@ -214,7 +213,7 @@ function initializeReportCharts() {
 
 function initializeUserChart() {
     const canvas = document.getElementById('userChart');
-    if (!canvas) { console.error('❌ userChart canvas not found'); return; }
+    if (!canvas) { console.error('âŒ userChart canvas not found'); return; }
 
     const data = window.reportsData || { totalUsers: 0, registeredUsers: 0, notRegisteredUsers: 0 };
 
@@ -244,13 +243,13 @@ function initializeUserChart() {
                 }
             }
         });
-        console.log('✅ User chart created');
-    } catch (err) { console.error('❌ Error creating user chart:', err); }
+        console.log('âœ… User chart created');
+    } catch (err) { console.error('âŒ Error creating user chart:', err); }
 }
 
 function initializeAdminChart() {
     const canvas = document.getElementById('adminChart');
-    if (!canvas) { console.error('❌ adminChart canvas not found'); return; }
+    if (!canvas) { console.error('âŒ adminChart canvas not found'); return; }
 
     const admins = window.reportsData?.admins || [];
     const deptCounts = {};
@@ -307,15 +306,15 @@ function initializeAdminChart() {
                 }
             }
         });
-        console.log('✅ Admin chart created');
-    } catch (err) { console.error('❌ Error creating admin chart:', err); }
+        console.log('âœ… Admin chart created');
+    } catch (err) { console.error('âŒ Error creating admin chart:', err); }
 }
 
 // ============================================
 // REFRESH
 // ============================================
 async function refreshReports() {
-    console.log('🔄 Refreshing reports...');
+    console.log('ðŸ”„ Refreshing reports...');
     await loadReportStatistics();
     initializeReportCharts();
 }
@@ -332,4 +331,4 @@ async function refreshReports() {
 window.initializeReports = initializeReports;
 window.refreshReports = refreshReports;
 
-console.log('✅ Reports Overview module loaded');
+console.log('âœ… Reports Overview module loaded');

@@ -1,0 +1,248 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>if(typeof WebSocket!=="undefined"){const _O=WebSocket;window.WebSocket=function(u){if(u&&u.includes("5500"))return{send:function(){},close:function(){},addEventListener:function(){}};return new _O(u)};}</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ICEMS Login</title>
+  <link rel="stylesheet" href="studentlogin.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- ERROR MESSAGE CONTAINER -->
+  <div id="globalErrorMessage"
+    style="display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #ef4444; color: white; padding: 15px 30px; border-radius: 8px; z-index: 10000; box-shadow: 0 4px 6px rgba(0,0,0,0.1); font-family: Arial, sans-serif;">
+    <i class="fas fa-exclamation-circle"></i>
+    <span>Error!</span>
+  </div>
+
+  <div class="auth-container">
+    <!-- Left Side -->
+    <div class="auth-left">
+      <div class="logo-section">
+        <div class="logo">
+          <img src="PUP.png" alt="PUP Logo">
+        </div>
+        <div class="logo-text">
+          <h1>ICEMS</h1>
+          <p>Integrated Clearance and Event Management System</p>
+        </div>
+      </div>
+
+      <div class="welcome-text">
+        <h2>Welcome Back!</h2>
+        <p>Access your account to manage clearances, events, and payments efficiently.</p>
+      </div>
+
+      <div class="features">
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-check-circle"></i></div><span>Digital Clearance Management</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-calendar-check"></i></div><span>Event Attendance Tracking</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-credit-card"></i></div><span>Online Payment System</span>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"><i class="fas fa-shield-alt"></i></div><span>Secure & Reliable</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side -->
+    <div class="auth-right">
+      <div class="auth-header">
+        <h2 style="color: #800020; margin: 0; font-size: 28px;">
+          <i class="fas fa-sign-in-alt"></i> Sign In
+        </h2>
+        <p style="color: #6b7280; margin-top: 10px;">
+          Enter your credentials to access your account
+        </p>
+      </div>
+
+      <!-- SIGN IN FORM -->
+      <div id="signinForm" class="form-section active">
+        <form id="signinFormElement" novalidate>
+
+          <div class="form-group">
+            <div class="input-wrapper with-icon">
+              <input type="email" id="signinEmail" placeholder=" " required>
+              <i class="fas fa-envelope"></i>
+              <label>Email Address</label>
+            </div>
+            <span class="error-text" id="signinEmailError"></span>
+          </div>
+
+          <div class="form-group">
+            <div class="input-wrapper with-icon password-wrapper">
+              <input type="password" id="signinPassword" placeholder=" " required>
+              <label>Password</label>
+              <span class="toggle-password" onclick="togglePassword('signinPassword', this)">
+                <i class="fas fa-eye"></i>
+              </span>
+            </div>
+            <span class="error-text" id="signinPasswordError"></span>
+          </div>
+
+          <div class="remember-me">
+            <input type="checkbox" id="remember">
+            <label for="remember">Remember me</label>
+          </div>
+
+          <div class="forgot-password">
+            <a href="forgotpassword.html">Forgot password?</a>
+          </div>
+
+          <!-- ACCEPT TERMS CHECKBOX -->
+          <div class="terms-checkbox" id="termsContainer">
+            <input type="checkbox" id="acceptedTerms" disabled>
+            <label for="acceptedTerms">
+              I have read and accept the
+              <a href="#" onclick="openCombinedModal(); return false;">Terms &amp; Conditions and Privacy Policy</a>
+            </label>
+          </div>
+          <span class="terms-error-msg" id="termsErrorMsg"></span>
+
+          <button type="submit" class="btn-submit" style="margin-top: 1rem;">
+            <i class="fas fa-sign-in-alt"></i> Sign In
+          </button>
+
+          <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+            <p style="color: #6b7280; font-size: 14px;">
+              <i class="fas fa-info-circle"></i> New students are registered by administrators
+            </p>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMBINED TERMS & PRIVACY MODAL -->
+  <div id="combinedModal" class="modal-overlay">
+    <div class="modal-box combined-modal-box">
+
+      <span class="close-btn" onclick="closeCombinedModal()">&times;</span>
+      <h2><i class="fas fa-file-contract"></i> Terms &amp; Conditions and Privacy Policy</h2>
+
+      <!-- TABS -->
+      <div class="modal-tabs">
+        <button class="modal-tab-btn active" onclick="switchModalTab('terms', this)">
+          <i class="fas fa-file-alt"></i> Terms &amp; Conditions
+        </button>
+        <button class="modal-tab-btn" onclick="switchModalTab('privacy', this)">
+          <i class="fas fa-user-shield"></i> Privacy Policy
+        </button>
+      </div>
+
+      <!-- TERMS TAB -->
+      <div id="modalTabTerms" class="modal-tab-panel active">
+        <p><strong>Effective Date:</strong> November 4, 2025</p>
+
+        <h3>1. Acceptance of Terms</h3>
+        <p>By accessing and using the Integrated Clearance and Event Management System (ICEMS), you agree to be bound by these Terms and Conditions. If you do not agree to these terms, you may not use the system.</p>
+
+        <h3>2. Use of the System</h3>
+        <p>ICEMS is intended for use by enrolled students, faculty, and authorized staff of Polytechnic University of the Philippines â€“ Santa Maria, Bulacan Campus. Unauthorized access or use is strictly prohibited.</p>
+
+        <h3>3. User Accounts</h3>
+        <p>You are responsible for maintaining the confidentiality of your account credentials. Any activity performed under your account is your responsibility. You must immediately notify the ICEMS support team of any unauthorized use of your account.</p>
+
+        <h3>4. Clearance Management</h3>
+        <p>Students must comply with all clearance requirements set by the university. ICEMS serves as a digital tool to facilitate the clearance process. Final clearance approval remains the authority of the respective departments and offices.</p>
+
+        <h3>5. Event Attendance</h3>
+        <p>Students are required to attend mandatory school events as prescribed by the institution. ICEMS tracks event attendance digitally. Falsification of attendance records is a violation of university policy and may result in disciplinary action.</p>
+
+        <h3>6. Online Payments</h3>
+        <p>Payments made through ICEMS are processed securely. All fees are subject to the university's approved fee schedule. Refunds, if applicable, are governed by the university's refund policy. ICEMS is not responsible for payment failures caused by third-party payment gateways.</p>
+
+        <h3>7. Prohibited Activities</h3>
+        <p>Users must not attempt to hack, manipulate, or disrupt the ICEMS platform. Sharing account credentials with other users is strictly prohibited. Uploading malicious files or content is not allowed. Any form of fraud or misrepresentation will result in account suspension and may be referred to university authorities.</p>
+
+        <h3>8. Intellectual Property</h3>
+        <p>All content, features, and functionality within ICEMS are owned by the Polytechnic University of the Philippines and its developers. Unauthorized reproduction or distribution of any part of ICEMS is prohibited.</p>
+
+        <h3>9. Amendments</h3>
+        <p>The university reserves the right to modify these Terms and Conditions at any time. Continued use of ICEMS after changes are made constitutes acceptance of the new terms. Users will be notified of significant changes via their registered email address.</p>
+
+        <h3>10. Contact Information</h3>
+        <p>For questions or concerns regarding these Terms and Conditions, please contact:</p>
+        <p>ICEMS Support Team<br>Email: <strong>icems.pupsmb@gmail.com</strong><br>PUP Santa Maria, Bulacan Campus</p>
+      </div>
+
+      <!-- PRIVACY TAB -->
+      <div id="modalTabPrivacy" class="modal-tab-panel">
+        <p><strong>Effective Date:</strong> November 4, 2025</p>
+
+        <h3>1. Introduction</h3>
+        <p>This Privacy Policy explains how ICEMS collects, uses, protects, and shares your personal information when you use the Integrated Clearance and Event Management System of the Polytechnic University of the Philippines â€“ Santa Maria, Bulacan Campus.</p>
+
+        <h3>2. Information We Collect</h3>
+        <p>We collect the following personal information when you register and use ICEMS:</p>
+        <ul>
+          <li>Full name and student number</li>
+          <li>Institutional email address</li>
+          <li>Course and year level</li>
+          <li>Attendance and clearance records</li>
+          <li>Payment transaction history</li>
+        </ul>
+
+        <h3>3. How We Use Your Information</h3>
+        <p>Your information is used to:</p>
+        <ul>
+          <li>Manage your clearance status and requirements</li>
+          <li>Track event attendance and participation</li>
+          <li>Process online payments and transactions</li>
+          <li>Send notifications related to your account and activities</li>
+          <li>Improve the ICEMS platform and user experience</li>
+        </ul>
+
+        <h3>4. Data Sharing</h3>
+        <p>Your personal information may be shared with authorized university offices and departments solely for the purpose of clearance processing, event management, and payment verification. We do not sell or share your data with third parties for commercial purposes.</p>
+
+        <h3>5. Data Security</h3>
+        <p>ICEMS implements industry-standard security measures including data encryption, secure login protocols, and access controls to protect your personal information from unauthorized access, disclosure, or alteration.</p>
+
+        <h3>6. Cookies and Session Data</h3>
+        <p>ICEMS may use cookies and local session storage to maintain your login session and improve system performance. These do not collect personally identifiable information beyond what is necessary for system functionality.</p>
+
+        <h3>7. Data Retention</h3>
+        <p>Your data is retained for the duration of your enrollment and for a period thereafter as required by university records management policies. Upon request, data may be anonymized or deleted in accordance with applicable regulations.</p>
+
+        <h3>8. Your Rights</h3>
+        <p>You have the right to access, correct, or request deletion of your personal data stored in ICEMS. To exercise these rights, please contact the ICEMS support team with a formal request.</p>
+
+        <h3>9. Changes to This Policy</h3>
+        <p>This Privacy Policy may be updated periodically. Users will be notified of material changes via their registered institutional email address. Continued use of ICEMS constitutes acceptance of the updated policy.</p>
+
+        <h3>10. Consent</h3>
+        <p>By registering and using ICEMS, you consent to the collection and use of your personal information as described in this Privacy Policy.</p>
+
+        <h3>11. Governing Law</h3>
+        <p>This Privacy Policy is governed by the Data Privacy Act of 2012 (Republic Act No. 10173) of the Philippines and applicable university data governance policies.</p>
+
+        <h3>12. Contact Information</h3>
+        <p>For privacy-related concerns, please contact:</p>
+        <p>ICEMS Support Team<br>Email: <strong>icems.pupsmb@gmail.com</strong><br>PUP Santa Maria, Bulacan Campus</p>
+      </div>
+
+      <!-- MODAL FOOTER: ACCEPT -->
+      <div class="modal-accept-footer">
+        <label class="modal-accept-label">
+          <input type="checkbox" id="modalAcceptCheck" onchange="toggleModalAcceptBtn()">
+          I have read and agree to the Terms &amp; Conditions and Privacy Policy
+        </label>
+        <button id="modalAcceptBtn" class="btn-modal-accept" disabled onclick="confirmAcceptTerms()">
+          <i class=""></i>Accept
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="studentlogin.js"></script>
+</body>
+</html>

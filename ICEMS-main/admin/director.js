@@ -1,3 +1,5 @@
+const API_BASE = 'https://icems-techz-production.up.railway.app/api';
+
 // data storage
 let clearances = [];
 
@@ -13,6 +15,20 @@ function showTab(tabName) {
 // toggle sidebar for mobile
 function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('active');
+}
+
+// ===== FETCH FROM DB =====
+async function loadClearances() {
+    try {
+        const res = await fetch(`${API_BASE}/director/clearances`);
+        const data = await res.json();
+        if (data.success) {
+            clearances = data.clearances;
+        }
+    } catch (err) {
+        console.error('Failed to load clearances:', err);
+    }
+    updateDisplay();
 }
 
 // update all displays
@@ -54,13 +70,13 @@ function updateClearancesTable() {
             <tr>
                 <td>${c.studentId}</td>
                 <td style="font-weight: 500; color: #374151;">${c.name}</td>
-                <td>${c.sections}</td>
+                <td>${c.sections || '-'}</td>
                 <td>${c.clearanceType}</td>
-                <td>${c.description}</td>
-                <td>${c.proof || '-'}</td>
+                <td>${c.description || '-'}</td>
+                <td>${c.proof ? `<a href="${c.proof}" target="_blank">View File</a>` : '-'}</td>
                 <td><span class="status-badge status-${c.status.toLowerCase()}">${c.status}</span></td>
                 <td>${c.remarks || '-'}</td>
-                <td><button class="btn btn-view" onclick="viewClearance(${c.id})">View</button></td>
+                <td><button class="btn btn-view" onclick="viewClearance('${c.id}')">View</button></td>
             </tr>`).join('');
     }
     document.getElementById('clearanceCount').textContent = clearances.length;
@@ -80,18 +96,120 @@ function updateReports() {
 
     const today = new Date();
     document.getElementById('reportDate').textContent = today.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+    updateSectionReport();
 }
 
-// view clearance details
+// update per-section clearance report table
+function updateSectionReport() {
+    const tbody = document.getElementById('sectionReportBody');
+
+    if (clearances.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="5">
+                    <div class="table-empty">
+                        <div class="table-empty-icon"><i class="fas fa-chart-bar"></i></div>
+                        <h3>No Data Available</h3>
+                        <p>Section reports will be generated once clearances are processed.</p>
+                    </div>
+                </td>
+            </tr>`;
+        return;
+    }
+
+    const bySection = {};
+    clearances.forEach(c => {
+        const sec = c.sections || 'Unspecified';
+        if (!bySection[sec]) {
+            bySection[sec] = { total: 0, cleared: 0, pending: 0 };
+        }
+        bySection[sec].total++;
+        if (c.status === 'Approved') bySection[sec].cleared++;
+        if (c.status === 'Pending') bySection[sec].pending++;
+    });
+
+    tbody.innerHTML = Object.keys(bySection).sort().map(sec => {
+        const data = bySection[sec];
+        const rate = data.total > 0 ? Math.round((data.cleared / data.total) * 100) : 0;
+        return `
+            <tr>
+                <td>${sec}</td>
+                <td>${data.total}</td>
+                <td>${data.cleared}</td>
+                <td>${data.pending}</td>
+                <td>${rate}%</td>
+            </tr>`;
+    }).join('');
+}
+
+// view clearance details (with approve/reject)
 function viewClearance(id) {
     const clearance = clearances.find(c => c.id === id);
-    if (clearance) {
-        alert(`Clearance Details:\n\nStudent: ${clearance.name}\nID: ${clearance.studentId}\nType: ${clearance.clearanceType}\nStatus: ${clearance.status}\nRemarks: ${clearance.remarks || 'None'}`);
+    if (!clearance) return;
+
+    const popup = document.createElement('div');
+    popup.className = 'filter-popup-overlay';
+    popup.innerHTML = `
+        <div class="filter-popup">
+            <h2>Clearance Details</h2>
+            <p><strong>Student:</strong> ${clearance.name}</p>
+            <p><strong>ID:</strong> ${clearance.studentId}</p>
+            <p><strong>Section:</strong> ${clearance.sections || '-'}</p>
+            <p><strong>Type:</strong> ${clearance.clearanceType}</p>
+            <p><strong>Description:</strong> ${clearance.description || '-'}</p>
+            <p><strong>Proof:</strong> ${clearance.proof ? `<a href="${clearance.proof}" target="_blank">View File</a>` : 'None'}</p>
+            <p><strong>Status:</strong> ${clearance.status}</p>
+            <label for="remarksInput">Remarks:</label>
+            <textarea id="remarksInput" rows="3" style="width:100%;">${clearance.remarks || ''}</textarea>
+
+            <div class="filter-popup-buttons">
+                <button class="filter-btn cancel" id="closeView">Close</button>
+                <button class="filter-btn print" id="rejectBtn" style="background:#b91c1c;">Reject</button>
+                <button class="filter-btn print" id="approveBtn">Approve</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(popup);
+
+    document.getElementById('closeView').onclick = () => popup.remove();
+    document.getElementById('approveBtn').onclick = () => {
+        updateClearanceStatus(clearance, 'Approved', document.getElementById('remarksInput').value);
+        popup.remove();
+    };
+    document.getElementById('rejectBtn').onclick = () => {
+        updateClearanceStatus(clearance, 'Rejected', document.getElementById('remarksInput').value);
+        popup.remove();
+    };
+}
+
+// send approve/reject to backend
+async function updateClearanceStatus(clearance, status, remarks) {
+    try {
+        const res = await fetch(`${API_BASE}/director/clearances/${clearance.type}/${clearance.recordId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status, remarks }),
+        });
+        const data = await res.json();
+        if (data.success) {
+            await loadClearances();
+        } else {
+            alert(data.message || 'Update failed.');
+        }
+    } catch (err) {
+        console.error('Failed to update clearance:', err);
+        alert('Failed to update clearance. Please try again.');
     }
 }
 
-// PRINTABLE REPORT WITH FILTER 
+// PRINTABLE REPORT WITH FILTER (Overall Clearance Summary)
 function downloadReport(type) {
+    if (type === 'section') {
+        printSectionReport();
+        return;
+    }
+
     const filterPopup = document.createElement("div");
     filterPopup.className = "filter-popup-overlay";
     filterPopup.innerHTML = `
@@ -130,17 +248,49 @@ function downloadReport(type) {
     document.getElementById("cancelFilter").onclick = () => filterPopup.remove();
 
     document.getElementById("applyFilterPrint").onclick = () => {
-        const dept = document.getElementById("filterSections").value;
+        const sections = document.getElementById("filterSections").value;
         const status = document.getElementById("filterStatus").value;
         filterPopup.remove();
-        printFilteredReport(dept, status);
+        printFilteredReport(sections, status);
     };
 }
 
-// Print filtered table
+// Print the section clearance status report
+function printSectionReport() {
+    const tbody = document.getElementById('sectionReportBody');
+
+    const printWindow = window.open("", "", "width=900,height=700");
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>ICEMS - Section Clearance Report</title>
+                <link rel="stylesheet" href="report.css">
+            </head>
+            <body>
+                <h2>ICEMS - Section Clearance Status Report</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Section</th>
+                            <th>Total Students</th>
+                            <th>Cleared</th>
+                            <th>Pending</th>
+                            <th>Completion Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>${tbody.innerHTML}</tbody>
+                </table>
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+}
+
+// Print filtered table (Overall Clearance Summary)
 function printFilteredReport(sections, status) {
-    const filtered = clearances.filter(c => 
-        (sections === "all" || c.course === sections) &&
+    const filtered = clearances.filter(c =>
+        (sections === "all" || c.sections === sections) &&
         (status === "all" || c.status === status)
     );
 
@@ -150,7 +300,7 @@ function printFilteredReport(sections, status) {
             <tr>
                 <td>${c.studentId}</td>
                 <td>${c.name}</td>
-                <td>${c.sections}</td>
+                <td>${c.sections || '-'}</td>
                 <td>${c.clearanceType}</td>
                 <td>${c.status}</td>
             </tr>
@@ -168,7 +318,7 @@ function printFilteredReport(sections, status) {
             </head>
             <body>
                 <h2>ICEMS - Filtered Clearance Report</h2>
-                <p>Department: ${sections.toUpperCase()} | Status: ${status.toUpperCase()}</p>
+                <p>Section: ${sections.toUpperCase()} | Status: ${status.toUpperCase()}</p>
                 <table>
                     <thead>
                         <tr>
@@ -190,12 +340,12 @@ function printFilteredReport(sections, status) {
 
 function logout() {
     document.getElementById("logoutModal").style.display = "flex";
-    document.body.style.overflow = "hidden";  // disable scroll
+    document.body.style.overflow = "hidden";
 }
 
 function closeLogoutModal() {
     document.getElementById("logoutModal").style.display = "none";
-    document.body.style.overflow = "auto"; // enable scroll again
+    document.body.style.overflow = "auto";
 }
 
 function confirmLogout() {
@@ -203,8 +353,7 @@ function confirmLogout() {
     window.location.href = "../user/studentlogin.html";
 }
 
-
 // initialize
 document.addEventListener('DOMContentLoaded', function () {
-    updateDisplay();
+    loadClearances();
 });

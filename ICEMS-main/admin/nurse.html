@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+    <button class="mobile-toggle" onclick="toggleSidebar()">â˜°</button>
 
     <div class="sidebar" id="sidebar">
         <div class="logo-section">
@@ -49,7 +49,7 @@
     <div class="main-wrapper">
         <div id="dashboardSection">
             <div class="header">
-                <h1>Welcome back, <span>Campus Nurse</span>! 👋</h1>
+                <h1>Welcome back, <span>Campus Nurse</span>! ðŸ‘‹</h1>
                 <p>Review and verify student-submitted clearances. Approve or reject based on provided proof.</p>
             </div>
 
@@ -194,7 +194,7 @@
             </div>
         </div>
         <footer style="text-align: center; color: #666; font-size: 0.875rem; margin-top: 2rem; padding: 1rem;">
-            © 2025 PUP Santa Maria Campus - ICEMS
+            Â© 2025 PUP Santa Maria Campus - ICEMS
         </footer>
     </div>
 
@@ -271,9 +271,7 @@
             <span class="close-btn" onclick="closeViewModal()">&times;</span>
             <h2>Clearance Details</h2>
             <div id="viewContent" class="view-details"></div>
-            <div class="logout-btn-wrapper" style="justify-content: center;">
-                <button class="logout-cancel" onclick="closeViewModal()">Close</button>
-            </div>
+
         </div>
     </div>
 
@@ -292,7 +290,16 @@
     <script>
         window.API_URL = 'http://localhost:8000/api';
     </script>
-    <script src="nurse.js"></script>
+    <script>
+    const _OriginalWebSocket = window.WebSocket;
+    window.WebSocket = function(url, protocols) {
+        if (url && url.toString().includes("5500")) {
+            return { send:()=>{}, close:()=>{}, addEventListener:()=>{} };
+        }
+        return new _OriginalWebSocket(url, protocols);
+    };
+</script>
+<script src="nurse.js"></script>
 </body>
 
 </html>

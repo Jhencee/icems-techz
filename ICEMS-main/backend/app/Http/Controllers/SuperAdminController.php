@@ -114,12 +114,14 @@ class SuperAdminController extends Controller
 
     public function resetAdminPassword(Request $request)
     {
-        if (!Session::has('super_admin_id')) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized.'], 401);
+        $superAdminEmail = $request->input('super_admin_email');
+
+        if (!$superAdminEmail || strtolower($superAdminEmail) !== 'superadmin@gmail.com') {
+            return response()->json(['success' => false, 'message' => 'Unauthorized. Please log in as Super Admin.'], 401);
         }
 
         $validator = Validator::make($request->all(), [
-            'admin_id' => 'required|integer',
+            'admin_email' => 'required|email',
             'new_password' => 'required|string|min:6',
         ]);
 
@@ -131,15 +133,15 @@ class SuperAdminController extends Controller
             ], 422);
         }
 
-        // Protect Super Admin (ID 1 is hardcoded super admin — adjust if needed)
-        if ($request->admin_id === 1) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cannot reset Super Admin password from this panel.',
-            ], 403);
-        }
+        // Protect Super Admin (ID 1 is hardcoded super admin â€” adjust if needed)
+        //if ($request->admin_id === 1) {
+          //  return response()->json([
+             //   'success' => false,
+            //    'message' => 'Cannot reset Super Admin password from this panel.',
+            //], 403);
+        //}
 
-        $admin = Admin::find($request->admin_id);
+        $admin = Admin::where('email', $request->admin_email)->first();
 
         if (!$admin) {
             return response()->json([
@@ -153,7 +155,7 @@ class SuperAdminController extends Controller
         ]);
 
         // Log the action
-        $superAdminName = Session::get('super_admin_name', 'Super Admin');
+        $superAdminName = $superAdminEmail ?? 'Super Admin';
         $this->logAudit(
             $superAdminName,
             'Password Reset',
@@ -171,7 +173,7 @@ class SuperAdminController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => "Password reset successfully for {$admin->name}.",
+            'message' => 'Password updated successfully for ' . $admin->name . '.'
         ]);
     }
 
@@ -372,3 +374,4 @@ class SuperAdminController extends Controller
         ]);
     }
 }
+

@@ -1,105 +1,99 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // Ensure body starts visible
-    document.body.style.opacity = "1";
+    // ─── LOADER ───
+    setTimeout(() => {
+        document.getElementById("loader").classList.add("hide");
+    }, 1400);
 
-    /* ========== HOME BUTTON ========== */
-    const homeBtn = document.querySelector(".btn-home");
-    if (homeBtn) {
-        homeBtn.addEventListener("click", function(e) {
-            e.preventDefault();
-            document.body.style.transition = "opacity 0.6s ease-out";
-            document.body.style.opacity = "0";
+    // ─── NAV SCROLL ───
+    const navbar = document.getElementById("navbar");
+    window.addEventListener("scroll", () => {
+        navbar.classList.toggle("scrolled", window.scrollY > 20);
+    });
 
-            setTimeout(() => {
-                window.location.href = "../user/studentlogin.html"; // fixed path
-            }, 600);
-        });
-    }
+    // ─── HOME BUTTON ───
+    document.getElementById("homeBtn")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        document.body.style.transition = "opacity 0.5s ease";
+        document.body.style.opacity = "0";
+        setTimeout(() => { window.location.href = "../user/studentlogin.html"; }, 500);
+    });
 
-    /* ========== UNIVERSAL MODAL FUNCTION ========== */
-    function openModal(title, content) {
-        const existing = document.querySelector(".modal-overlay");
-        if (existing) existing.remove();
-
-        const modal = document.createElement("div");
-        modal.className = "modal-overlay";
-
-        modal.innerHTML = `
+    // ─── MODAL HELPER ───
+    function openModal(title, items) {
+        document.querySelector(".modal-overlay")?.remove();
+        const overlay = document.createElement("div");
+        overlay.className = "modal-overlay";
+        overlay.innerHTML = `
             <div class="modal-box">
                 <button class="modal-close">&times;</button>
                 <h2>${title}</h2>
-                <div class="modal-body">${content}</div>
-            </div>
-        `;
+                ${items.map(i => `<div class="modal-item">${i}</div>`).join("")}
+            </div>`;
+        document.body.appendChild(overlay);
 
-        document.body.appendChild(modal);
-        document.body.style.overflow = "hidden"; // prevent scrolling
-
-        modal.querySelector(".modal-close").addEventListener("click", () => closeModal(modal));
-        modal.addEventListener("click", (e) => {
-            if (e.target.classList.contains("modal-overlay")) closeModal(modal);
-        });
-
-        function closeModal(modalEl) {
-            modalEl.remove();
-            document.body.style.overflow = "auto";
-        }
+        const close = () => {
+            overlay.remove();
+            document.body.style.overflow = "";
+        };
+        overlay.querySelector(".modal-close").addEventListener("click", close);
+        overlay.addEventListener("click", (e) => { if (e.target === overlay) close(); });
     }
 
-    /* ========== CONTACT MODAL ========== */
-    document.querySelector(".btn-contact")?.addEventListener("click", () => {
-        openModal("📩 Contact Us",
-            `<p><strong>Email:</strong> icems.pupsmb@gmail.com</p>
-             <p><strong>Phone:</strong> 0999-123-4567</p>
-             <p><strong>Facebook:</strong> facebook.com/icems.pupsmb</p>`
-        );
+    // ─── CONTACT MODAL ───
+    document.getElementById("contactBtn")?.addEventListener("click", () => {
+        openModal("Contact Us", [
+            "<strong>Email:</strong> icems.pupsmb@gmail.com",
+            "<strong>Phone:</strong> 0999-123-4567",
+            "<strong>Facebook:</strong> facebook.com/icems.pupsmb"
+        ]);
     });
 
-    /* ========== TEAM MODAL ========== */
-    document.querySelector(".btn-team")?.addEventListener("click", () => {
-        openModal("👥 Development Team",
-            `<p><strong>Samantha Santos</strong> — Project Manager</p>
-             <p><strong>Jhencee Borjal</strong> — Backend Developer</p>
-             <p><strong>Rochelle Sto. Domingo</strong> — Frontend Developer</p>
-             <p><strong>Michaela Estinor</strong> — UI/UX Designer</p>
-             <p><strong>Grace Ann Lucero</strong> — QA Tester</p>`
-        );
+    // ─── TEAM MODAL ───
+    document.getElementById("teamBtn")?.addEventListener("click", () => {
+        openModal("Development Team", [
+            "<strong>Samantha Santos</strong> — Project Manager",
+            "<strong>Jhencee Borjal</strong> — Backend Developer",
+            "<strong>Rochelle Sto. Domingo</strong> — Frontend Developer",
+            "<strong>Michaela Estinor</strong> — UI/UX Designer",
+            "<strong>Julianna Alejandria</strong> — QA",
+            "<strong>Amytha Bautista</strong> — Tester"
+        ]);
     });
 
-    /* ========== CLOSE HEADER BUTTON ========== */
-    document.querySelector(".btn-close-header")?.addEventListener("click", () => {
-        document.body.style.transition = "opacity 0.6s ease-out";
-        document.body.style.opacity = "0";
+    // ─── REVEAL MAIN CONTENT ───
+    function revealMain() {
+        const main = document.getElementById("mainContent");
+        main.style.display = "block";
+        requestAnimationFrame(() => {
+            main.style.opacity = "1";
+            document.body.style.overflowY = "auto";
+            setTimeout(() => {
+                main.scrollIntoView({ behavior: "smooth" });
+            }, 100);
+        });
+        document.getElementById("viewBtn").style.display = "none";
+        document.getElementById("heroExplore").style.display = "none";
+    }
 
-        setTimeout(() => {
-            if (document.referrer) {
-                window.location.href = document.referrer;
-            } else {
-                window.location.href = "../user/studentdashboard.html"; // fixed path
+    document.getElementById("viewBtn")?.addEventListener("click", revealMain);
+    document.getElementById("heroExplore")?.addEventListener("click", revealMain);
+
+    // ─── SCROLL REVEAL ───
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+            if (e.isIntersecting) {
+                e.target.style.transitionDelay = `${e.target.dataset.delay || 0}ms`;
+                e.target.classList.add("visible");
             }
-        }, 600);
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll(".reveal").forEach((el, i) => {
+        el.dataset.delay = i * 80;
+        observer.observe(el);
     });
 
-    const viewBtn = document.querySelector(".btn-view");
-    const mainContent = document.querySelector(".main-content");
-    const body = document.body;
-
-    // Initially hide main content and prevent scrolling
-    mainContent.classList.remove("active");
-    body.style.overflow = "hidden";
-
-    viewBtn?.addEventListener("click", () => {
-        // Show main content
-        mainContent.classList.add("active");
-
-        // Enable scrolling
-        body.style.overflow = "auto";
-
-        // Hide the View Details button
-        viewBtn.style.display = "none";
-
-        // Optional: scroll smoothly to main content
-        window.scrollTo({ top: mainContent.offsetTop, behavior: "smooth" });
-    });
+    // ─── PREVENT SCROLL INITIALLY ───
+    document.body.style.overflowY = "hidden";
 });

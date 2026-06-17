@@ -136,7 +136,6 @@ async function fetchClearances() {
         console.log('🔄 Fetching laboratory clearances from API...');
         console.log('📍 API URL:', window.API_URL);
         
-        // CHANGED: Use /clearances instead of /all-clearances to match routes
         const apiEndpoint = `${window.API_URL}/api/laboratory/clearances`;
         console.log('🌐 Full endpoint:', apiEndpoint);
         
@@ -150,12 +149,10 @@ async function fetchClearances() {
 
         console.log('📡 Response status:', response.status);
 
-        // Check if response is OK
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        // Check if response is JSON
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
             console.error('❌ Response is not JSON:', contentType);
@@ -168,7 +165,6 @@ async function fetchClearances() {
         if (data.success && data.clearances) {
             console.log(`✅ Fetched ${data.clearances.length} clearances`);
             
-            // Transform API data to match expected format
             clearances = data.clearances.map(c => ({
                 studentId: c.student_id,
                 name: c.student_name,
@@ -199,7 +195,6 @@ async function fetchClearances() {
         console.error('❌ Error fetching clearances:', error);
         console.error('Error details:', error.message);
         
-        // More specific error message
         let errorMsg = 'Failed to load clearances. ';
         if (error.message.includes('Failed to fetch')) {
             errorMsg += 'Cannot connect to server. Make sure Laravel is running on ' + window.API_URL;
@@ -355,7 +350,7 @@ function approveClearance(studentId) {
 
                     if (data.success) {
                         showModal('Success', 'Clearance approved successfully!', 'success');
-                        await fetchClearances(); // Refresh data
+                        await fetchClearances();
                     } else {
                         showModal('Error', data.message || 'Failed to approve clearance', 'error');
                     }
@@ -396,7 +391,7 @@ function rejectClearance(studentId) {
 
                     if (data.success) {
                         showModal('Clearance Rejected', 'The clearance has been rejected.', 'error');
-                        await fetchClearances(); // Refresh data
+                        await fetchClearances();
                     } else {
                         showModal('Error', data.message || 'Failed to reject clearance', 'error');
                     }
@@ -481,7 +476,6 @@ function viewClearance(studentId) {
         </div>
     `;
 
-    // Create modal
     const modal = document.createElement('div');
     modal.style.cssText = 'display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: center;';
     
@@ -497,13 +491,30 @@ function viewClearance(studentId) {
     
     document.body.appendChild(modal);
     
-    // Close on clicking outside
     modal.onclick = function(event) {
         if (event.target === modal) {
             modal.remove();
         }
     };
 }
+
+// ==========================================================
+// PROFILE DROPDOWN
+// ==========================================================
+function toggleProfileDropdown() {
+    const dropdown = document.getElementById('profileDropdown');
+    dropdown.classList.toggle('show');
+}
+
+// Close dropdown when clicking outside
+window.addEventListener('click', function(event) {
+    if (!event.target.closest('.profile-dropdown-container')) {
+        const dropdown = document.getElementById('profileDropdown');
+        if (dropdown && dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+        }
+    }
+});
 
 // ==========================================================
 // LOGOUT

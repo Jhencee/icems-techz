@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Login API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background: #800000;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #600000;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Login API</h1>
+    
+    <div class="test-box">
+        <h2>Test 1: Wrong Password (Student)</h2>
+        <input type="email" id="email1" value="jhenceeborjal@iskolarngbayan.pup.edu.ph" placeholder="Email">
+        <input type="password" id="password1" value="wrongpassword" placeholder="Wrong Password">
+        <button onclick="testLogin(1, false)">Test Wrong Password</button>
+        <div id="result1" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-box">
+        <h2>Test 2: Correct Password (Student)</h2>
+        <input type="email" id="email2" value="jhenceeborjal@iskolarngbayan.pup.edu.ph" placeholder="Email">
+        <input type="password" id="password2" value="" placeholder="Enter Correct Password">
+        <button onclick="testLogin(2, true)">Test Correct Password</button>
+        <div id="result2" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-box">
+        <h2>Test 3: Wrong Admin Password</h2>
+        <input type="email" id="email3" value="accounting.pupsmb@gmail.com" placeholder="Admin Email">
+        <input type="password" id="password3" value="wrongadminpass" placeholder="Wrong Admin Password">
+        <button onclick="testLogin(3, false)">Test Wrong Admin Password</button>
+        <div id="result3" class="result" style="display:none;"></div>
+    </div>
+
+    <div class="test-box">
+        <h2>Test 4: Correct Admin Password</h2>
+        <input type="email" id="email4" value="accounting.pupsmb@gmail.com" placeholder="Admin Email">
+        <input type="password" id="password4" value="accountingadmin" placeholder="Admin Password">
+        <button onclick="testLogin(4, true)">Test Correct Admin Password</button>
+        <div id="result4" class="result" style="display:none;"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8000';
+
+        async function testLogin(testNum, shouldSucceed) {
+            const email = document.getElementById(`email${testNum}`).value;
+            const password = document.getElementById(`password${testNum}`).value;
+            const resultDiv = document.getElementById(`result${testNum}`);
+            
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.textContent = '⏳ Testing... Please wait...';
+
+            try {
+                console.log(`\n🧪 TEST ${testNum} - Starting...`);
+                console.log('📧 Email:', email);
+                console.log('🔑 Password:', password);
+                console.log('✅ Expected:', shouldSucceed ? 'SUCCESS' : 'FAILURE');
+
+                const response = await fetch(`${API_URL}/api/signin`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                console.log('📡 Response Status:', response.status);
+                console.log('📡 Response OK:', response.ok);
+
+                const responseText = await response.text();
+                console.log('📡 Raw Response:', responseText);
+
+                let data;
+                try {
+                    data = JSON.parse(responseText);
+                    console.log('📦 Parsed Data:', data);
+                } catch (e) {
+                    throw new Error('Invalid JSON response: ' + responseText);
+                }
+
+                // Check if result matches expectation
+                const actualSuccess = response.ok && data.success === true;
+                const testPassed = actualSuccess === shouldSucceed;
+
+                let resultText = `TEST ${testNum}: ${testPassed ? '✅ PASSED' : '❌ FAILED'}\n\n`;
+                resultText += `HTTP Status: ${response.status} ${response.statusText}\n`;
+                resultText += `Response OK: ${response.ok}\n`;
+                resultText += `data.success: ${data.success}\n`;
+                resultText += `Message: ${data.message || 'N/A'}\n\n`;
+                resultText += `Expected: ${shouldSucceed ? 'Success' : 'Failure'}\n`;
+                resultText += `Got: ${actualSuccess ? 'Success' : 'Failure'}\n\n`;
+                resultText += `Full Response:\n${JSON.stringify(data, null, 2)}`;
+
+                resultDiv.className = `result ${testPassed ? 'success' : 'error'}`;
+                resultDiv.textContent = resultText;
+
+                console.log(`\n${testPassed ? '✅' : '❌'} Test ${testNum} ${testPassed ? 'PASSED' : 'FAILED'}`);
+
+            } catch (error) {
+                console.error(`💥 Test ${testNum} Error:`, error);
+                
+                resultDiv.className = 'result error';
+                resultDiv.textContent = `❌ ERROR\n\n${error.message}\n\nCheck console for details.`;
+            }
+        }
+    </script>
+</body>
+</html>

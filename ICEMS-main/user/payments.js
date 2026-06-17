@@ -1,9 +1,11 @@
+/*
+
 // ============================================
 // STUDENT PAYMENT.JS - WITH USER DATA LOADING
 // Compatible with Laravel API
 // ============================================
 
-const API_BASE_URL = 'http://localhost:8000/api';
+const API_BASE_URL = 'https://icems-techz-production.up.railway.app/api';
 let currentPayment = { name: '', amount: 0, requirementId: null };
 let paymentRequirements = [];
 let userPayments = [];
@@ -17,13 +19,13 @@ function loadUserData() {
   const storedUser = localStorage.getItem('currentUser');
 
   if (!storedUser) {
-    console.error('❌ No user logged in');
+    console.error('âŒ No user logged in');
     window.location.href = '../user/studentlogin.html';
     return null;
   }
 
   currentUser = JSON.parse(storedUser);
-  console.log('👤 User data loaded from localStorage:', currentUser);
+  console.log('ðŸ‘¤ User data loaded from localStorage:', currentUser);
 
   // Update sidebar with user data
   updateUserProfile(currentUser);
@@ -34,7 +36,7 @@ function loadUserData() {
 // UPDATE USER PROFILE IN SIDEBAR
 // ============================================
 function updateUserProfile(user) {
-  console.log('🔄 Updating profile with user data:', user);
+  console.log('ðŸ”„ Updating profile with user data:', user);
 
   // Build full name from first_name and last_name
   const fullName = `${user.first_name} ${user.last_name}`;
@@ -56,46 +58,46 @@ function updateUserProfile(user) {
       sidebarAvatar.style.color = 'transparent';
     }
     
-    console.log('✅ Updated sidebar avatar:', initials);
+    console.log('âœ… Updated sidebar avatar:', initials);
   }
 
   // Update sidebar name
   const sidebarName = document.getElementById('sidebarName');
   if (sidebarName) {
     sidebarName.textContent = fullName;
-    console.log('✅ Updated sidebar name:', fullName);
+    console.log('âœ… Updated sidebar name:', fullName);
   }
 
   // Update sidebar ID
   const sidebarId = document.getElementById('sidebarId');
   if (sidebarId) {
     sidebarId.textContent = `${courseYear} | ${studentNumber}`;
-    console.log('✅ Updated sidebar ID:', `${courseYear} | ${studentNumber}`);
+    console.log('âœ… Updated sidebar ID:', `${courseYear} | ${studentNumber}`);
   }
 
   // Update profile modal fields
   const editName = document.getElementById('editName');
   if (editName) {
     editName.value = fullName;
-    console.log('✅ Updated profile modal name');
+    console.log('âœ… Updated profile modal name');
   }
 
   const editCourse = document.getElementById('editCourse');
   if (editCourse) {
     editCourse.value = courseYear;
-    console.log('✅ Updated profile modal course');
+    console.log('âœ… Updated profile modal course');
   }
 
   const editStudentId = document.getElementById('editStudentId');
   if (editStudentId) {
     editStudentId.value = studentNumber;
-    console.log('✅ Updated profile modal student ID');
+    console.log('âœ… Updated profile modal student ID');
   }
 
   const editEmail = document.getElementById('editEmail');
   if (editEmail) {
     editEmail.value = user.email;
-    console.log('✅ Updated profile modal email');
+    console.log('âœ… Updated profile modal email');
   }
 }
 
@@ -123,7 +125,7 @@ function getStudentInfo() {
 // LOAD PAYMENT REQUIREMENTS FROM DATABASE
 // ============================================
 async function loadPaymentRequirements() {
-  console.log('🔍 [Student] Loading payment requirements...');
+  console.log('ðŸ” [Student] Loading payment requirements...');
   
   try {
     const response = await fetch(`${API_BASE_URL}/payment-requirements`);
@@ -131,15 +133,15 @@ async function loadPaymentRequirements() {
 
     if (data.success) {
       paymentRequirements = data.requirements || [];
-      console.log('✅ [Student] Loaded', paymentRequirements.length, 'payment requirements');
+      console.log('âœ… [Student] Loaded', paymentRequirements.length, 'payment requirements');
       await loadUserPayments();
       updatePaymentDisplay();
     } else {
-      console.error('❌ [Student] Failed to load payment requirements:', data.message);
+      console.error('âŒ [Student] Failed to load payment requirements:', data.message);
       showEmptyState('Failed to load payment requirements');
     }
   } catch (error) {
-    console.error('❌ [Student] Error loading payment requirements:', error);
+    console.error('âŒ [Student] Error loading payment requirements:', error);
     showEmptyState('Cannot connect to server. Please check if Laravel is running.');
   }
 }
@@ -156,10 +158,10 @@ async function loadUserPayments() {
 
     if (data.success) {
       userPayments = data.payments || [];
-      console.log('✅ [Student] Loaded', userPayments.length, 'user payments');
+      console.log('âœ… [Student] Loaded', userPayments.length, 'user payments');
     }
   } catch (error) {
-    console.error('❌ [Student] Error loading user payments:', error);
+    console.error('âŒ [Student] Error loading user payments:', error);
     userPayments = [];
   }
 }
@@ -184,8 +186,8 @@ function updateStatistics() {
   const unpaidRequirements = paymentRequirements.filter(req => !paidRequirements.has(req.id));
   const totalUnpaid = unpaidRequirements.reduce((sum, req) => sum + parseFloat(req.amount), 0);
 
-  document.querySelector('.stat-card:nth-child(1) .stat-value').textContent = `₱${totalPaid.toLocaleString()}`;
-  document.querySelector('.stat-card:nth-child(2) .stat-value').textContent = `₱${totalUnpaid.toLocaleString()}`;
+  document.querySelector('.stat-card:nth-child(1) .stat-value').textContent = `${totalPaid.toLocaleString()}`;
+  document.querySelector('.stat-card:nth-child(2) .stat-value').textContent = `${totalUnpaid.toLocaleString()}`;
   document.querySelector('.stat-card:nth-child(3) .stat-value').textContent = userPayments.length;
   document.querySelector('.stat-card:nth-child(3) .stat-change').textContent = `${userPayments.length} Transactions`;
 }
@@ -236,7 +238,7 @@ function displayPendingPayments() {
           <div class="payment-title">${req.title}</div>
           <span class="payment-badge unpaid"><i class="fas fa-circle-exclamation"></i> Unpaid</span>
         </div>
-        <div class="payment-amount">₱${parseFloat(req.amount).toLocaleString()}</div>
+        <div class="payment-amount">${parseFloat(req.amount).toLocaleString()}</div>
         <div class="payment-description">
           ${req.description || 'Payment requirement'}
         </div>
@@ -305,7 +307,7 @@ function displayPaymentHistory() {
             return `
               <tr style="border-bottom: 1px solid #e5e7eb;">
                 <td style="padding: 12px; font-weight: 500;">${payment.requirement_title}</td>
-                <td style="padding: 12px;">₱${parseFloat(payment.amount).toLocaleString()}</td>
+                <td style="padding: 12px;">${parseFloat(payment.amount).toLocaleString()}</td>
                 <td style="padding: 12px;">${date}</td>
                 <td style="padding: 12px;">
                   <span class="payment-badge ${statusClass}">
@@ -346,7 +348,7 @@ function showEmptyState(message) {
 function openPaymentModal(name, amount, requirementId) {
   currentPayment = { name, amount, requirementId };
   document.getElementById('paymentTitle').textContent = `Pay ${name}`;
-  document.getElementById('paymentAmount').textContent = `₱${amount}`;
+  document.getElementById('paymentAmount').textContent = `${amount}`;
   document.getElementById('paymentModal').classList.add('active');
 
   document.body.classList.add('modal-open');
@@ -456,15 +458,15 @@ async function submitPayment() {
     const data = await response.json();
 
     if (data.success) {
-      alert(`✅ Payment submitted for ${currentPayment.name} (₱${currentPayment.amount}).\nYour payment is now being verified.`);
+      alert(`âœ… Payment submitted for ${currentPayment.name} (${currentPayment.amount}).\nYour payment is now being verified.`);
       closePaymentModal();
       await loadPaymentRequirements(); // Reload to update display
     } else {
-      alert('❌ Failed to submit payment: ' + (data.message || 'Unknown error'));
+      alert('âŒ Failed to submit payment: ' + (data.message || 'Unknown error'));
     }
   } catch (error) {
-    console.error('❌ [Student] Error submitting payment:', error);
-    alert('❌ Failed to submit payment. Please try again.');
+    console.error('âŒ [Student] Error submitting payment:', error);
+    alert('âŒ Failed to submit payment. Please try again.');
   }
 }
 
@@ -550,7 +552,7 @@ function saveProfile() {
 // INITIALIZE ON PAGE LOAD
 // ============================================
 document.addEventListener('DOMContentLoaded', async () => {
-  console.log('🚀 [Student] Initializing Student Payment Page...');
+  console.log('ðŸš€ [Student] Initializing Student Payment Page...');
   
   // Load user data first
   loadUserData();
@@ -558,5 +560,474 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Then load payments
   await loadPaymentRequirements();
   
-  console.log('✅ [Student] Payment page initialized with user:', currentUser?.first_name);
+  console.log('âœ… [Student] Payment page initialized with user:', currentUser?.first_name);
+});
+
+*/
+
+// ============================================
+// STUDENT PAYMENT.JS - WITH DATABASE INTEGRATION
+// ============================================
+
+const API_BASE_URL = 'https://icems-techz-production.up.railway.app/api';
+let currentPayment = { name: '', amount: 0, requirementId: null };
+let paymentRequirements = [];
+let userPayments = [];
+let currentUser = null;
+
+// ============================================
+// LOAD USER DATA FROM LOCALSTORAGE
+// ============================================
+function loadUserData() {
+  const storedUser = localStorage.getItem('currentUser');
+  if (!storedUser) {
+    window.location.href = 'studentlogin.html';
+    return null;
+  }
+
+  currentUser = JSON.parse(storedUser);
+  console.log('ðŸ‘¤ User loaded:', currentUser);
+  updateUserProfile(currentUser);
+  return currentUser;
+}
+
+// ============================================
+// UPDATE SIDEBAR WITH USER DATA
+// ============================================
+function updateUserProfile(user) {
+  const firstName = user.first_name || '';
+  const lastName = user.last_name || '';
+  const fullName = `${firstName} ${lastName}`.trim() || 'Student';
+  const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase() || '--';
+  const course = user.course || 'N/A';
+  const year = user.year || '';
+  const section = user.section || '';
+  const studentNum = user.student_number || 'N/A';
+
+  const sidebarAvatar = document.getElementById('sidebarAvatar');
+  if (sidebarAvatar) {
+    sidebarAvatar.textContent = initials;
+    const savedAvatar = localStorage.getItem(`avatar_${studentNum}`);
+    if (savedAvatar) {
+      sidebarAvatar.style.backgroundImage = `url(${savedAvatar})`;
+      sidebarAvatar.style.backgroundSize = 'cover';
+      sidebarAvatar.style.backgroundPosition = 'center';
+      sidebarAvatar.style.color = 'transparent';
+    }
+  }
+
+  const sidebarName = document.getElementById('sidebarName');
+  if (sidebarName) sidebarName.textContent = fullName;
+
+  const sidebarId = document.getElementById('sidebarId');
+  if (sidebarId) sidebarId.textContent =
+    `${course} ${year}${section ? '-' + section : ''} | ${studentNum}`;
+
+  const editName = document.getElementById('editName');
+  if (editName) editName.value = fullName;
+
+  const editCourse = document.getElementById('editCourse');
+  if (editCourse) editCourse.value = `${course} ${year}${section ? '-' + section : ''}`.trim();
+
+  const editStudentId = document.getElementById('editStudentId');
+  if (editStudentId) editStudentId.value = studentNum;
+
+  const editEmail = document.getElementById('editEmail');
+  if (editEmail) editEmail.value = user.email || '';
+}
+
+// ============================================
+// GET STUDENT INFO
+// ============================================
+function getStudentInfo() {
+  return {
+    studentNumber: currentUser?.student_number || '',
+    studentName: `${currentUser?.first_name || ''} ${currentUser?.last_name || ''}`.trim(),
+    email: currentUser?.email || ''
+  };
+}
+
+// ============================================
+// LOAD PAYMENT REQUIREMENTS FROM DATABASE
+// ============================================
+async function loadPaymentRequirements() {
+  console.log('ðŸ” Loading payment requirements...');
+  try {
+    const response = await fetch(`${API_BASE_URL}/payment-requirements`);
+    const data = await response.json();
+
+    if (data.success) {
+      paymentRequirements = data.requirements || [];
+      console.log('âœ… Loaded', paymentRequirements.length, 'requirements');
+      await loadUserPayments();
+      updatePaymentDisplay();
+    } else {
+      showEmptyState('Failed to load payment requirements');
+    }
+  } catch (error) {
+    console.error('âŒ Error:', error);
+    showEmptyState('Cannot connect to server. Please check if Laravel is running.');
+  }
+}
+
+// ============================================
+// LOAD STUDENT'S OWN PAYMENTS
+// ============================================
+async function loadUserPayments() {
+  const { studentNumber } = getStudentInfo();
+  if (!studentNumber) return;
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/payments/student/${studentNumber}`);
+    const data = await response.json();
+    userPayments = data.success ? (data.payments || []) : [];
+    console.log('âœ… Loaded', userPayments.length, 'user payments');
+  } catch (error) {
+    console.error('âŒ Error loading user payments:', error);
+    userPayments = [];
+  }
+}
+
+// ============================================
+// UPDATE ALL PAYMENT DISPLAY
+// ============================================
+function updatePaymentDisplay() {
+  updateStatistics();
+  displayPendingPayments();
+  displayPaymentHistory();
+}
+
+// ============================================
+// UPDATE STAT CARDS
+// ============================================
+function updateStatistics() {
+  const verified = userPayments.filter(p => p.status === 'verified');
+  const totalPaid = verified.reduce((s, p) => s + parseFloat(p.amount), 0);
+
+  const paidIds = new Set(verified.map(p => p.requirement_id));
+  const unpaidReqs = paymentRequirements.filter(r => !paidIds.has(r.id));
+  const totalDue = unpaidReqs.reduce((s, r) => s + parseFloat(r.amount), 0);
+
+  const elPaid = document.getElementById('statTotalPaid');
+  const elUnpaid = document.getElementById('statTotalUnpaid');
+  const elCount = document.getElementById('statTransactions');
+  const elLabel = document.getElementById('statTransactionLabel');
+
+  if (elPaid) elPaid.textContent = `${totalPaid.toLocaleString()}`;
+  if (elUnpaid) elUnpaid.textContent = `${totalDue.toLocaleString()}`;
+  if (elCount) elCount.textContent = userPayments.length;
+  if (elLabel) elLabel.textContent = `${userPayments.length} Transactions`;
+}
+
+// ============================================
+// DISPLAY PENDING (UNPAID) PAYMENT CARDS
+// ============================================
+function displayPendingPayments() {
+  const container = document.getElementById('paymentContainer');
+  if (!container) return;
+
+  const verifiedIds = new Set(userPayments.filter(p => p.status === 'verified').map(p => p.requirement_id));
+  const pendingIds = new Set(userPayments.filter(p => p.status === 'pending').map(p => p.requirement_id));
+
+  // Show unpaid + rejected only (not pending-verification, not verified)
+  const unpaid = paymentRequirements.filter(r =>
+    !verifiedIds.has(r.id) && !pendingIds.has(r.id)
+  );
+
+  // Also show pending-verification as a separate card state
+  const pendingVerification = paymentRequirements.filter(r => pendingIds.has(r.id));
+
+  if (unpaid.length === 0 && pendingVerification.length === 0) {
+    container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-check-circle" style="color:#059669;"></i></div>
+                <h2>All Payments Completed</h2>
+                <p>You have no pending payments at this time</p>
+            </div>`;
+    return;
+  }
+
+  const allCards = [...unpaid.map(r => ({ req: r, status: 'unpaid' })),
+  ...pendingVerification.map(r => ({ req: r, status: 'pending' }))];
+
+  container.innerHTML = allCards.map(({ req, status }) => {
+    const dueDate = new Date(req.due_date).toLocaleDateString('en-US',
+      { month: 'long', day: 'numeric', year: 'numeric' });
+    const typeLabel = req.is_mandatory ? 'Mandatory' : 'Optional';
+
+    const badgeHtml = status === 'pending'
+      ? `<span class="payment-badge" style="background:#f59e0b;color:white;padding:4px 10px;border-radius:12px;font-size:0.75rem;font-weight:600;">
+                   <i class="fas fa-clock"></i> Pending Verification
+               </span>`
+      : `<span class="payment-badge unpaid">
+                   <i class="fas fa-circle-exclamation"></i> Unpaid
+               </span>`;
+
+    const actionBtn = status === 'pending'
+      ? `<button class="btn full-btn" disabled
+                   style="background:#f59e0b;color:white;padding:12px;border:none;border-radius:8px;
+                          font-weight:600;cursor:not-allowed;width:100%;">
+                   <i class="fas fa-clock"></i> Awaiting Verification
+               </button>`
+      : `<button class="btn btn-primary full-btn"
+                   onclick="openPaymentModal('${escapeHtml(req.title)}', ${req.amount}, ${req.id})">
+                   Pay Now
+               </button>`;
+
+    return `
+            <div class="payment-card unpaid" data-status="${status}">
+                <div class="payment-header">
+                    <div class="payment-title">${req.title}</div>
+                    ${badgeHtml}
+                </div>
+                <div class="payment-amount">${parseFloat(req.amount).toLocaleString()}</div>
+                <div class="payment-description">${req.description || 'Payment requirement'}</div>
+                <div class="payment-details">
+                    <div class="payment-detail-item">
+                        <span>Due Date:</span><strong>${dueDate}</strong>
+                    </div>
+                    <div class="payment-detail-item">
+                        <span>Type:</span><strong>${typeLabel}</strong>
+                    </div>
+                </div>
+                ${actionBtn}
+            </div>`;
+  }).join('');
+}
+
+// ============================================
+// DISPLAY PAYMENT HISTORY TABLE
+// ============================================
+function displayPaymentHistory() {
+  const container = document.getElementById('historyContainer');
+  if (!container) return;
+
+  if (userPayments.length === 0) {
+    container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-receipt"></i></div>
+                <h2>No Payment History</h2>
+                <p>You haven't made any payments yet</p>
+            </div>`;
+    return;
+  }
+
+  const sorted = [...userPayments].sort((a, b) =>
+    new Date(b.created_at) - new Date(a.created_at));
+
+  container.innerHTML = `
+        <div style="overflow-x:auto;">
+            <table style="width:100%;border-collapse:collapse;">
+                <thead>
+                    <tr style="background:#f3f4f6;border-bottom:2px solid #e5e7eb;">
+                        <th style="padding:12px;text-align:left;color:#800020;font-weight:600;">Payment</th>
+                        <th style="padding:12px;text-align:left;color:#800020;font-weight:600;">Amount</th>
+                        <th style="padding:12px;text-align:left;color:#800020;font-weight:600;">Date</th>
+                        <th style="padding:12px;text-align:left;color:#800020;font-weight:600;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${sorted.map(p => {
+    const date = new Date(p.created_at).toLocaleDateString('en-US',
+      { month: 'short', day: 'numeric', year: 'numeric' });
+    const statusMap = {
+      verified: { cls: 'paid', icon: 'fa-check-circle', text: 'Verified' },
+      rejected: { cls: 'rejected', icon: 'fa-times-circle', text: 'Rejected' },
+      pending: { cls: 'unpaid', icon: 'fa-clock', text: 'Pending' }
+    };
+    const s = statusMap[p.status] || statusMap.pending;
+    return `
+                            <tr style="border-bottom:1px solid #e5e7eb;">
+                                <td style="padding:12px;font-weight:500;">${p.requirement_title}</td>
+                                <td style="padding:12px;">${parseFloat(p.amount).toLocaleString()}</td>
+                                <td style="padding:12px;">${date}</td>
+                                <td style="padding:12px;">
+                                    <span class="payment-badge ${s.cls}">
+                                        <i class="fas ${s.icon}"></i> ${s.text}
+                                    </span>
+                                </td>
+                            </tr>`;
+  }).join('')}
+                </tbody>
+            </table>
+        </div>`;
+}
+
+// ============================================
+// SHOW ERROR / EMPTY STATE
+// ============================================
+function showEmptyState(message) {
+  const container = document.getElementById('paymentContainer');
+  if (!container) return;
+  container.innerHTML = `
+        <div class="empty-state">
+            <div class="empty-icon"><i class="fas fa-exclamation-triangle"></i></div>
+            <h2>Cannot Load Payments</h2>
+            <p>${message}</p>
+            <button class="btn btn-primary" onclick="loadPaymentRequirements()"
+                    style="margin-top:15px;padding:10px 20px;">
+                <i class="fas fa-sync"></i> Retry
+            </button>
+        </div>`;
+}
+
+// ============================================
+// OPEN PAYMENT MODAL
+// ============================================
+function openPaymentModal(name, amount, requirementId) {
+  currentPayment = { name, amount, requirementId };
+  document.getElementById('paymentTitle').textContent = `Pay ${name}`;
+  document.getElementById('paymentAmount').textContent = `${amount}`;
+  document.getElementById('paymentModal').classList.add('active');
+  document.body.classList.add('modal-open');
+
+  const requirement = paymentRequirements.find(r => r.id === requirementId);
+  const instructions = document.getElementById('paymentInstructions');
+  const storageUrl = API_BASE_URL.replace('/api', '/storage/');
+
+  const qrHtml = (requirement && requirement.qr_code)
+    ? `<img src="${storageUrl}${requirement.qr_code}" alt="GCash QR Code" class="qr-image">`
+    : `<img src="qr_hi.png" alt="GCash QR Code" class="qr-image">`;
+
+  instructions.innerHTML = `
+        <div class="qr-code">
+            ${qrHtml}
+            <p class="qr-text">Scan QR Code to Pay via GCash</p>
+            <div class="account-info">
+                <p><strong>Account Name:</strong> ${requirement?.gcash_name || 'PUP Santa Maria'}</p>
+                <p><strong>GCash Number:</strong> ${requirement?.gcash_number || '0917-123-4567'}</p>
+                <p><strong>Reference:</strong> ${name.replace(/\s+/g, '-').toUpperCase()}</p>
+            </div>
+        </div>`;
+
+  resetPaymentModalState();
+}
+
+// ============================================
+// CLOSE PAYMENT MODAL
+// ============================================
+function closePaymentModal() {
+  document.getElementById('paymentModal').classList.remove('active');
+  document.body.classList.remove('modal-open');
+  resetPaymentModalState();
+}
+
+function resetPaymentModalState() {
+  const proofInput = document.getElementById('proofInput');
+  const uploadArea = document.getElementById('uploadArea');
+  const filePreview = document.getElementById('filePreview');
+  if (proofInput) proofInput.value = '';
+  if (uploadArea) uploadArea.style.display = 'block';
+  if (filePreview) filePreview.style.display = 'none';
+}
+
+// ============================================
+// FILE UPLOAD HANDLERS
+// ============================================
+function handleProofSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { alert('File size exceeds 5MB limit'); return; }
+  document.getElementById('uploadArea').style.display = 'none';
+  document.getElementById('filePreview').style.display = 'block';
+  document.getElementById('fileName').textContent =
+    `${file.name} (${(file.size / 1024).toFixed(2)} KB)`;
+}
+
+function removeUploadedFile() {
+  document.getElementById('proofInput').value = '';
+  document.getElementById('filePreview').style.display = 'none';
+  document.getElementById('uploadArea').style.display = 'block';
+}
+
+// ============================================
+// SUBMIT PAYMENT TO API
+// ============================================
+async function submitPayment() {
+  const proofInput = document.getElementById('proofInput');
+  if (!proofInput.files.length) { alert('Please upload proof of payment.'); return; }
+
+  const { studentNumber } = getStudentInfo();
+  const formData = new FormData();
+  formData.append('student_number', studentNumber);
+  formData.append('requirement_id', currentPayment.requirementId);
+  formData.append('amount', currentPayment.amount);
+  formData.append('proof_image', proofInput.files[0]);
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/payments`, {
+      method: 'POST',
+      body: formData
+    });
+    const data = await response.json();
+
+    if (data.success) {
+      alert(`âœ… Payment submitted for ${currentPayment.name} (${currentPayment.amount}).\nAwaiting verification by accounting.`);
+      closePaymentModal();
+      await loadPaymentRequirements();
+    } else {
+      alert('âŒ Failed: ' + (data.message || 'Unknown error'));
+    }
+  } catch (error) {
+    console.error('âŒ Submit error:', error);
+    alert('âŒ Failed to submit payment. Please try again.');
+  }
+}
+
+// ============================================
+// FILTER BUTTONS
+// ============================================
+function filterPayments(status) {
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.remove('active');
+    if (btn.getAttribute('onclick').includes(`'${status}'`)) btn.classList.add('active');
+  });
+  document.querySelectorAll('.payment-card').forEach(card => {
+    const s = card.getAttribute('data-status');
+    card.style.display = (status === 'all' || s === status) ? 'block' : 'none';
+  });
+}
+
+// ============================================
+// UTILITY
+// ============================================
+function escapeHtml(text) {
+  return text.replace(/[&<>"']/g, m =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[m]);
+}
+
+// ============================================
+// PROFILE MODAL
+// ============================================
+function openProfileModal() {
+  document.getElementById('profileModal').classList.add('active');
+  document.body.classList.add('modal-open');
+}
+function closeProfileModal() {
+  document.getElementById('profileModal').classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+function saveProfile() {
+  const name = document.getElementById('editName').value;
+  const course = document.getElementById('editCourse').value;
+  const id = document.getElementById('editStudentId').value;
+  document.getElementById('sidebarName').textContent = name;
+  document.getElementById('sidebarId').textContent = `${course} | ${id}`;
+  alert('Profile updated!');
+  closeProfileModal();
+}
+
+window.onclick = e => {
+  if (e.target === document.getElementById('paymentModal')) closePaymentModal();
+  if (e.target === document.getElementById('profileModal')) closeProfileModal();
+};
+
+// ============================================
+// INITIALIZE
+// ============================================
+document.addEventListener('DOMContentLoaded', async () => {
+  console.log('ðŸš€ Student Payment Page Loading...');
+  loadUserData();
+  await loadPaymentRequirements();
+  console.log('âœ… Payment page ready');
 });

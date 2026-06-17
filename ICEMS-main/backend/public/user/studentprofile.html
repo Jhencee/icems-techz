@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICEMS - Student Profile & Settings</title>
+    <link rel="stylesheet" href="studentdashboard.css">
+    <link rel="stylesheet" href="studentprofile.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        .forgot-password-link {
+            color: #800000; /* PUP Maroon */
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo-section">
+            <div class="logo">
+                <img src="PUP.png" alt="puplogo">
+            </div>
+            <div class="logo-text">
+                <h2>ICEMS</h2>
+                <p>PUP Santa Maria</p>
+            </div>  
+        </div>
+
+        <div class="user-profile active-profile" onclick="window.location.href='studentprofile.html'">
+            <div class="user-avatar-large" id="sidebarAvatar">JB</div>
+            <div class="user-name" id="sidebarName">Jhencee Borjal</div>
+            <div class="user-id" id="sidebarId">BSIT 3-1 | 2021-54321-SM-0</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="studentdashboard.html" class="nav-link">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentclearance.html" class="nav-link">
+                    <i class="fas fa-list-check nav-icon"></i>
+                    <span>Clearances</span>
+                    <span class="nav-badge" id="clearanceBadge">0/4</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentevent.html" class="nav-link">
+                    <i class="fas fa-calendar-alt nav-icon"></i>
+                    <span>Events</span>
+                    <span class="nav-badge" id="eventsBadge">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentpayment.html" class="nav-link">
+                    <i class="fas fa-peso-sign nav-icon"></i>
+                    <span>Payments</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="attendance.html" class="nav-link">
+                    <i class="fas fa-user-check nav-icon"></i>
+                    <span>Attendance</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentnotifications.html" class="nav-link">
+                    <i class="fas fa-bell nav-icon"></i>
+                    <span>Notifications</span>
+                    <span class="nav-badge" id="notifBadge">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="studentprofile.html" class="nav-link active">
+                    <i class="fas fa-user-gear nav-icon"></i>
+                    <span>Profile & Settings</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="header-left">
+                <h1><i class="fas fa-user-gear"></i> Account Settings</h1>
+                <p>View your profile and manage security settings.</p>
+            </div>
+            <div class="header-right">
+                <button class="header-btn btn-notification" onclick="window.location.href='notifications.html'">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-dot" id="notifDot" style="display: none;"></span>
+                </button>
+            </div>
+        </div>
+        <div class="settings-grid">
+            
+            <div class="settings-card profile-card">
+                <h2 class="card-title">Profile Picture</h2>
+                
+                <div class="profile-avatar-wrapper">
+                    <img id="profileImagePreview" src="default-avatar.png" alt=" " class="profile-image">
+                </div>
+
+                <div class="file-upload-group">
+                    <input type="file" id="profileImageUpload" accept="image/*" class="file-input">
+                    <label for="profileImageUpload" class="custom-file-label">
+                        <i class="fas fa-upload"></i> Upload New Image
+                    </label>
+                </div>
+
+                <button class="btn btn-primary" onclick="saveProfilePicture()">Save Profile Changes</button>
+                <small class="note">Profile picture update is optional.</small>
+            </div>
+            
+            <div class="settings-card info-card">
+                <h2 class="card-title">Personal Information (Read-Only)</h2>
+                
+                <div class="form-group-readonly">
+                    <label>Full Name</label>
+                    <input type="text" value="Jhencee Borjal" readonly>
+                </div>
+
+                <div class="form-group-readonly">
+                    <label>Course & Year</label>
+                    <input type="text" value="BSIT 3-1" readonly>
+                </div>
+
+                <div class="form-group-readonly">
+                    <label>Student ID</label>
+                    <input type="text" value="2021-54321-SM-0" readonly>
+                </div>
+
+                <div class="form-group-readonly">
+                    <label>Email Address</label>
+                    <input type="email" value="jhencee.borjal@pupsmb.edu.ph" readonly>
+                </div>
+            </div>
+
+            <div class="settings-card security-card full-width">
+                
+                <div class="form-group-readonly">
+                    <label>Username (Read-only)</label>
+                    <input type="text" value="jborjal21" readonly>
+                </div>
+                
+                <hr class="section-divider">
+                
+                <h3 class="subsection-title">Change Password</h3>
+
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" class="form-input" placeholder="Enter your current password">
+                </div>
+
+                <button class="btn btn-primary" id="verifyPasswordBtn" onclick="verifyCurrentPassword()">
+                    Verify Password
+                </button>
+                
+                <div id="newPasswordFields" style="display: none;"> 
+                    
+                    <hr class="section-divider">
+                    <h4 class="subsection-title">Set New Password</h4> 
+
+                    <div class="form-group">
+                        <label for="newPassword">New Password</label>
+                        <input type="password" id="newPassword" class="form-input" placeholder="Min 12 chars, inc. upper, lower, and number">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input type="password" id="confirmPassword" class="form-input" placeholder="Re-enter new password">
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="submitNewPassword()">
+                        Set New Password
+                    </button>
+                </div>
+                
+                <a href="#" class="forgot-password-link" onclick="forgotPassword()">
+                    <i class="fas fa-key"></i> Forgot your password? Request reset.
+                </a>
+            </div>
+
+        </div>
+        </div>
+        <div class="footer">
+        © 2025 PUP Santa Maria Campus - ICEMS |
+       <a href="../about us/about.html" target="_blank" class="footer-link">About Us</a>
+    </div>
+    <div class="logout-modal" id="logoutModal">
+        <div class="logout-modal-content">
+            <h2>Logout Confirmation</h2>
+            <p>Are you sure you want to logout?</p>
+            <div class="logout-btn-wrapper">
+                <button class="logout-confirm" onclick="confirmLogout()">Yes</button>
+                <button class="logout-cancel" onclick="closeLogoutModal()">No</button>
+            </div>
+        </div>
+    </div>
+    <script src="studentdashboard.js"></script>
+    <script src="studentprofile.js"></script> 
+    
+    <script>
+        // Inline JS for basic modal control
+        function logout() {
+            document.getElementById('logoutModal').style.display = 'flex'; 
+        }
+        function closeLogoutModal() {
+            document.getElementById('logoutModal').style.display = 'none';
+        }
+        function confirmLogout() {
+            window.location.href = 'studentlogin.html'; 
+        }
+        window.onclick = function(event) {
+            const modal = document.getElementById('logoutModal');
+            if (modal && event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

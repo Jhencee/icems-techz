@@ -1,19 +1,14 @@
+﻿// ============================================
+// CONFIG.JS - SHARED CONFIGURATION
 // ============================================
-// CONFIG.JS - SHARED CONFIGURATION - Organization
-// ============================================
-
-const API_BASE_URL = 'http://localhost:8000/api';
-
-// Shared Application State
-
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:8000/api'
+  : 'https://icems-techz-production.up.railway.app/api';
+const SC_ID = 1;
 const AppState = {
-    currentOrgId: 1, 
+    currentOrgId: SC_ID,
     currentUser: null,
     organizationName: 'Student Council',
     organizationType: 'Student Organization'
 };
-
-// Export for use in other files
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { API_BASE_URL, AppState };
-}
+console.log('Config API_BASE_URL set to:', API_BASE_URL);

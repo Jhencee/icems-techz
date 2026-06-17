@@ -1,4 +1,4 @@
-// ===== KEEP MODAL OPEN AFTER ANY RELOAD =====
+﻿// ===== KEEP MODAL OPEN AFTER ANY RELOAD =====
 (function () {
     // Block Live Server WebSocket
     if (typeof WebSocket !== 'undefined') {
@@ -57,11 +57,12 @@
     });
 })();
 // ===== END KEEP MODAL OPEN =====
+
 if (typeof WebSocket !== 'undefined') {
     WebSocket.prototype.send = function () { };
 }
 
-const API_URL = 'http://127.0.0.1:8000';
+const API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? `${window.location.protocol}//${window.location.hostname}:8000` : 'https://icems-techz-production.up.railway.app';
 let userEmail = '';
 let resetToken = '';
 
@@ -491,12 +492,11 @@ document.addEventListener('keydown', function (event) {
 
 // Initialize on DOM load
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('Password Reset Loaded ✅');
+    console.log('Password Reset Loaded âœ…');
 
     const emailInput = document.getElementById('recoveryEmail');
     if (emailInput) {
         emailInput.focus();
-        // Add Enter key listener here
         emailInput.addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 e.preventDefault();

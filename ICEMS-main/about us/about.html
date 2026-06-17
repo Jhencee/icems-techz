@@ -3,184 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us - ICEMS | PUP Santa Maria</title>
-    <link rel="stylesheet" href="about.css">
+    <title>About Us — ICEMS | PUP Santa Maria</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="about.css">
 </head>
-<body class="white-theme" style="overflow: hidden;"> <!-- disable scrolling initially -->
+<body>
 
-    <!-- HEADER ONLY – MAY PICTURE NA SA BACKGROUND + PERFECT OVERLAY -->
-    <header class="hero-header">
-        <!-- BACKGROUND PICTURE -->
-        <div class="header-bg">
-            <img src="login-bg.jpg" alt="ICEMS Team" class="header-image">
+<!-- Nav -->
+<nav id="navbar">
+    <a href="../user/studentlogin.html" class="nav-logo">ICEMS</a>
+    <div class="nav-links">
+        <a href="../user/studentlogin.html" class="nav-link" id="homeBtn"><i class=""></i> Home</a>
+        <button class="nav-link" id="contactBtn">Contact</button>
+        <button class="nav-link" id="teamBtn">Team</button>
+        <button class="nav-link primary" id="viewBtn">Explore <i class="fas fa-arrow-down"></i></button>
+    </div>
+</nav>
+
+<!-- Hero -->
+<div class="hero" id="hero">
+    <div class="hero-left">
+        <p class="hero-eyebrow">PUP Santa Maria · BSIT 2025</p>
+        <h1 class="hero-title">ICEMS</h1>
+        <p class="hero-sub">Integrated Clearance &amp; Event Management System — Where Efficiency Meets Campus Engagement.</p>
+        <button class="hero-cta" id="heroExplore">
+            Explore System <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+    <div class="hero-right">
+        <div class="hero-stats">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-label">Team Size</div>
+                <div class="stat-value">6</div>
+                <div class="stat-desc">BSIT students</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+                <div class="stat-label">Timeline</div>
+                <div class="stat-value">'25</div>
+                <div class="stat-desc">Oct 2025 – May 2026</div>
+            </div>
+            <div class="stat-card tall">
+                <div class="stat-icon"><i class="fas fa-university"></i></div>
+                <div class="stat-label">Institution</div>
+                <div class="stat-value" style="font-size:1.6rem;">PUP</div>
+                <div class="stat-desc">Polytechnic University of the Philippines — Santa Maria Campus</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-layer-group"></i></div>
+                <div class="stat-label">Stack</div>
+                <div class="stat-value" style="font-size:1.2rem; margin-top:4px;">PHP</div>
+                <div class="stat-desc">HTML · CSS · JS · MySQL</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main content (hidden initially) -->
+<div id="mainContent">
+
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Mission & Vision -->
+    <section class="reveal" style="padding-bottom:0; max-width:100%;">
+        <div class="section-inner-pad">
+            <div class="section-label">Our Purpose</div>
+            <h2 class="section-title">What Drives Us</h2>
+        </div>
+        <div class="mv-section">
+            <div class="mv-block">
+                <div class="icon-ring"><i class="fas fa-bullseye"></i></div>
+                <h3>Mission</h3>
+                <p>ADVANCE AN INCLUSIVE, EQUITABLE, AND GLOBALLY RELEVANT POLYTECHNIC EDUCATION TOWARDS NATIONAL DEVELOPMENT</p>
+            </div>
+            <div class="mv-block">
+                <div class="icon-ring"><i class="fas fa-eye"></i></div>
+                <h3>Vision</h3>
+                <p>A LEADING COMPREHENSIVE POLYTECHNIC UNIVERSITY IN ASIA</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="services-section reveal">
+        <div class="services-header">
+            <div>
+                <div class="section-label">What We Offer</div>
+                <h2 class="section-title">Core Services</h2>
+            </div>
+            <p class="section-desc" style="max-width:320px;">Four pillars that power seamless campus operations from clearance to analytics.</p>
+        </div>
+        <div class="services-grid">
+            <div class="svc">
+                <i class="fas fa-file-signature svc-icon"></i>
+                <h3>Clearance Processing</h3>
+                <p>Paperless, real-time, multi-department clearance system that eliminates manual forms.</p>
+            </div>
+            <div class="svc">
+                <i class="fas fa-calendar-check svc-icon"></i>
+                <h3>Event Management</h3>
+                <p>Create events, RSVP, and track attendance — all from a single dashboard.</p>
+            </div>
+            <div class="svc">
+                <i class="fas fa-bell svc-icon"></i>
+                <h3>Real-time Notifications</h3>
+                <p>Stay informed with instant email and in-system alerts on all updates.</p>
+            </div>
+            <div class="svc">
+                <i class="fas fa-chart-bar svc-icon"></i>
+                <h3>Reports &amp; Analytics</h3>
+                <p>Generate comprehensive clearance and event reports with one click.</p>
+            </div>
         </div>
 
-        <!-- MAROON + DARK OVERLAY -->
-        <div class="header-overlay"></div>
-
-        <!-- NAV BUTTONS -->
-        <div class="nav-buttons">
-            <a href="user/studentlogin.html" class="btn btn-home">
-                <i class="fas fa-home"></i> Home
-            </a>
-            <a class="btn btn-contact" data-target="contact">
-                <i class="fas fa-envelope"></i> Contact
-            </a>
-            <a class="btn btn-team" data-target="team">
-                <i class="fas fa-users"></i> Team
-            </a>
+        <!-- Features -->
+        <div class="features-wrap reveal">
+            <div class="section-label" style="margin-top:80px;">Capabilities</div>
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-list">
+                <div class="feat-tag"><i class="fas fa-check-circle"></i> Streamlined Clearance</div>
+                <div class="feat-tag"><i class="fas fa-calendar-alt"></i> Event RSVP</div>
+                <div class="feat-tag"><i class="fas fa-bell"></i> Smart Notifications</div>
+                <div class="feat-tag"><i class="fas fa-database"></i> Centralized Data</div>
+                <div class="feat-tag"><i class="fas fa-users-cog"></i> BSIT-Exclusive Access</div>
+                <div class="feat-tag"><i class="fas fa-mobile-alt"></i> Mobile Friendly</div>
+                <div class="feat-tag"><i class="fas fa-shield-alt"></i> Secure Accounts</div>
+                <div class="feat-tag"><i class="fas fa-sync-alt"></i> Real-time Updates</div>
+            </div>
         </div>
+    </section>
 
-        <!-- HEADER CONTENT -->
-        <div class="header-content">
-            <h1>ICEMS</h1>
-            <p class="tagline">Integrated Clearance & Event Management System</p>
-            <p class="subtitle">Polytechnic University of the Philippines – Santa Maria Campus</p>
-            <div class="pup-logo">
-                <i class="fas fa-university"></i> PUP Santa Maria | BSIT Web Development Project 2025
+    <!-- Team -->
+    <section class="team-section reveal">
+        <div class="section-label">The People</div>
+        <h2 class="section-title">Development Team</h2>
+        <p class="section-desc">Six BSIT students who built ICEMS from the ground up.</p>
+
+        <div class="team-grid">
+            <!-- Row 1: 3 members -->
+            <div class="member">
+                <img src="sam.jpg" alt="Samantha Santos" class="member-img" onerror="this.parentNode.insertBefore(Object.assign(document.createElement('div'),{className:'member-img-placeholder',innerHTML:'<i class=\'fas fa-user\'></i>'}), this); this.remove();">
+                <div class="member-info">
+                    <div class="member-name">Samantha Santos</div>
+                    <div class="member-role">Project Manager</div>
+                    <div class="member-bar"></div>
+                </div>
+            </div>
+            <div class="member">
+                <img src="jhencee.jpg" alt="Jhencee Borjal" class="member-img" onerror="this.parentNode.insertBefore(Object.assign(document.createElement('div'),{className:'member-img-placeholder',innerHTML:'<i class=\'fas fa-user\'></i>'}), this); this.remove();">
+                <div class="member-info">
+                    <div class="member-name">Jhencee Borjal</div>
+                    <div class="member-role">Backend Developer</div>
+                    <div class="member-bar"></div>
+                </div>
+            </div>
+            <div class="member">
+                <img src="rochelle.png" alt="Rochelle Sto. Domingo" class="member-img" onerror="this.parentNode.insertBefore(Object.assign(document.createElement('div'),{className:'member-img-placeholder',innerHTML:'<i class=\'fas fa-user\'></i>'}), this); this.remove();">
+                <div class="member-info">
+                    <div class="member-name">Rochelle Sto. Domingo</div>
+                    <div class="member-role">Frontend Developer</div>
+                    <div class="member-bar"></div>
+                </div>
             </div>
 
-            <div class="view-btn-container">
-                <button class="btn btn-view">View Details</button>
+            <!-- Row 2: 3 members -->
+            <div class="row2">
+                <div class="member">
+                    <img src="michaela.jpg" alt="Michaela Estinor" class="member-img" onerror="this.parentNode.insertBefore(Object.assign(document.createElement('div'),{className:'member-img-placeholder',innerHTML:'<i class=\'fas fa-user\'></i>'}), this); this.remove();">
+                    <div class="member-info">
+                        <div class="member-name">Michaela Estinor</div>
+                        <div class="member-role">UI/UX Designer</div>
+                        <div class="member-bar"></div>
+                    </div>
+                </div>
+                <div class="member">
+                    <img src="Alejandria.jpg" alt="Alejandria" class="member-img" onerror="this.parentNode.insertBefore(Object.assign(document.createElement('div'),{className:'member-img-placeholder',innerHTML:'<i class=\'fas fa-user\'></i>'}), this); this.remove();">
+                    <div class="member-info">
+                        <div class="member-name">Julianna Alejandria</div>
+                        <div class="member-role">QA</div>
+                        <div class="member-bar"></div>
+                    </div>
+                </div>
+                <div class="member">
+                    <img src="Bautista.jpg" alt="Bautista" class="member-img" onerror="this.parentNode.insertBefore(Object.assign(document.createElement('div'),{className:'member-img-placeholder',innerHTML:'<i class=\'fas fa-user\'></i>'}), this); this.remove();">
+                    <div class="member-info">
+                        <div class="member-name">Amytha Bautista</div>
+                        <div class="member-role">Tester</div>
+                        <div class="member-bar"></div>
+                    </div>
+                </div>
             </div>
         </div>
-    </header>
+    </section>
 
-    <!-- MAIN CONTENT (HIDDEN INITIALLY) -->
-    <div class="main-content">
-        <main class="container">
-
-            <!-- Welcome -->
-            <section class="section-welcome">
-                <h2><i class="fas fa-info-circle"></i> Welcome to ICEMS</h2>
-                <p>Welcome to the <strong>Integrated Clearance and Event Management System (ICEMS)</strong> — a modern digital solution proudly developed by BSIT students of PUP Santa Maria Campus to revolutionize campus administrative processes.</p>
-            </section>
-
-            <!-- Mission & Vision -->
-            <section class="section-mv">
-                <div class="mv-card mission">
-                    <i class="fas fa-bullseye"></i>
-                    <h3>Our Mission</h3>
-                    <p>To deliver a seamless, efficient, and user-friendly platform that simplifies clearance processing and event coordination.</p>
-                </div>
-                <div class="mv-card vision">
-                    <i class="fas fa-eye"></i>
-                    <h3>Our Vision</h3>
-                    <p>To be the leading campus-wide digital ecosystem that transforms traditional paperwork into fast, transparent, and innovative solutions.</p>
-                </div>
-            </section>
-
-            <!-- Our Services -->
-            <section class="section-services">
-                <h2><i class="fas fa-concierge-bell"></i> Our Services</h2>
-                <div class="services-grid">
-                    <div class="service-card">
-                        <i class="fas fa-file-signature"></i>
-                        <h3>Clearance Processing</h3>
-                        <p>Paperless, real-time, multi-department clearance system</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-calendar-check"></i>
-                        <h3>Event Management</h3>
-                        <p>Create events, RSVP, and track attendance instantly</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-bell"></i>
-                        <h3>Real-time Notifications</h3>
-                        <p>Get updates via email and in-system alerts</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-chart-bar"></i>
-                        <h3>Reports & Analytics</h3>
-                        <p>Generate clearance and event reports with one click</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Key Features -->
-            <section class="section-features">
-                <h2><i class="fas fa-cogs"></i> Key Features</h2>
-                <div class="features-grid">
-                    <div class="feature"><i class="fas fa-check-circle"></i> Streamlined Clearance</div>
-                    <div class="feature"><i class="fas fa-calendar-alt"></i> Event RSVP</div>
-                    <div class="feature"><i class="fas fa-bell"></i> Notifications</div>
-                    <div class="feature"><i class="fas fa-database"></i> Centralized Data</div>
-                    <div class="feature"><i class="fas fa-users-cog"></i> BSIT-Exclusive Access</div>
-                    <div class="feature"><i class="fas fa-mobile-alt"></i> Mobile Friendly</div>
-                </div>
-            </section>
-
-            <!-- Development Team -->
-            <section class="section-team">
-                <h2><i class="fas fa-users"></i> Development Team</h2>
-                <div class="team-grid">
-                    <div class="team-card">
-                        <div class="photo-box"><img src="sam.jpg" alt="Samantha Santos" class="member-photo"></div>
-                        <h3>Samantha Santos</h3>
-                        <p class="role">Project Manager</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="photo-box"><img src="jhencee.jpg" alt="Jhencee Borjal" class="member-photo"></div>
-                        <h3>Jhencee Borjal</h3>
-                        <p class="role">Backend Developer</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="photo-box"><img src="rochelle.jpg" alt="Rochelle Sto. Domingo" class="member-photo"></div>
-                        <h3>Rochelle Sto. Domingo</h3>
-                        <p class="role">Frontend Developer</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="photo-box"><img src="michaela.jpg" alt="Michaela Estinor" class="member-photo"></div>
-                        <h3>Michaela Estinor</h3>
-                        <p class="role">UI/UX Designer</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="photo-box"><img src="grace.jpg" alt="Grace Ann Lucero" class="member-photo"></div>
-                        <h3>Grace Ann Lucero</h3>
-                        <p class="role">QA Tester</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Project Info -->
-            <section class="info-grid">
-                <div class="info-card"><div class="icon"><i class="fas fa-history"></i></div><h3>Background</h3><p>From manual forms to fully digital workflow</p></div>
-                <div class="info-card"><div class="icon"><i class="fas fa-tools"></i></div><h3>Tech Stack</h3><p>HTML5 • CSS3 • JS • PHP • MySQL • XAMPP</p></div>
-                <div class="info-card"><div class="icon"><i class="fas fa-calendar-alt"></i></div><h3>Timeline</h3><p>Oct 2024 – May 2025</p></div>
-                <div class="info-card"><div class="icon"><i class="fas fa-lightbulb"></i></div><h3>Future</h3><p>Mobile App • SSO • SMS Alerts</p></div>
-            </section>
-
-            <!-- Acknowledgement + Motto -->
-            <section class="final-section">
-                <div class="thanks-box">
-                    <h2><i class="fas fa-handshake"></i> Acknowledgement</h2>
-                    <p>We extend our deepest gratitude to:</p>
-                    <p class="adviser"><strong>Prof. Philip Lorenz Sarmiento</strong><br><em>Project Adviser</em></p>
-                    <p>Thank you for your unwavering guidance and support.</p>
-                </div>
-                <div class="tagline-box">
-                    <h2>Our Tagline</h2>
-                    <p class="english">"Your All-in-One Platform for Smart Campus Operations"</p>
-
-                </div>
-            </section>
-
-        </main>
+    <!-- Info Strip -->
+    <div class="info-strip reveal">
+        <div class="info-strip-inner">
+            <div class="info-item">
+                <i class="fas fa-history"></i>
+                <h4>Background</h4>
+                <p>From manual paper forms to a fully digital administrative workflow.</p>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-tools"></i>
+                <h4>Tech Stack</h4>
+                <p>HTML5 · CSS3 · JavaScript · PHP · MySQL · XAMPP</p>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-calendar-alt"></i>
+                <h4>Timeline</h4>
+                <p>October 2025 — May 2026</p>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-rocket"></i>
+                <h4>Roadmap</h4>
+                <p>Mobile App · Single Sign-On</p>
+            </div>
+        </div>
     </div>
 
+    <!-- Acknowledgement -->
+    <section class="ack-section reveal">
+        <div class="ack-box">
+            <div class="section-label">Gratitude</div>
+            <h3>Acknowledgement</h3>
+            <p>We extend our deepest gratitude to our adviser for the unwavering guidance and support throughout the entire development journey.</p>
+            <div class="ack-adviser">
+                Prof. Philip Lorenz Sarmiento
+                <small>Project Adviser</small>
+            </div>
+            <p>Thank you for believing in this project and pushing us to build something truly impactful for our campus.</p>
+        </div>
+        <div class="tagline-box">
+            <div class="tl-label">Our Tagline</div>
+            <blockquote>Run It Smart. Run It All.</blockquote>
+        </div>
+    </section>
+
     <!-- Footer -->
-    <footer class="footer">
-        <p>© 2025 ICEMS – PUP Santa Maria Campus</p>
-        <p>Proudly Developed by BSIT 3-2 Students <i class="fas fa-heart"></i></p>
+    <footer>
+        <div class="footer-left">ICEMS</div>
+        <div class="footer-right">
+            © 2025 PUP Santa Maria Campus<br>
+            Proudly developed by BSIT 3-2 
+        </div>
     </footer>
 
-    <!-- Close / Back Button -->
-    <button class="btn btn-close-header" title="Go Back">
-        <i class="fas fa-times"></i>
-    </button>
+</div><!-- /mainContent -->
 
-    <script src="about.js"></script>
+<script src="about.js"></script>
 </body>
 </html>

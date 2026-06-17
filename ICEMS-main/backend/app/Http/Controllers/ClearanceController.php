@@ -45,7 +45,7 @@ class ClearanceController extends Controller
     public function submitProof(Request $request): JsonResponse
     {
         $request->validate([
-            'student_email' => 'required|email|exists:students,email',
+            'student_email' => 'required|email',
             'event_id' => 'required|integer|exists:events,id',
             'proof_image' => 'required|string',
             'notes' => 'nullable|string',
@@ -72,7 +72,8 @@ class ClearanceController extends Controller
             'event_date' => $event->event_date,
             'proof_image' => $request->proof_image,
             'notes' => $request->notes,
-            'status' => 'pending',
+            'status'        => 'pending',
+            'submitted_at'  => now(),
         ]);
 
         // Notify student
@@ -201,7 +202,8 @@ class ClearanceController extends Controller
             'proof_image' => $request->proof_image,
             'notes' => $request->notes,
             'submitted_at' => $request->submitted_at ?? now(),
-            'status' => 'pending',
+            'status'        => 'pending',
+            'submitted_at'  => now(),
         ]);
 
         $student = Student::where('student_number', $request->student_id)->first();
@@ -511,7 +513,7 @@ class ClearanceController extends Controller
                 $isApproved ? 'success' : 'error',
                 "{$label} " . ($isApproved ? 'Approved' : 'Rejected'),
                 $isApproved
-                ? "Your {$label} has been approved! ✅"
+                ? "Your {$label} has been approved! âœ…"
                 : "Your {$label} was rejected. " . ($request->remarks ?? 'Please resubmit.'),
                 $notifCategory,
                 null,

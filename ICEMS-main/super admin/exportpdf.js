@@ -1,13 +1,12 @@
-// ============================================
+﻿// ============================================
 // EXPORT TO PDF - exportpdf.js
 // ============================================
 
 // Load jsPDF library
 const jsPDFScript = document.createElement('script');
 jsPDFScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-document.head.appendChild(jsPDFScript);
+const PDF_API_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? `${window.location.protocol}//${window.location.hostname}:8000/api` : 'https://icems-techz-production.up.railway.app/api';
 
-const PDF_API_URL = 'http://127.0.0.1:8000/api';
 
 // ============================================
 // EXPORT REPORT TO PDF
@@ -20,7 +19,7 @@ async function exportReportPDF() {
     }
 
     try {
-        console.log('📄 Generating PDF report...');
+        console.log('ðŸ“„ Generating PDF report...');
 
         // Show loading indicator
         showLoadingModal();
@@ -53,10 +52,10 @@ async function exportReportPDF() {
         // Show success message
         showAlert('Success', 'Report exported successfully!', 'success');
 
-        console.log('✅ PDF generated successfully:', filename);
+        console.log('âœ… PDF generated successfully:', filename);
 
     } catch (error) {
-        console.error('❌ Error generating PDF:', error);
+        console.error('âŒ Error generating PDF:', error);
         closeLoadingModal();
         showAlert('Error', 'Failed to generate PDF report: ' + error.message, 'error');
     }
@@ -67,7 +66,7 @@ async function exportReportPDF() {
 // ============================================
 async function generateReportData() {
     try {
-        console.log('📊 Fetching comprehensive data from backend...');
+        console.log('ðŸ“Š Fetching comprehensive data from backend...');
 
         // Fetch all data sources
         const [
@@ -134,7 +133,7 @@ async function generateReportData() {
             adminsByDept[dept] = (adminsByDept[dept] || 0) + 1;
         });
 
-        console.log('✅ Report data compiled successfully');
+        console.log('âœ… Report data compiled successfully');
 
         return {
             timestamp: new Date().toLocaleString(),
@@ -160,7 +159,7 @@ async function generateReportData() {
             events: events.slice(0, 20) // Include recent events
         };
     } catch (error) {
-        console.error('❌ Error generating report data:', error);
+        console.error('âŒ Error generating report data:', error);
         throw error;
     }
 }
@@ -481,4 +480,4 @@ function closeLoadingModal() {
 // ============================================
 window.exportReportPDF = exportReportPDF;
 
-console.log('✅ Export PDF module loaded');
+console.log('âœ… Export PDF module loaded');

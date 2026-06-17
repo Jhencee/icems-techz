@@ -3,7 +3,7 @@
 // With Real-Time Validation & Dynamic Loading
 // ============================================
 
-window.API_URL = window.API_URL || 'http://127.0.0.1:8000';
+window.API_URL = window.API_URL || 'https://icems-techz-production.up.railway.app';
 
 let healthQuestions = [];
 let nurseClearanceStatus = null;

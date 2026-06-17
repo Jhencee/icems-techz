@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Super Admin Dashboard</title>
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
-    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="SystemAdmin.css">
 </head>
 
@@ -103,7 +102,6 @@
                             <button type="submit" class="btn btn-primary">Save</button>
                         </form>
                     </div>
-
                     <div class="config-card">
                         <h3><i class="fas fa-calendar"></i> Semester Settings</h3>
                         <form id="semesterForm">
@@ -116,7 +114,6 @@
                             <button type="submit" class="btn btn-primary">Save</button>
                         </form>
                     </div>
-
                     <div class="config-card">
                         <h3><i class="fas fa-check-circle"></i> Clearance Types</h3>
                         <div class="tag-list">
@@ -145,7 +142,6 @@
                     <button class="tab-btn active" onclick="switchTab('activity-logs')">Activity Logs</button>
                     <button class="tab-btn" onclick="switchTab('audit-trails')">Audit Trails</button>
                 </div>
-
                 <div id="activity-logs" class="tab-content active">
                     <div class="table-container">
                         <table id="activityLogsTable">
@@ -161,7 +157,6 @@
                         </table>
                     </div>
                 </div>
-
                 <div id="audit-trails" class="tab-content">
                     <div class="table-container">
                         <table id="auditTrailsTable">
@@ -186,21 +181,16 @@
                         <i class="fas fa-download"></i>
                         <h3>Export Database</h3>
                         <p>Download a complete backup of the system database</p>
-                        <button class="btn btn-primary" onclick="exportDatabase()">
-                            Export Now
-                        </button>
+                        <button class="btn btn-primary" onclick="exportDatabase()">Export Now</button>
                     </div>
-
                     <div class="backup-card">
                         <i class="fas fa-upload"></i>
                         <h3>Restore Database</h3>
                         <p>Restore database from a previous backup file</p>
                         <input type="file" id="restoreFile" accept=".sql,.json" style="display:none">
-                        <button class="btn btn-secondary" onclick="document.getElementById('restoreFile').click()">
-                            Restore
-                        </button>
+                        <button class="btn btn-secondary"
+                            onclick="document.getElementById('restoreFile').click()">Restore</button>
                     </div>
-
                     <div class="backup-card full-width">
                         <h3>Backup History</h3>
                         <table>
@@ -241,7 +231,6 @@
                         <p class="stat-number">128</p>
                     </div>
                 </div>
-
                 <div class="charts-grid">
                     <div class="chart-card">
                         <h3>User Statistics</h3>
@@ -252,7 +241,6 @@
                         <canvas id="adminChart"></canvas>
                     </div>
                 </div>
-
                 <button class="btn btn-primary btn-export" onclick="exportReportPDF()">
                     <i class="fas fa-file-pdf"></i> Export to PDF
                 </button>
@@ -291,6 +279,18 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- ===== LOGOUT MODAL ===== -->
+    <div class="logout-modal" id="logoutModal">
+        <div class="logout-modal-content">
+            <h2>Logout Confirmation</h2>
+            <p>Are you sure you want to logout?</p>
+            <div class="logout-btn-wrapper">
+                <button class="logout-confirm" onclick="confirmLogout()">Yes</button>
+                <button class="logout-cancel" onclick="closeLogoutModal()">No</button>
+            </div>
+        </div>
     </div>
 
     <!-- Upload Options Modal -->
@@ -365,15 +365,13 @@
                         password
                     </small>
                 </div>
-
                 <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
                     <button type="submit" class="btn btn-primary"
                         style="display: inline-flex; align-items: center; gap: 8px;">
                         <i class="fas fa-paper-plane"></i> Send Password
                     </button>
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('sendSinglePasswordModal')">
-                        Cancel
-                    </button>
+                    <button type="button" class="btn btn-secondary"
+                        onclick="closeModal('sendSinglePasswordModal')">Cancel</button>
                 </div>
             </form>
         </div>
@@ -384,7 +382,6 @@
         <div class="modal-content" style="max-width: 900px;">
             <span class="close" onclick="closeModal('sendBatchPasswordModal')">&times;</span>
             <h2>Send Passwords to Multiple Students</h2>
-
             <div
                 style="margin: 20px 0; padding: 15px; background: #f0f7ff; border-left: 4px solid #3b82f6; border-radius: 4px;">
                 <p style="margin: 0; color: #1e40af; font-size: 14px;">
@@ -392,7 +389,6 @@
                     Select students and verify their email addresses before sending passwords.
                 </p>
             </div>
-
             <div class="table-container" style="max-height: 400px; overflow-y: auto;">
                 <table style="width: 100%; border-collapse: collapse;">
                     <thead style="position: sticky; top: 0; background: white; z-index: 1;">
@@ -409,20 +405,15 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody id="batchPasswordTableBody">
-                        <!-- Will be populated dynamically -->
-                    </tbody>
+                    <tbody id="batchPasswordTableBody"></tbody>
                 </table>
             </div>
-
             <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
                 <button class="btn btn-primary" onclick="sendBatchPasswords()"
                     style="display: inline-flex; align-items: center; gap: 8px;">
                     <i class="fas fa-paper-plane"></i> Send Passwords
                 </button>
-                <button class="btn btn-secondary" onclick="closeModal('sendBatchPasswordModal')">
-                    Cancel
-                </button>
+                <button class="btn btn-secondary" onclick="closeModal('sendBatchPasswordModal')">Cancel</button>
             </div>
         </div>
     </div>
@@ -465,7 +456,6 @@
                         <label>Full Name</label>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <div class="input-wrapper with-icon">
                         <input type="text" id="addStudentNumber" placeholder=" " required>
@@ -473,7 +463,6 @@
                         <label>Student Number</label>
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <div class="input-wrapper with-icon">
@@ -482,16 +471,14 @@
                             <label>Course</label>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <div class="input-wrapper with-icon">
                             <input type="text" id="addYear" placeholder=" " required>
                             <i class="fas fa-calendar-alt"></i>
-                            <label>Year & Section</label>
+                            <label>Year &amp; Section</label>
                         </div>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <div class="input-wrapper with-icon">
                         <input type="email" id="addEmail" placeholder=" " required>
@@ -499,7 +486,6 @@
                         <label>Email Address</label>
                     </div>
                 </div>
-
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-user-plus"></i> Add Student
                 </button>
@@ -512,15 +498,12 @@
         <div class="modal-content">
             <span class="close" onclick="closeModal('batchUploadModal')">&times;</span>
             <h2>Batch Upload Users</h2>
-
             <div style="margin: 20px 0;">
                 <a href="#" class="download-template" onclick="downloadTemplate(); return false;"
                     style="color: #800000; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-weight: 500;">
-                    <i class="fas fa-download"></i>
-                    Download CSV Template
+                    <i class="fas fa-download"></i> Download CSV Template
                 </a>
             </div>
-
             <div class="upload-area" id="uploadArea" onclick="document.getElementById('csvFile').click()"
                 style="border: 2px dashed #800000; border-radius: 8px; padding: 40px; text-align: center; cursor: pointer; transition: all 0.3s; background: #f9f9f9;">
                 <i class="fas fa-cloud-upload-alt"
@@ -528,23 +511,18 @@
                 <h3 style="margin: 10px 0; color: #333;">Click to Upload CSV File</h3>
                 <p style="margin: 5px 0; color: #666; font-size: 14px;">or drag and drop your file here</p>
             </div>
-
             <input type="file" id="csvFile" accept=".csv" style="display: none;" onchange="handleFileSelect(event)">
-
             <div class="file-info" id="fileInfo"
                 style="display: none; margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 5px;">
                 <p style="margin: 5px 0;"><strong>Selected file:</strong> <span id="fileName"></span></p>
                 <p style="margin: 5px 0;"><strong>Records found:</strong> <span id="recordCount">0</span></p>
             </div>
-
             <div style="display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end;">
                 <button class="btn btn-primary" onclick="uploadBatchUsers()" id="uploadBtn" disabled
                     style="display: inline-flex; align-items: center; gap: 8px;">
                     <i class="fas fa-upload"></i> Upload Users
                 </button>
-                <button class="btn btn-secondary" onclick="closeModal('batchUploadModal')">
-                    Cancel
-                </button>
+                <button class="btn btn-secondary" onclick="closeModal('batchUploadModal')">Cancel</button>
             </div>
         </div>
     </div>
@@ -619,6 +597,7 @@
 
     <script>
         let selectedFile = null;
+        // ==================================
 
         function openUploadOptions() {
             openModal('uploadOptionsModal');
@@ -654,13 +633,11 @@
             selectedFile = event.target.files[0];
             if (selectedFile) {
                 document.getElementById('fileName').textContent = selectedFile.name;
-
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     const text = e.target.result;
                     const lines = text.split('\n').filter(line => line.trim());
-                    const recordCount = lines.length - 1; // Subtract header
-
+                    const recordCount = lines.length - 1;
                     document.getElementById('recordCount').textContent = recordCount;
                     document.getElementById('fileInfo').style.display = 'block';
                     document.getElementById('uploadBtn').disabled = false;
@@ -672,17 +649,11 @@
         function resetBatchUpload() {
             selectedFile = null;
             const csvFileInput = document.getElementById('csvFile');
-            if (csvFileInput) {
-                csvFileInput.value = '';
-            }
+            if (csvFileInput) csvFileInput.value = '';
             const fileInfo = document.getElementById('fileInfo');
-            if (fileInfo) {
-                fileInfo.style.display = 'none';
-            }
+            if (fileInfo) fileInfo.style.display = 'none';
             const uploadBtn = document.getElementById('uploadBtn');
-            if (uploadBtn) {
-                uploadBtn.disabled = true;
-            }
+            if (uploadBtn) uploadBtn.disabled = true;
         }
 
         function downloadTemplate() {
@@ -690,7 +661,6 @@
                 "2021-00001,Dela Cruz,Juan,Santos,juan.delacruz@pupsmb.edu.ph\n" +
                 "2021-00002,Santos,Maria,Reyes,maria.santos@pupsmb.edu.ph\n" +
                 "2021-00003,Reyes,Pedro,Garcia,pedro.reyes@pupsmb.edu.ph";
-
             const blob = new Blob([csvContent], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -702,121 +672,58 @@
 
         async function uploadBatchUsers() {
             if (!selectedFile) return;
-
             const reader = new FileReader();
             reader.onload = async function (e) {
                 const text = e.target.result;
                 const lines = text.split('\n').filter(line => line.trim());
                 const users = [];
-
-                // CSV Format: Student Number, Last Name, First Name, Middle Name, Email
-                // Start from line 1 to skip header
                 for (let i = 1; i < lines.length; i++) {
                     const line = lines[i].trim();
                     if (!line) continue;
-
-                    // Split by comma and clean each value
                     const data = line.split(',').map(v => v.trim().replace(/"/g, ''));
-
-                    if (data.length < 5) continue; // Need at least 5 columns
-
-                    // Column 0: Student Number
-                    // Column 1: Last Name
-                    // Column 2: First Name
-                    // Column 3: Middle Name
-                    // Column 4: Email
+                    if (data.length < 5) continue;
                     const studentNumber = data[0];
                     const lastName = data[1];
                     const firstName = data[2];
                     const middleName = data[3];
                     const email = data[4];
-
-                    // Create full name: First Name + Middle Name + Last Name
-                    let fullName = '';
-                    if (middleName && middleName.trim() !== '') {
-                        fullName = `${firstName} ${middleName} ${lastName}`;
-                    } else {
-                        fullName = `${firstName} ${lastName}`;
-                    }
-
-                    // Validate required fields
+                    let fullName = middleName && middleName.trim() !== ''
+                        ? `${firstName} ${middleName} ${lastName}`
+                        : `${firstName} ${lastName}`;
                     if (firstName && lastName && email && studentNumber) {
                         users.push({
                             fullname: fullName,
                             first_name: firstName,
                             last_name: lastName,
                             student_number: studentNumber,
-                            course: data[5] || 'N/A',  // Optional
-                            year_section: data[6] || 'N/A',  // Optional
+                            course: data[5] || 'N/A',
+                            year_section: data[6] || 'N/A',
                             email: email
                         });
                     }
                 }
-
-                console.log('Uploading users:', users);
-                console.log('Total valid users:', users.length);
-
                 if (users.length === 0) {
-                    showAlert('Error', 'No valid users found in CSV file. Format: Student Number, Last Name, First Name, Middle Name, Email', 'error');
+                    showAlert('Error', 'No valid users found in CSV file.', 'error');
                     return;
                 }
-
                 try {
-                    // Try the batch endpoint first
                     let response = await fetch('http://127.0.0.1:8000/api/admin/allowed-students/batch', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                         body: JSON.stringify({ students: users })
                     });
-
-                    // If batch endpoint fails with 405, fall back to individual uploads
                     if (response.status === 405) {
-                        console.log('⚠️ Batch endpoint not available (405 Method Not Allowed)');
-                        console.log('📤 Switching to individual upload method...');
                         closeModal('batchUploadModal');
                         await uploadStudentsIndividually(users);
                         return;
                     }
-
-                    const contentType = response.headers.get('content-type');
-
-                    if (!response.ok) {
-                        let errorMessage = 'Upload failed';
-
-                        if (contentType && contentType.includes('application/json')) {
-                            const errorData = await response.json();
-                            errorMessage = errorData.message || errorData.error || errorMessage;
-                        } else {
-                            const errorText = await response.text();
-                            console.error('Server error response:', errorText);
-                            errorMessage = `Server error (${response.status}). Check console for details.`;
-                        }
-
-                        throw new Error(errorMessage);
-                    }
-
-                    const result = await response.json();
-
+                    if (!response.ok) throw new Error('Upload failed');
                     closeModal('batchUploadModal');
                     document.getElementById('successTitle').textContent = 'Batch Upload Successful!';
                     document.getElementById('successMessage').textContent = `Successfully uploaded ${users.length} users`;
                     openModal('successModal');
-
-                    // Reload the users table
-                    if (typeof loadUsers === 'function') {
-                        loadUsers();
-                    } else if (typeof refreshStudentList === 'function') {
-                        refreshStudentList();
-                    }
-
+                    if (typeof loadUsers === 'function') loadUsers();
                 } catch (error) {
-                    console.error('❌ Error uploading batch users:', error);
-
-                    // On any error, try individual upload as fallback
-                    console.log('📤 Attempting individual upload as fallback...');
                     closeModal('batchUploadModal');
                     await uploadStudentsIndividually(users);
                 }
@@ -825,165 +732,75 @@
         }
 
         async function uploadStudentsIndividually(users) {
-            // Create progress modal
             const progressModal = document.createElement('div');
             progressModal.id = 'individualUploadModal';
             progressModal.className = 'modal';
             progressModal.style.display = 'flex';
             progressModal.innerHTML = `
-        <div class="modal-content" style="max-width: 600px;">
-        <h2><i class="fas fa-upload"></i> Uploading Students</h2>
-        <p style="color: #666; margin-bottom: 20px;">Uploading students one by one...</p>
-        
-        <div style="margin: 20px 0;">
-            <div style="background: #f0f0f0; border-radius: 10px; overflow: hidden; height: 40px; position: relative;">
-                <div id="individualProgressBar" 
-                     style="background: linear-gradient(90deg, #800000, #a00000); 
-                            height: 100%; 
-                            width: 0%; 
-                            transition: width 0.3s; 
-                            display: flex; 
-                            align-items: center; 
-                            justify-content: center; 
-                            color: white; 
-                            font-weight: bold;
-                            font-size: 16px;">
-                </div>
-            </div>
-            <p id="individualProgressText" style="text-align: center; margin-top: 10px; font-weight: 500;">
-                0 / ${users.length} students uploaded
-            </p>
-        </div>
-        
-        <div id="uploadResultsContainer" style="max-height: 250px; overflow-y: auto; background: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 20px;">
-            <div id="uploadResults" style="font-size: 14px;"></div>
-        </div>
-        </div>
-    `;
+                <div class="modal-content" style="max-width: 600px;">
+                    <h2><i class="fas fa-upload"></i> Uploading Students</h2>
+                    <p style="color: #666; margin-bottom: 20px;">Uploading students one by one...</p>
+                    <div style="margin: 20px 0;">
+                        <div style="background: #f0f0f0; border-radius: 10px; overflow: hidden; height: 40px; position: relative;">
+                            <div id="individualProgressBar" style="background: linear-gradient(90deg, #800000, #a00000); height: 100%; width: 0%; transition: width 0.3s; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px;"></div>
+                        </div>
+                        <p id="individualProgressText" style="text-align: center; margin-top: 10px; font-weight: 500;">0 / ${users.length} students uploaded</p>
+                    </div>
+                    <div id="uploadResultsContainer" style="max-height: 250px; overflow-y: auto; background: #f9f9f9; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                        <div id="uploadResults" style="font-size: 14px;"></div>
+                    </div>
+                </div>`;
             document.body.appendChild(progressModal);
-
-            let successCount = 0;
-            let failCount = 0;
+            let successCount = 0, failCount = 0;
             const results = [];
-
-            // Upload each student individually
             for (let i = 0; i < users.length; i++) {
                 const user = users[i];
-
                 try {
-                    // Generate random password
-                    const password = generateRandomPassword();
-
                     const response = await fetch('http://127.0.0.1:8000/api/admin/allowed-students', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            first_name: user.first_name,
-                            last_name: user.last_name,
-                            student_number: user.student_number,
-                            course: user.course,
-                            year: user.year_section,
-                            email: user.email,
-                            password: password,
-                            auto_registered: true
-                        })
+                        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                        body: JSON.stringify({ first_name: user.first_name, last_name: user.last_name, student_number: user.student_number, course: user.course, year: user.year_section, email: user.email, auto_registered: true })
                     });
-
-                    const data = await response.json();
-
+                    const rawText = await response.text();
+                    const data = JSON.parse(rawText.replace(/^\uFEFF/, '').trim());
                     if (data.success || response.ok) {
                         successCount++;
-                        results.push(`<div style="padding: 8px; border-left: 3px solid #22c55e; background: white; margin-bottom: 5px; border-radius: 4px;">
-                    <i class="fas fa-check-circle" style="color: #22c55e;"></i> 
-                    <strong>${user.fullname}</strong> - Successfully added
-                </div>`);
+                        results.push(`<div style="padding: 8px; border-left: 3px solid #22c55e; background: white; margin-bottom: 5px; border-radius: 4px;"><i class="fas fa-check-circle" style="color: #22c55e;"></i> <strong>${user.fullname}</strong> - Successfully added</div>`);
                     } else {
                         failCount++;
-                        results.push(`<div style="padding: 8px; border-left: 3px solid #ef4444; background: white; margin-bottom: 5px; border-radius: 4px;">
-                    <i class="fas fa-times-circle" style="color: #ef4444;"></i> 
-                    <strong>${user.fullname}</strong> - ${data.message || 'Failed'}
-                </div>`);
+                        results.push(`<div style="padding: 8px; border-left: 3px solid #ef4444; background: white; margin-bottom: 5px; border-radius: 4px;"><i class="fas fa-times-circle" style="color: #ef4444;"></i> <strong>${user.fullname}</strong> - ${data.message || 'Failed'}</div>`);
                     }
                 } catch (error) {
                     failCount++;
-                    results.push(`<div style="padding: 8px; border-left: 3px solid #ef4444; background: white; margin-bottom: 5px; border-radius: 4px;">
-                <i class="fas fa-times-circle" style="color: #ef4444;"></i> 
-                <strong>${user.fullname}</strong> - ${error.message}
-            </div>`);
+                    results.push(`<div style="padding: 8px; border-left: 3px solid #ef4444; background: white; margin-bottom: 5px; border-radius: 4px;"><i class="fas fa-times-circle" style="color: #ef4444;"></i> <strong>${user.fullname}</strong> - ${error.message}</div>`);
                 }
-
-                // Update progress
                 const progress = ((i + 1) / users.length) * 100;
-                const progressBar = document.getElementById('individualProgressBar');
-                const progressText = document.getElementById('individualProgressText');
-
-                if (progressBar) {
-                    progressBar.style.width = progress + '%';
-                    progressBar.textContent = Math.round(progress) + '%';
-                }
-
-                if (progressText) {
-                    progressText.textContent = `${i + 1} / ${users.length} students uploaded`;
-                }
-
-                // Update results display (show last 5 results)
+                const bar = document.getElementById('individualProgressBar');
+                if (bar) { bar.style.width = progress + '%'; bar.textContent = Math.round(progress) + '%'; }
+                const txt = document.getElementById('individualProgressText');
+                if (txt) txt.textContent = `${i + 1} / ${users.length} students uploaded`;
                 const resultsDiv = document.getElementById('uploadResults');
-                if (resultsDiv) {
-                    resultsDiv.innerHTML = results.slice(-5).reverse().join('');
-                }
-
-                // Small delay to avoid overwhelming the server
+                if (resultsDiv) resultsDiv.innerHTML = results.slice(-5).reverse().join('');
                 await new Promise(resolve => setTimeout(resolve, 150));
             }
-
-            // Show final results
-            const resultsDiv = document.getElementById('uploadResults');
-            resultsDiv.innerHTML = `
-        <div style="text-align: center; padding: 20px;">
-        <i class="fas fa-check-circle" style="font-size: 48px; color: #22c55e; margin-bottom: 15px;"></i>
-        <h3 style="margin: 10px 0; color: #333;">Upload Complete!</h3>
-        <div style="display: flex; gap: 20px; justify-content: center; margin: 20px 0;">
-            <div style="text-align: center;">
-                <div style="font-size: 32px; font-weight: bold; color: #22c55e;">${successCount}</div>
-                <div style="color: #666; font-size: 14px;">Successful</div>
-            </div>
-            ${failCount > 0 ? `
-            <div style="text-align: center;">
-                <div style="font-size: 32px; font-weight: bold; color: #ef4444;">${failCount}</div>
-                <div style="color: #666; font-size: 14px;">Failed</div>
-            </div>
-            ` : ''}
-        </div>
-        <button class="btn btn-primary" onclick="closeIndividualUploadModal()" style="margin-top: 20px; width: 100%;">
-            <i class="fas fa-check"></i> Close
-        </button>
-        </div>
-    `;
-
-            // Refresh the student list
-            if (typeof refreshStudentList === 'function') {
-                await refreshStudentList();
-            } else if (typeof loadAllowedStudents === 'function') {
-                await loadAllowedStudents();
-            }
+            document.getElementById('uploadResults').innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <i class="fas fa-check-circle" style="font-size: 48px; color: #22c55e; margin-bottom: 15px;"></i>
+                    <h3 style="margin: 10px 0; color: #333;">Upload Complete!</h3>
+                    <div style="display: flex; gap: 20px; justify-content: center; margin: 20px 0;">
+                        <div style="text-align: center;"><div style="font-size: 32px; font-weight: bold; color: #22c55e;">${successCount}</div><div style="color: #666; font-size: 14px;">Successful</div></div>
+                        ${failCount > 0 ? `<div style="text-align: center;"><div style="font-size: 32px; font-weight: bold; color: #ef4444;">${failCount}</div><div style="color: #666; font-size: 14px;">Failed</div></div>` : ''}
+                    </div>
+                    <button class="btn btn-primary" onclick="closeIndividualUploadModal()" style="margin-top: 20px; width: 100%;"><i class="fas fa-check"></i> Close</button>
+                </div>`;
+            if (typeof refreshStudentList === 'function') await refreshStudentList();
+            else if (typeof loadAllowedStudents === 'function') await loadAllowedStudents();
         }
-
 
         function closeIndividualUploadModal() {
             const modal = document.getElementById('individualUploadModal');
-            if (modal) {
-                modal.remove();
-            }
+            if (modal) modal.remove();
             resetBatchUpload();
-        }
-
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                window.location.href = 'login.html';
-            }
         }
 
         const uploadArea = document.getElementById('uploadArea');
@@ -993,17 +810,14 @@
                 uploadArea.style.background = '#ffe6e6';
                 uploadArea.style.borderColor = '#600000';
             });
-
             uploadArea.addEventListener('dragleave', () => {
                 uploadArea.style.background = '#f9f9f9';
                 uploadArea.style.borderColor = '#800000';
             });
-
             uploadArea.addEventListener('drop', (e) => {
                 e.preventDefault();
                 uploadArea.style.background = '#f9f9f9';
                 uploadArea.style.borderColor = '#800000';
-
                 const files = e.dataTransfer.files;
                 if (files.length > 0 && files[0].name.endsWith('.csv')) {
                     document.getElementById('csvFile').files = files;
@@ -1015,17 +829,24 @@
         }
 
         window.onclick = function (event) {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
+            // Close regular modals on outside click
+            document.querySelectorAll('.modal').forEach(modal => {
+                if (event.target === modal) modal.style.display = 'none';
             });
+            // Close logout modal on outside click
+            const logoutModal = document.getElementById('logoutModal');
+            if (event.target === logoutModal) closeLogoutModal();
+        }
+    </script>
+    <script>
+        // Disable Live Server auto-reload
+        if (typeof LiveReload !== 'undefined') {
+            LiveReload.disconnect();
         }
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script src="SystemAdmins.js"></script>
+    <script src="SystemAdmin.js"></script>
     <script src="SystemadminBatchUpload.js"></script>
     <script src="passwordReset.js"></script>
     <script src="sendpassword.js"></script>

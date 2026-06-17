@@ -1,0 +1,14 @@
+﻿// ============================================================
+// ICEMS - Add this route to your routes/web.php file
+// ============================================================
+
+Route::get('/download', function () {
+    return view('download');
+})->name('download');
+
+// ============================================================
+// Then link to it anywhere in your app using:
+//   <a href="{{ route('download') }}">Download App</a>
+// or:
+//   href="{{ url('/download') }}"
+// ============================================================

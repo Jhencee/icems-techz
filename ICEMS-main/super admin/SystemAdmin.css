@@ -99,7 +99,7 @@ body {
 }
 
 .logout-btn:hover {
-    color: #ef4444;
+    color: #800000;
 }
 
 /* Main Content Styles */
@@ -141,7 +141,7 @@ body {
 }
 
 .user-info i:hover {
-    color: #ef4444;
+    color: #800000;
 }
 
 /* Content Sections */
@@ -735,7 +735,7 @@ tbody tr:hover {
 }
 
 .close:hover {
-    color: #ef4444;
+    color: #800000;
 }
 
 .modal-content h2 {
@@ -764,7 +764,7 @@ tbody tr:hover {
     box-shadow: 0 0 0 3px rgba(128, 0, 0, 0.1);
 }
 
-/* Logout Modal */
+/* ==== LOGOUT MODAL ==== */
 .logout-modal {
     display: none;
     justify-content: center;
@@ -775,7 +775,7 @@ tbody tr:hover {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.55);
-    z-index: 999;
+    z-index: 9999;
 }
 
 .logout-modal-content {
@@ -816,23 +816,33 @@ tbody tr:hover {
     cursor: pointer;
 }
 
+/* YES - maroon */
 .logout-confirm {
     background: #800000;
     color: #fff;
 }
-
 .logout-confirm:hover {
     background: #5c0000;
 }
 
+/* NO - gray */
 .logout-cancel {
     background: #d5d5d5;
+    color: #333;
 }
-
 .logout-cancel:hover {
     background: #bcbcbc;
 }
 
+@keyframes fadeDown {
+    from { transform: translateY(-10px); opacity: 0; }
+    to   { transform: translateY(0);     opacity: 1; }
+}
+
+body.no-scroll {
+    overflow: hidden;
+}
+/* ====================== */
 
 /* Alert Modal Styles */
 .alert-modal-content {
@@ -856,7 +866,7 @@ tbody tr:hover {
 }
 
 .alert-modal-content .modal-icon.warning {
-    color: #f59e0b;
+    color: #800000;
 }
 
 .alert-modal-content .modal-icon.info {
@@ -885,19 +895,6 @@ tbody tr:hover {
     border: 2px solid #e2e8f0;
     border-radius: 6px;
     font-size: 14px;
-}
-
-
-@keyframes fadeDown {
-    from {
-        transform: translateY(-10px);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
 }
 
 /* Responsive */

@@ -1,8 +1,11 @@
 ﻿{
-    "liveServer.settings.ignoreFiles": [
-        "**/*.js",
-        "**/*.css",
-        "**/*.html"
-    ],
-    "liveServer.settings.fullReload": false
+    "liveServer.settings.ignoreFiles":  [
+                                            "**/*.html",
+                                            "**/*.js",
+                                            "**/*.css",
+                                            "**/*"
+                                        ],
+    "liveServer.settings.wait":  99999,
+    "liveServer.settings.donotShowInfoMsg":  true,
+    "liveServer.settings.fullReload":  false
 }

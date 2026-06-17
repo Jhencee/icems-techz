@@ -1,0 +1,373 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICEMS - Dashboard</title>
+    <link rel="stylesheet" href="studentdashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <button class="mobile-toggle" onclick="toggleSidebar()">ÃƒÆ’Ã‚Â¢Ãƒâ€¹Ã…â€œÃƒâ€šÃ‚Â°</button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo-section">
+            <div class="logo"><img src="PUP.png" alt="puplogo"></div>
+            <div class="logo-text">
+                <h2>ICEMS</h2>
+                <p>PUP Santa Maria</p>
+            </div>
+        </div>
+
+        <div class="user-profile" onclick="window.location.href='myprofile.html'" style="cursor:pointer;">
+            <div class="user-avatar-large" id="sidebarAvatar">--</div>
+            <div class="user-name" id="sidebarName">Loading...</div>
+            <div class="user-id" id="sidebarId">Loading...</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="studentdashboard.html" class="nav-link active"><i
+                        class="fas fa-home nav-icon"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="studentclearance.html" class="nav-link"><i
+                        class="fas fa-list-check nav-icon"></i><span>Clearances</span><span class="nav-badge"
+                        id="clearanceBadge">0</span></a></li>
+            <li class="nav-item"><a href="studentevent.html" class="nav-link"><i
+                        class="fas fa-calendar-alt nav-icon"></i><span>Events</span><span class="nav-badge"
+                        id="eventsBadge">0</span></a></li>
+            <li class="nav-item"><a href="studentpayment.html" class="nav-link"><i
+                        class="fas fa-peso-sign nav-icon"></i><span>Payments</span></a></li>
+            <li class="nav-item"><a href="attendance.html" class="nav-link"><i
+                        class="fas fa-user-check nav-icon"></i><span>Attendance</span></a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()"><i
+                    class="fas fa-sign-out-alt"></i><span>Logout</span></button>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="header-left">
+                <h1>Welcome back, <span id="headerName">...</span>!</h1>
+                <p>Here's what's happening with your clearance today</p>
+            </div>
+            <div class="header-right">
+                <button class="header-btn btn-notification" onclick="window.location.href='studentnotification.html'">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-dot" id="notifDot" style="display:none;"></span>
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon clearance"><i class="fas fa-clipboard-check"></i></div>
+                    <span class="stat-change positive" id="clearancePercent">0%</span>
+                </div>
+                <div class="stat-value" id="clearanceValue">0</div>
+                <div class="stat-label">Clearances Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon events"><i class="fas fa-calendar-check"></i></div>
+                    <span class="stat-change positive" id="eventsUpcoming">0 Upcoming</span>
+                </div>
+                <div class="stat-value" id="eventsValue">0</div>
+                <div class="stat-label">Events Attended</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon payments"><i class="fas fa-peso-sign"></i></div>
+                    <span class="stat-change positive" id="paymentStatus">Loading...</span>
+                </div>
+                <div class="stat-value" id="paymentValue">0</div>
+                <div class="stat-label">Total Fees Paid</div>
+            </div>
+        </div>
+
+        <div class="content-card" style="margin-bottom:30px;">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span class="progress-label">Overall Clearance Progress</span>
+                    <span class="progress-percentage" id="overallProgress">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAYMENT REQUIREMENTS SECTION -->
+        <div id="dashboardPaymentsContainer" style="margin-bottom:30px;">
+            <div style="text-align:center;padding:30px;color:#666;">
+                <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#800020;"></i>
+                <p>Loading payments...</p>
+            </div>
+        </div>
+
+        <!-- UPCOMING EVENTS SECTION -->
+        <div class="empty-state" id="dashboardEventsContainer">
+            <div class="empty-icon"><i class="fas fa-spinner fa-spin"></i></div>
+            <h2>Loading Events...</h2>
+            <p>Please wait while we fetch events from the database</p>
+        </div>
+    </div>
+
+    <!-- LOGOUT MODAL -->
+    <div class="logout-modal" id="logoutModal">
+        <div class="logout-modal-content">
+            <h2>Logout Confirmation</h2>
+            <p>Are you sure you want to logout?</p>
+            <div class="logout-btn-wrapper">
+                <button class="logout-confirm" onclick="confirmLogout()">Yes</button>
+                <button class="logout-cancel" onclick="closeLogoutModal()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© 2025 PUP Santa Maria Campus - ICEMS |
+        <a href="../about us/about.html" target="_blank" class="footer-link">About Us</a>
+    </div>
+
+    <script>
+        const API_URL_DASHBOARD = 'http://127.0.0.1:8000/api';
+
+        // ============================================
+        // LOAD USER PROFILE FROM LOCALSTORAGE
+        // ============================================
+        function loadUserProfileData() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                window.location.href = 'studentlogin.html';
+                return null;
+            }
+
+            const firstName = currentUser.first_name || '';
+            const lastName = currentUser.last_name || '';
+            const fullName = `${firstName} ${lastName}`.trim() || 'Student';
+            const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase() || '--';
+            const course = currentUser.course || 'N/A';
+            const year = currentUser.year || '';
+            const section = currentUser.section || '';
+            const studentNum = currentUser.student_number || 'N/A';
+
+            document.getElementById('sidebarAvatar').textContent = initials;
+            document.getElementById('sidebarName').textContent = fullName;
+            document.getElementById('sidebarId').textContent =
+                `${course} ${year}${section ? '-' + section : ''} | ${studentNum}`;
+            document.getElementById('headerName').textContent = firstName || fullName;
+
+            // Load saved avatar image
+            const savedAvatar = localStorage.getItem(`avatar_${studentNum}`);
+            if (savedAvatar) {
+                const el = document.getElementById('sidebarAvatar');
+                el.style.backgroundImage = `url(${savedAvatar})`;
+                el.style.backgroundSize = 'cover';
+                el.style.backgroundPosition = 'center';
+                el.style.color = 'transparent';
+            }
+
+            console.log('ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Profile loaded:', fullName);
+            return currentUser;
+        }
+
+        // ============================================
+        // LOAD PAYMENT REQUIREMENTS + USER PAYMENTS
+        // ============================================
+        async function loadDashboardPayments(studentNumber) {
+            const container = document.getElementById('dashboardPaymentsContainer');
+            try {
+                // Fetch requirements and student payments in parallel
+                const [reqRes, payRes] = await Promise.all([
+                    fetch(`${API_URL_DASHBOARD}/payment-requirements`),
+                    fetch(`${API_URL_DASHBOARD}/payments/student/${studentNumber}`)
+                ]);
+
+                const reqData = await reqRes.json();
+                const payData = await payRes.json();
+
+                const requirements = reqData.success ? reqData.requirements : [];
+                const userPayments = payData.success ? payData.payments : [];
+
+                if (requirements.length === 0) {
+                    container.innerHTML = '';
+                    return;
+                }
+
+                // Map payment status per requirement
+                const statusMap = {};
+                userPayments.forEach(p => { statusMap[p.requirement_id] = p.status; });
+
+                // Calculate totals for stat card
+                const verified = userPayments.filter(p => p.status === 'verified');
+                const totalPaid = verified.reduce((s, p) => s + parseFloat(p.amount), 0);
+                const unpaidReqs = requirements.filter(r => !statusMap[r.id] || statusMap[r.id] === 'rejected');
+                const totalDue = unpaidReqs.reduce((s, r) => s + parseFloat(r.amount), 0);
+
+                document.getElementById('paymentValue').textContent = `ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â±${totalPaid.toLocaleString()}`;
+                document.getElementById('paymentStatus').textContent =
+                    totalDue > 0 ? `ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â±${totalDue.toLocaleString()} Due` : 'All Paid';
+
+                // Build payment cards
+                let html = `
+                    <h2 style="color:#800020;margin-bottom:15px;">
+                        <i class="fas fa-peso-sign"></i> Payment Requirements
+                    </h2>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:15px;">
+                `;
+
+                requirements.forEach(req => {
+                    const status = statusMap[req.id] || 'unpaid';
+                    const dueDate = new Date(req.due_date).toLocaleDateString('en-US',
+                        { month: 'short', day: 'numeric', year: 'numeric' });
+
+                    let badgeColor, badgeText, badgeIcon, borderColor;
+                    if (status === 'verified') {
+                        badgeColor = '#059669'; badgeText = 'Paid';
+                        badgeIcon = 'fa-check-circle'; borderColor = '#059669';
+                    } else if (status === 'pending') {
+                        badgeColor = '#f59e0b'; badgeText = 'Pending Verification';
+                        badgeIcon = 'fa-clock'; borderColor = '#f59e0b';
+                    } else {
+                        badgeColor = '#dc2626'; badgeText = 'Unpaid';
+                        badgeIcon = 'fa-circle-exclamation'; borderColor = '#dc2626';
+                    }
+
+                    html += `
+                        <div style="background:white;border-radius:12px;padding:20px;
+                                    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+                                    border-left:4px solid ${borderColor};">
+                            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px;">
+                                <strong style="color:#800020;font-size:1rem;">${req.title}</strong>
+                                <span style="background:${badgeColor};color:white;padding:3px 10px;
+                                             border-radius:12px;font-size:0.75rem;font-weight:600;white-space:nowrap;">
+                                    <i class="fas ${badgeIcon}"></i> ${badgeText}
+                                </span>
+                            </div>
+                            <div style="font-size:1.5rem;font-weight:700;color:#800020;margin-bottom:8px;">
+                                ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â±${parseFloat(req.amount).toLocaleString()}
+                            </div>
+                            <div style="font-size:0.85rem;color:#666;margin-bottom:12px;">
+                                ${req.description || ''}
+                            </div>
+                            <div style="font-size:0.85rem;color:#666;margin-bottom:12px;">
+                                <i class="fas fa-calendar" style="color:#800020;"></i>
+                                Due: <strong>${dueDate}</strong> &nbsp;|&nbsp;
+                                ${req.is_mandatory ? '<span style="color:#dc2626;font-weight:600;">Mandatory</span>' : '<span style="color:#059669;">Optional</span>'}
+                            </div>
+                            ${status === 'unpaid' || status === 'rejected' ? `
+                            <a href="studentpayment.html"
+                               style="display:block;text-align:center;background:#800020;color:white;
+                                      padding:10px;border-radius:8px;text-decoration:none;font-weight:600;">
+                                <i class="fas fa-peso-sign"></i> Pay Now
+                            </a>` : ''}
+                        </div>
+                    `;
+                });
+
+                html += `</div>`;
+                container.innerHTML = html;
+
+            } catch (err) {
+                console.error('ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Error loading payments:', err);
+                container.innerHTML = '';
+            }
+        }
+
+        // ============================================
+        // LOAD UPCOMING EVENTS
+        // ============================================
+        async function loadDashboardEvents() {
+            const container = document.getElementById('dashboardEventsContainer');
+            try {
+                const response = await fetch(`${API_URL_DASHBOARD}/events`);
+                const data = await response.json();
+
+                if (data.success && data.events.length > 0) {
+                    const today = new Date(); today.setHours(0, 0, 0, 0);
+
+                    const upcoming = data.events
+                        .filter(e => new Date(e.event_date) >= today)
+                        .sort((a, b) => new Date(a.event_date) - new Date(b.event_date))
+                        .slice(0, 5);
+
+                    if (upcoming.length === 0) {
+                        container.innerHTML = `
+                            <div class="empty-icon"><i class="fas fa-calendar-times"></i></div>
+                            <h2>No Upcoming Events</h2><p>Check back later</p>`;
+                        return;
+                    }
+
+                    container.innerHTML = `<h2 style="color:#800020;margin-bottom:20px;">
+                        <i class="fas fa-calendar-alt"></i> Upcoming Events</h2>`;
+
+                    upcoming.forEach(event => {
+                        const date = new Date(event.event_date).toLocaleDateString('en-US',
+                            { month: 'short', day: 'numeric', year: 'numeric' });
+                        const color = (event.is_clearance || event.category === 'mandatory') ? '#dc2626' : '#059669';
+                        const label = (event.is_clearance || event.category === 'mandatory') ? 'MANDATORY' : 'OPTIONAL';
+
+                        container.insertAdjacentHTML('beforeend', `
+                            <div style="background:white;padding:20px;border-radius:12px;margin-bottom:15px;
+                                        box-shadow:0 2px 8px rgba(0,0,0,0.1);border-left:4px solid ${color};">
+                                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
+                                    <h3 style="color:#800020;margin:0;font-size:1.1rem;">${event.title}</h3>
+                                    <span style="background:${color};color:white;padding:3px 10px;
+                                                 border-radius:12px;font-size:0.75rem;font-weight:600;">${label}</span>
+                                </div>
+                                <div style="display:flex;gap:15px;color:#666;font-size:0.85rem;flex-wrap:wrap;">
+                                    <span><i class="fas fa-calendar" style="color:#800020;"></i> ${date}</span>
+                                    <span><i class="fas fa-clock" style="color:#800020;"></i> ${event.time}</span>
+                                    <span><i class="fas fa-map-marker-alt" style="color:#800020;"></i> ${event.location}</span>
+                                </div>
+                                ${event.is_clearance ? '<div style="margin-top:8px;color:#059669;font-size:0.85rem;"><i class="fas fa-check-circle"></i> Counts toward clearance</div>' : ''}
+                            </div>
+                        `);
+                    });
+                } else {
+                    container.innerHTML = `
+                        <div class="empty-icon"><i class="fas fa-calendar-times"></i></div>
+                        <h2>No Events Available</h2>
+                        <p>SSO admin hasn't created any events yet</p>`;
+                }
+            } catch (err) {
+                console.error('ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€¦Ã¢â‚¬â„¢ Error loading events:', err);
+                container.innerHTML = `
+                    <div class="empty-icon"><i class="fas fa-exclamation-triangle" style="color:#dc2626;"></i></div>
+                    <h2>Cannot Connect to Server</h2><p>Make sure Laravel is running</p>`;
+            }
+        }
+
+        // ============================================
+        // LOGOUT
+        // ============================================
+        function logout() { document.getElementById('logoutModal').style.display = 'flex'; }
+        function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
+        function confirmLogout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'studentlogin.html';
+        }
+        window.onclick = e => {
+            if (e.target === document.getElementById('logoutModal')) closeLogoutModal();
+        };
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = loadUserProfileData();
+            if (!user) return;
+            await Promise.all([
+                loadDashboardPayments(user.student_number),
+                loadDashboardEvents()
+            ]);
+        });
+    </script>
+</body>
+
+</html>
