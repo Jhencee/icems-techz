@@ -1,4 +1,4 @@
-﻿// ============================================
+// ============================================
 // GYMNASIUM CLEARANCE MODULE - OPTIMIZED
 // Handles all gymnasium equipment clearance functionality
 // with improved caching and reduced API calls
@@ -26,13 +26,13 @@ function clearGymnasiumCache(studentNumber = null) {
 async function fetchGymnasiumClearanceStatus(studentNumber, forceRefresh = false) {
     // Return cached result if available and not forcing refresh
     if (!forceRefresh && gymnasiumStatusCache.has(studentNumber)) {
-        console.log('📦 Using cached gymnasium status for:', studentNumber);
+        console.log('?? Using cached gymnasium status for:', studentNumber);
         return gymnasiumStatusCache.get(studentNumber);
     }
 
     // If there's already a pending request for this student, wait for it
     if (pendingRequests.has(studentNumber)) {
-        console.log('⏳ Waiting for existing request for:', studentNumber);
+        console.log('? Waiting for existing request for:', studentNumber);
         return await pendingRequests.get(studentNumber);
     }
 
@@ -46,7 +46,7 @@ async function fetchGymnasiumClearanceStatus(studentNumber, forceRefresh = false
             if (response.ok) {
                 const data = await response.json();
                 if (data.success && data.clearance) {
-                    console.log('✅ Gymnasium clearance found:', data.clearance.status);
+                    console.log('? Gymnasium clearance found:', data.clearance.status);
                     result = {
                         status: data.clearance.status,
                         remarks: data.clearance.remarks || '',
@@ -61,14 +61,14 @@ async function fetchGymnasiumClearanceStatus(studentNumber, forceRefresh = false
                 }
             } else if (response.status === 404) {
                 // 404 is expected when no clearance has been submitted yet (suppress error)
-                console.log('ℹ️ No gymnasium clearance submitted yet');
+                console.log('?? No gymnasium clearance submitted yet');
                 result = {
                     status: 'not_submitted',
                     remarks: '',
                     exists: false
                 };
             } else {
-                console.warn('⚠️ Unexpected response status:', response.status);
+                console.warn('?? Unexpected response status:', response.status);
                 result = {
                     status: 'not_submitted',
                     remarks: '',
@@ -78,7 +78,7 @@ async function fetchGymnasiumClearanceStatus(studentNumber, forceRefresh = false
 
         } catch (error) {
             // Network error or other fetch failure
-            console.log('ℹ️ Could not connect to server (network error)');
+            console.log('?? Could not connect to server (network error)');
             result = {
                 status: 'not_submitted',
                 remarks: '',
@@ -216,7 +216,7 @@ function addEquipmentItem() {
 
     const itemHTML = `
         <div class="equipment-item" id="equipment_${itemId}" style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 2px solid #e0e0e0; position: relative;">
-            <button type="button" onclick="removeEquipmentItem(${itemId})" style="position: absolute; top: 10px; right: 10px; background: #dc2626; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-size: 0.9rem;">×</button>
+            <button type="button" onclick="removeEquipmentItem(${itemId})" style="position: absolute; top: 10px; right: 10px; background: #dc2626; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-size: 0.9rem;">�</button>
             
             <div style="margin-bottom: 12px;">
                 <label style="display: block; font-weight: 600; margin-bottom: 5px; font-size: 0.9rem;">Equipment Name *</label>
@@ -379,7 +379,7 @@ async function handleGymnasiumSubmit(e) {
         const data = await response.json();
 
         if (data.success) {
-            alert('✅ Gymnasium clearance submitted successfully!\n\nYour submission is pending admin approval.');
+            alert('? Gymnasium clearance submitted successfully!\n\nYour submission is pending admin approval.');
             closeGymnasiumModal();
 
             // Clear cache for this student and reload
@@ -388,12 +388,12 @@ async function handleGymnasiumSubmit(e) {
                 await loadClearanceEvents();
             }
         } else {
-            alert('❌ ' + (data.message || 'Failed to submit clearance'));
+            alert('? ' + (data.message || 'Failed to submit clearance'));
         }
 
     } catch (error) {
         console.error('Error submitting gymnasium clearance:', error);
-        alert('❌ Failed to submit clearance. Please try again.');
+        alert('? Failed to submit clearance. Please try again.');
     } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalBtnText;

@@ -1019,7 +1019,7 @@ async function submitProof() {
         const reader = new FileReader();
         reader.onload = async function(e) {
             const base64Image = e.target.result;
-            const response = await fetch('http://127.0.0.1:8000/api/clearance/submit-proof', {
+            const response = await fetch('https://icems-techz-production.up.railway.app/api/clearance/submit-proof', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

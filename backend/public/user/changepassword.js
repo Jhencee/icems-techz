@@ -1,4 +1,4 @@
-﻿
+
 // Guard: redirect to login if no user session
 const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 if (!currentUser) {
@@ -8,9 +8,9 @@ if (!currentUser) {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('ðŸŸ¢ ICEMS Change Password JS loaded');
+    console.log('🟢 ICEMS Change Password JS loaded');
 
-    const API_URL = 'http://127.0.0.1:8000';
+    const API_URL = 'https://icems-techz-production.up.railway.app';
 
     const newPasswordInput = document.getElementById('newPassword');
     const confirmPasswordInput = document.getElementById('confirmPassword');
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const token = currentUser?.token || null;
 
             try {
-                console.log('ðŸŒ Sending change password request...');
+                console.log('🌐 Sending change password request...');
 
                 const response = await fetch(`${API_URL}/api/auth/change-password`, {
                     method: 'POST',
@@ -211,13 +211,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     })
                 });
 
-                console.log('ðŸ“¡ Response status:', response.status);
+                console.log('📡 Response status:', response.status);
                 const rawText = await response.text();
                 const data = JSON.parse(rawText.replace(/^\uFEFF/, '').trim());
-                console.log('ðŸ“¦ Response data:', data);
+                console.log('📦 Response data:', data);
 
                 if (data.success === true || response.status === 200) {
-                    console.log('âœ… Password changed successfully');
+                    console.log('✅ Password changed successfully');
                     showSuccess('Password changed successfully! Redirecting to dashboard...');
                     form.reset();
 
@@ -239,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
             } catch (error) {
-                console.error('ðŸ’¥ Change password error:', error);
+                console.error('💥 Change password error:', error);
                 showError('Connection error. Please check if the server is running.');
             } finally {
                 if (submitBtn) {

@@ -1,4 +1,4 @@
-const API_BASE = 'http://127.0.0.1:8000/api';
+const API_BASE = 'https://icems-techz-production.up.railway.app/api';
 
 // data storage
 let clearances = [];

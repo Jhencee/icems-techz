@@ -2,7 +2,7 @@
 // ATTENDANCE.JS - WITH PROPER USER DATA LOADING
 // ============================================
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
+const API_BASE_URL = 'https://icems-techz-production.up.railway.app/api';
 let currentUser = null;
 let attendanceRecords = [];
 let filteredRecords = [];

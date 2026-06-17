@@ -1,8 +1,8 @@
-﻿// ============================================
+// ============================================
 // CONFIG.JS - SHARED CONFIGURATION
 // ============================================
 const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-  ? 'http://127.0.0.1:8000/api'
+  ? 'https://icems-techz-production.up.railway.app/api'
   : window.location.origin + '/api';
 
 const SC_ID = 1;

@@ -2,7 +2,7 @@
 // SSO.JS - WITH DATABASE INTEGRATION
 // ============================================
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api'; // Ã¢Å¡Â Ã¯Â¸Â Change to your Laravel API URL
+const API_BASE_URL = 'https://icems-techz-production.up.railway.app/api'; // Ã¢Å¡Â Ã¯Â¸Â Change to your Laravel API URL
 
 // Get all the section elements
 const sections = {

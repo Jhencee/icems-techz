@@ -133,7 +133,7 @@ async function updateAdminPassword(adminId, newPassword, adminName) {
     try {
         console.log(`🔄 Sending password reset request for Admin ID: ${adminId}`);
 
-        const apiUrl = window.API_URL || 'http://127.0.0.1:8000/api';
+        const apiUrl = window.API_URL || 'https://icems-techz-production.up.railway.app/api';
 
         // Build headers
         const headers = {
@@ -227,7 +227,7 @@ async function updateAdminPassword(adminId, newPassword, adminName) {
         } else if (error.message.includes('Failed to fetch')) {
             alertFn(
                 'Error',
-                'Cannot connect to server. Please make sure your Laravel backend is running on http://127.0.0.1:8000',
+                'Cannot connect to server. Please make sure your Laravel backend is running on https://icems-techz-production.up.railway.app',
                 'error'
             );
         } else {
@@ -293,7 +293,7 @@ function logAdminAction(action, details) {
 
         console.log('📝 Logging action:', logEntry);
 
-        const apiUrl = window.API_URL || 'http://127.0.0.1:8000/api';
+        const apiUrl = window.API_URL || 'https://icems-techz-production.up.railway.app/api';
 
         // Build headers (same auth logic)
         const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };

@@ -12,7 +12,7 @@ if (typeof WebSocket !== 'undefined') {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Ã°Å¸Å¸Â¢ ICEMS Login JS loaded');
 
-    const API_URL = 'http://127.0.0.1:8000';
+    const API_URL = 'https://icems-techz-production.up.railway.app';
 
     // Super Admin - Keep hardcoded (exception)
     const SUPER_ADMIN = {

@@ -5,7 +5,7 @@
 // Compatible with Laravel API
 // ============================================
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
+const API_BASE_URL = 'https://icems-techz-production.up.railway.app/api';
 let currentPayment = { name: '', amount: 0, requirementId: null };
 let paymentRequirements = [];
 let userPayments = [];
@@ -569,7 +569,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // STUDENT PAYMENT.JS - WITH DATABASE INTEGRATION
 // ============================================
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
+const API_BASE_URL = 'https://icems-techz-production.up.railway.app/api';
 let currentPayment = { name: '', amount: 0, requirementId: null };
 let paymentRequirements = [];
 let userPayments = [];

@@ -1,4 +1,4 @@
-﻿// ============================================
+// ============================================
 // COMPLETE PASSWORD RESET SYSTEM
 // ============================================
 // NOTE: This file uses window.API_URL which should be set in the main JS file
@@ -23,11 +23,11 @@ const sampleAdminsPasswordReset = [
 function loadAdminSelect() {
     const select = document.getElementById('adminSelect');
     if (!select) {
-        console.error('âŒ adminSelect dropdown not found!');
+        console.error('❌ adminSelect dropdown not found!');
         return;
     }
 
-    console.log('ðŸ”„ Loading admin dropdown...');
+    console.log('🔄 Loading admin dropdown...');
     console.log('Available admins:', sampleAdminsPasswordReset);
 
     // Clear existing options except the first placeholder
@@ -48,10 +48,10 @@ function loadAdminSelect() {
         option.textContent = `${admin.name} (${admin.department})`;
         option.setAttribute('data-email', admin.email);
         select.appendChild(option);
-        console.log(`âœ… Added: ${admin.name} (${admin.department})`);
+        console.log(`✅ Added: ${admin.name} (${admin.department})`);
     });
 
-    console.log('âœ… Admin dropdown loaded with', sampleAdminsPasswordReset.length, 'admins');
+    console.log('✅ Admin dropdown loaded with', sampleAdminsPasswordReset.length, 'admins');
 }
 
 // ============================================
@@ -60,7 +60,7 @@ function loadAdminSelect() {
 function setupPasswordChangeForm() {
     const form = document.getElementById('resetPasswordForm');
     if (!form) {
-        console.error('âŒ Reset password form not found!');
+        console.error('❌ Reset password form not found!');
         return;
     }
 
@@ -77,7 +77,7 @@ function setupPasswordChangeForm() {
         const adminName = selectedOption ? selectedOption.textContent : 'Unknown Admin';
         const adminEmail = selectedOption ? selectedOption.dataset.email : '';
 
-        console.log('ðŸ” Password reset attempt:', {
+        console.log('🔐 Password reset attempt:', {
             adminId: adminId,
             adminName: adminName,
             passwordLength: newPassword.length
@@ -124,7 +124,7 @@ function setupPasswordChangeForm() {
         );
     });
 
-    console.log('âœ… Password change form initialized');
+    console.log('✅ Password change form initialized');
 }
 
 // ============================================
@@ -132,9 +132,9 @@ function setupPasswordChangeForm() {
 // ============================================
 async function updateAdminPassword(adminId, newPassword, adminName, adminEmail) {
     try {
-        console.log(`ðŸ”„ Sending password reset request for Admin ID: ${adminId}`);
+        console.log(`🔄 Sending password reset request for Admin ID: ${adminId}`);
 
-        const apiUrl = window.API_URL || 'http://127.0.0.1:8000/api';
+        const apiUrl = window.API_URL || 'https://icems-techz-production.up.railway.app/api';
         const response = await fetch(`${apiUrl}/admin/reset-password`, {
             method: 'POST',
             headers: {
@@ -148,17 +148,17 @@ async function updateAdminPassword(adminId, newPassword, adminName, adminEmail) 
             })
         });
 
-        console.log('ðŸ“¡ Response status:', response.status);
+        console.log('📡 Response status:', response.status);
 
         // Check if response is OK
         if (!response.ok) {
             const errorText = await response.text();
-            console.error('âŒ HTTP Error:', response.status, errorText);
+            console.error('❌ HTTP Error:', response.status, errorText);
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log('ðŸ“¦ Response data:', data);
+        console.log('📦 Response data:', data);
 
         if (data.success) {
             const alertFn = window.showAlert || showAlertPasswordReset;
@@ -181,7 +181,7 @@ async function updateAdminPassword(adminId, newPassword, adminName, adminEmail) 
             return false;
         }
     } catch (error) {
-        console.error('ðŸ’¥ Error changing password:', error);
+        console.error('💥 Error changing password:', error);
 
         const alertFn = window.showAlert || showAlertPasswordReset;
 
@@ -201,7 +201,7 @@ async function updateAdminPassword(adminId, newPassword, adminName, adminEmail) 
         } else if (error.message.includes('Failed to fetch')) {
             alertFn(
                 'Error',
-                'Cannot connect to server. Please make sure your Laravel backend is running on http://127.0.0.1:8000',
+                'Cannot connect to server. Please make sure your Laravel backend is running on https://icems-techz-production.up.railway.app',
                 'error'
             );
         } else {
@@ -236,20 +236,20 @@ function loadSecurityAdminList() {
         tbody.appendChild(tr);
     });
 
-    console.log('âœ… Security admin list loaded');
+    console.log('✅ Security admin list loaded');
 }
 
 // ============================================
 // INITIALIZE SECURITY CONTROL ON PAGE LOAD
 // ============================================
 function initializeSecurityControl() {
-    console.log('ðŸ”§ Initializing Security Control...');
+    console.log('🔧 Initializing Security Control...');
 
     loadAdminSelect();
     loadSecurityAdminList();
     setupPasswordChangeForm();
 
-    console.log('âœ… Security Control initialized successfully');
+    console.log('✅ Security Control initialized successfully');
 }
 
 // ============================================
@@ -265,9 +265,9 @@ function logAdminAction(action, details) {
             performedBy: 'Super Admin'
         };
 
-        console.log('ðŸ“ Logging action:', logEntry);
+        console.log('📝 Logging action:', logEntry);
 
-        const apiUrl = window.API_URL || 'http://127.0.0.1:8000/api';
+        const apiUrl = window.API_URL || 'https://icems-techz-production.up.railway.app/api';
 
         // Send to API for logging
         fetch(`${apiUrl}/admin/log-action`, {
@@ -279,10 +279,10 @@ function logAdminAction(action, details) {
             body: JSON.stringify(logEntry)
         })
             .then(response => response.json())
-            .then(data => console.log('âœ… Action logged:', data))
-            .catch(err => console.log('âš ï¸ Failed to log action:', err));
+            .then(data => console.log('✅ Action logged:', data))
+            .catch(err => console.log('⚠️ Failed to log action:', err));
     } catch (error) {
-        console.error('ðŸ’¥ Error logging action:', error);
+        console.error('💥 Error logging action:', error);
     }
 }
 
@@ -352,15 +352,15 @@ window.updateAdminPassword = updateAdminPassword;
 // AUTO-INITIALIZE ON DOM READY
 // ============================================
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('ðŸš€ DOM loaded - checking for Security Control section...');
+    console.log('🚀 DOM loaded - checking for Security Control section...');
 
     // Initialize if Security Control section exists (check both possible IDs)
     const securitySection = document.getElementById('securityControl') || document.getElementById('security');
     if (securitySection) {
-        console.log('âœ… Security section found, initializing...');
+        console.log('✅ Security section found, initializing...');
         initializeSecurityControl();
     } else {
-        console.log('âš ï¸ Security section not found on this page');
+        console.log('⚠️ Security section not found on this page');
     }
 });
 

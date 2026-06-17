@@ -10,7 +10,7 @@ if (!currentUser) {
 document.addEventListener('DOMContentLoaded', () => {
     console.log('ðŸŸ¢ ICEMS Change Password JS loaded');
 
-    const API_URL = 'http://127.0.0.1:8000';
+    const API_URL = 'https://icems-techz-production.up.railway.app';
 
     const newPasswordInput = document.getElementById('newPassword');
     const confirmPasswordInput = document.getElementById('confirmPassword');

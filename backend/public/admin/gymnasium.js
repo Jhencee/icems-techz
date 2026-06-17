@@ -1,4 +1,4 @@
-window.API_URL = window.API_URL || 'http://127.0.0.1:8000';
+window.API_URL = window.API_URL || 'https://icems-techz-production.up.railway.app';
 
 const customModal = document.getElementById('customModal');
 const promptModal = document.getElementById('promptModal');

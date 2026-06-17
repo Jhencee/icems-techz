@@ -1,9 +1,9 @@
-﻿/*
+/*
 // ============================================
 // CONFIG.JS - SHARED CONFIGURATION - Organization
 // ============================================
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
+const API_BASE_URL = 'https://icems-techz-production.up.railway.app/api';
 
 // Shared Application State
 
@@ -22,7 +22,7 @@ if (typeof module !== 'undefined' && module.exports) {
 // ============================================
 // CONFIG.JS - SHARED CONFIGURATION
 // ============================================
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
+const API_BASE_URL = 'https://icems-techz-production.up.railway.app/api';
 const SC_ID = 1; // Student Council ID
 
 const AppState = {

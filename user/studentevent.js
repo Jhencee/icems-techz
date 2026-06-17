@@ -1,9 +1,9 @@
-﻿// ============================================
+// ============================================
 // studentevent.js (WITH USER DATA FROM DATABASE)
 // ============================================
 
 // 1. Configuration
-window.API_URL = window.API_URL || 'http://127.0.0.1:8000';
+window.API_URL = window.API_URL || 'https://icems-techz-production.up.railway.app';
 let mockEvents = []; // Will be populated from database
 let currentUser = null; // Store logged-in user data
 
@@ -46,21 +46,21 @@ function loadUserData() {
                 sidebarAvatar.style.backgroundPosition = 'center';
                 sidebarAvatar.style.color = 'transparent';
             }
-            console.log('✅ Updated sidebar avatar:', initials);
+            console.log('? Updated sidebar avatar:', initials);
         }
 
         // Update sidebar name
         const sidebarName = document.getElementById('sidebarName');
         if (sidebarName) {
             sidebarName.textContent = fullName;
-            console.log('✅ Updated sidebar name:', fullName);
+            console.log('? Updated sidebar name:', fullName);
         }
 
         // Update sidebar ID
         const sidebarId = document.getElementById('sidebarId');
         if (sidebarId) {
             sidebarId.textContent = `${courseYear} | ${studentNumber}`;
-            console.log('✅ Updated sidebar ID:', `${courseYear} | ${studentNumber}`);
+            console.log('? Updated sidebar ID:', `${courseYear} | ${studentNumber}`);
         }
 
         // Update profile modal fields
@@ -88,10 +88,10 @@ function loadUserData() {
         const headerGreeting = document.querySelector('.header-left h1');
         if (headerGreeting) {
             headerGreeting.innerHTML = `Events <i class="fas fa-calendar-alt"></i>`;
-            console.log('✅ Updated header');
+            console.log('? Updated header');
         }
 
-        console.log('✅ User data loaded from localStorage:', user);
+        console.log('? User data loaded from localStorage:', user);
     } catch (e) {
         console.error('Failed to parse user from localStorage', e);
     }
@@ -101,14 +101,14 @@ function loadUserData() {
 // LOAD EVENTS FROM DATABASE
 // ============================================
 async function loadEventsFromDatabase() {
-    console.log('📅 Fetching events from database...');
+    console.log('?? Fetching events from database...');
 
     try {
         const response = await fetch(`${window.API_URL}/api/events`);
         const data = await response.json();
 
         if (data.success) {
-            console.log('✅ Events loaded from database:', data.events.length);
+            console.log('? Events loaded from database:', data.events.length);
 
             mockEvents = data.events.map(event => ({
                 id: event.id,
@@ -125,7 +125,7 @@ async function loadEventsFromDatabase() {
                 status: new Date(event.event_date) < new Date() ? 'attended' : 'upcoming'
             }));
 
-            console.log('📅 Transformed events:', mockEvents);
+            console.log('?? Transformed events:', mockEvents);
             return mockEvents;
         } else {
             console.error('Failed to load events:', data.message);
@@ -471,7 +471,7 @@ async function submitProof() {
         const reader = new FileReader();
         reader.onload = async function(e) {
             const base64Image = e.target.result;
-            const response = await fetch('http://127.0.0.1:8000/api/clearance/submit-proof', {
+            const response = await fetch('https://icems-techz-production.up.railway.app/api/clearance/submit-proof', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -529,7 +529,7 @@ function confirmLogout() { localStorage.removeItem('currentUser'); window.locati
 // INITIALIZATION
 // ============================================
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🚀 Initializing Student Events...');
+    console.log('?? Initializing Student Events...');
     loadUserData();
     await renderEvents();
 
@@ -540,5 +540,5 @@ document.addEventListener('DOMContentLoaded', async () => {
         calendarButtons[2].onclick = () => changeMonth(1);
     }
 
-    console.log('✅ Student Events initialized with user:', currentUser?.first_name);
+    console.log('? Student Events initialized with user:', currentUser?.first_name);
 });

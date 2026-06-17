@@ -1,4 +1,4 @@
-﻿// ORGANIZATIONEVENTS.JS - EVENT MANAGEMENT
+// ORGANIZATIONEVENTS.JS - EVENT MANAGEMENT
 // ============================================
 
 let currentCalendar = {
@@ -239,10 +239,10 @@ async function deleteEventFromModal(dateKey) {
             updateDashboardStats();
             alert('Event deleted!');
         } else {
-            alert('âŒ Failed: ' + data.message);
+            alert('❌ Failed: ' + data.message);
         }
     } catch (e) {
-        alert('âŒ Server error.');
+        alert('❌ Server error.');
     }
 }
 
@@ -330,10 +330,10 @@ function openCreateEventModal() {
                 updateDashboardStats();
                 alert(`Event "${eventData.title}" created!`);
             } else {
-                alert('âŒ Failed: ' + data.message);
+                alert('❌ Failed: ' + data.message);
             }
         } catch (err) {
-            alert('âŒ Server error: ' + err.message);
+            alert('❌ Server error: ' + err.message);
         }
     });
 }
@@ -396,10 +396,10 @@ async function handleSimpleEvent(e) {
             updateDashboardStats();
             alert(`Event "${title}" created!`);
         } else {
-            alert('âŒ Failed: ' + data.message);
+            alert('❌ Failed: ' + data.message);
         }
     } catch (err) {
-        alert('âŒ Server error: ' + err.message);
+        alert('❌ Server error: ' + err.message);
     }
 }
 
@@ -436,10 +436,10 @@ async function handleQuickEditEvent(e) {
             loadAllEventsTable();
             alert(`Event "${title}" updated!`);
         } else {
-            alert('âŒ Failed: ' + data.message);
+            alert('❌ Failed: ' + data.message);
         }
     } catch (err) {
-        alert('âŒ Server error: ' + err.message);
+        alert('❌ Server error: ' + err.message);
     }
 }
 
@@ -459,10 +459,10 @@ async function deleteQuickEvent(dateKey) {
             updateDashboardStats();
             alert('Event deleted!');
         } else {
-            alert('âŒ Failed: ' + data.message);
+            alert('❌ Failed: ' + data.message);
         }
     } catch (err) {
-        alert('âŒ Server error.');
+        alert('❌ Server error.');
     }
 }
 

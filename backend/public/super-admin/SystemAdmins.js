@@ -1,4 +1,4 @@
-﻿const API_URL = 'http://127.0.0.1:8000/api';
+const API_URL = 'https://icems-techz-production.up.railway.app/api';
 window.API_URL = API_URL;
 
 // Sample Admins
@@ -83,7 +83,7 @@ async function loadAllDataOnce() {
     try { cachedStudents = cached ? JSON.parse(cached) : []; } catch (_) { }
 
     if (isDataLoadedInSession() && cachedStudents.length > 0) {
-        console.log('✅ Loading from cache...');
+        console.log('? Loading from cache...');
         allowedStudents = cachedStudents;
         displayAllowedStudents();
         loadRoles();
@@ -95,7 +95,7 @@ async function loadAllDataOnce() {
 
     // Always fetch fresh if cache is empty
     try {
-        console.log('🔄 Fetching fresh data from API...');
+        console.log('?? Fetching fresh data from API...');
         await Promise.all([
             loadAllowedStudents(),
             loadRoles(),
@@ -115,26 +115,26 @@ async function loadAllDataOnce() {
 }
 
 async function loadAllowedStudents() {
-    console.log('═══════════════════════════════════════');
-    console.log('🔍 LOADING STUDENTS - DETAILED DEBUG');
-    console.log('═══════════════════════════════════════');
+    console.log('---------------------------------------');
+    console.log('?? LOADING STUDENTS - DETAILED DEBUG');
+    console.log('---------------------------------------');
 
     try {
-        console.log('📤 Fetching from:', `${API_URL}/admin/allowed-students`);
+        console.log('?? Fetching from:', `${API_URL}/admin/allowed-students`);
 
         const response = await fetch(`${API_URL}/admin/allowed-students`);
 
-        console.log('📥 Response status:', response.status);
-        console.log('📥 Response headers:', Object.fromEntries(response.headers.entries()));
+        console.log('?? Response status:', response.status);
+        console.log('?? Response headers:', Object.fromEntries(response.headers.entries()));
 
         const rawText = await response.text();
-        console.log('📥 Raw response (first 500 chars):', rawText.substring(0, 500));
+        console.log('?? Raw response (first 500 chars):', rawText.substring(0, 500));
 
         const data = JSON.parse(rawText);
-        console.log('📥 Parsed data:', data);
+        console.log('?? Parsed data:', data);
 
         if (data.success) {
-            console.log(`📊 Received ${data.students.length} students from API`);
+            console.log(`?? Received ${data.students.length} students from API`);
 
             data.students.forEach((student, index) => {
                 console.log(`Student ${index + 1}:`, {
@@ -149,14 +149,14 @@ async function loadAllowedStudents() {
             const registeredCount = data.students.filter(s => s.is_registered).length;
             const notRegisteredCount = data.students.filter(s => !s.is_registered).length;
 
-            console.log('📊 SUMMARY FROM API:');
+            console.log('?? SUMMARY FROM API:');
             console.log(`  - Total: ${data.students.length}`);
             console.log(`  - Registered (truthy): ${registeredCount}`);
             console.log(`  - Not Registered (falsy): ${notRegisteredCount}`);
 
             const notRegistered = data.students.filter(s => !s.is_registered);
             if (notRegistered.length > 0) {
-                console.log('❌ STUDENTS SHOWING AS NOT REGISTERED:');
+                console.log('? STUDENTS SHOWING AS NOT REGISTERED:');
                 notRegistered.forEach(s => {
                     console.log(`  - ID ${s.id}: ${s.first_name} ${s.last_name} (${s.email})`);
                     console.log(`    is_registered value: ${s.is_registered}`);
@@ -166,21 +166,21 @@ async function loadAllowedStudents() {
 
             allowedStudents = data.students;
 
-            console.log('✅ Data stored in allowedStudents global variable');
+            console.log('? Data stored in allowedStudents global variable');
             console.log('allowedStudents length:', allowedStudents.length);
 
             displayAllowedStudents();
 
-            console.log('═══════════════════════════════════════');
+            console.log('---------------------------------------');
 
         } else {
-            console.error('❌ API returned success: false');
+            console.error('? API returned success: false');
         }
     } catch (error) {
-        console.error('═══════════════════════════════════════');
-        console.error('❌ ERROR LOADING STUDENTS:', error);
+        console.error('---------------------------------------');
+        console.error('? ERROR LOADING STUDENTS:', error);
         console.error('Error stack:', error.stack);
-        console.error('═══════════════════════════════════════');
+        console.error('---------------------------------------');
         showAlert('Error', 'Failed to load students', 'error');
     }
 }
@@ -215,13 +215,13 @@ function displayAllowedStudents() {
     const tbody = document.getElementById('usersTableBody');
 
     if (!tbody) {
-        console.error('❌ Table body element not found!');
+        console.error('? Table body element not found!');
         return;
     }
 
     tbody.innerHTML = '';
 
-    console.log(`📊 Displaying ${allowedStudents.length} students in table...`);
+    console.log(`?? Displaying ${allowedStudents.length} students in table...`);
 
     if (allowedStudents.length === 0) {
         tbody.innerHTML = `
@@ -246,7 +246,7 @@ function displayAllowedStudents() {
             : '<span class="status-badge status-inactive">Not Registered</span>';
 
         const passwordDisplay = student.password
-            ? `<span style="font-family: monospace;">••••••••</span>`
+            ? `<span style="font-family: monospace;">��������</span>`
             : '<span style="color: #999;">Not Set</span>';
 
         tr.innerHTML = `
@@ -271,7 +271,7 @@ function displayAllowedStudents() {
         tbody.appendChild(tr);
     });
 
-    console.log('✅ Students displayed successfully');
+    console.log('? Students displayed successfully');
 }
 
 // ============================================
@@ -295,12 +295,12 @@ function editStudent(studentId) {
     const student = allowedStudents.find(s => s.id === studentId || s.allowed_student_id === studentId);
 
     if (!student) {
-        console.error('❌ Student not found in local data!');
+        console.error('? Student not found in local data!');
         showAlert('Error', 'Student not found', 'error');
         return;
     }
 
-    console.log('📝 Editing student:', {
+    console.log('?? Editing student:', {
         id: student.id,
         allowed_student_id: student.allowed_student_id,
         name: `${student.first_name} ${student.last_name}`,
@@ -322,7 +322,7 @@ function editStudent(studentId) {
     const statusSelect = document.getElementById('editUserStatus');
     if (statusSelect) {
         statusSelect.value = student.is_registered ? 'Active' : 'Inactive';
-        console.log('📋 Status dropdown set to:', statusSelect.value);
+        console.log('?? Status dropdown set to:', statusSelect.value);
     }
 
     openModal('editUserModal');
@@ -378,7 +378,7 @@ async function updateStudent(studentId) {
 
         const isRegistered = status === 'Active';
 
-        console.log('🔍 Form values:', { status, isRegistered });
+        console.log('?? Form values:', { status, isRegistered });
 
         const updateData = {
             first_name: firstName,
@@ -387,7 +387,7 @@ async function updateStudent(studentId) {
             is_registered: isRegistered
         };
 
-        console.log('📤 Sending update:', updateData);
+        console.log('?? Sending update:', updateData);
 
         const response = await fetch(`${API_URL}/admin/allowed-students/${studentId}`, {
             method: 'PUT',
@@ -399,13 +399,13 @@ async function updateStudent(studentId) {
         });
 
         const data = await response.json();
-        console.log('📥 Backend response:', data);
+        console.log('?? Backend response:', data);
 
         if (!response.ok) {
             throw new Error(data.message || data.error || 'Update failed');
         }
 
-        console.log('🔍 Verifying update immediately...');
+        console.log('?? Verifying update immediately...');
 
         const allResponse = await fetch(`${API_URL}/admin/allowed-students`);
         const allData = await allResponse.json();
@@ -416,14 +416,14 @@ async function updateStudent(studentId) {
             if (verifiedStudent) {
                 const dbValue = !!verifiedStudent.is_registered;
 
-                console.log('🔍 Verification result:', {
+                console.log('?? Verification result:', {
                     sent: isRegistered,
                     received: dbValue,
                     match: dbValue === isRegistered
                 });
 
                 if (dbValue !== isRegistered) {
-                    console.error('❌ UPDATE FAILED - Database has different value!');
+                    console.error('? UPDATE FAILED - Database has different value!');
                     console.error(`Expected: ${isRegistered}, Got: ${dbValue}`);
 
                     closeModal('editUserModal');
@@ -449,7 +449,7 @@ async function updateStudent(studentId) {
                     return;
                 }
 
-                console.log('✅ Verification passed - update successful');
+                console.log('? Verification passed - update successful');
 
                 const studentIndex = allowedStudents.findIndex(s => s.allowed_student_id == studentId || s.id == studentId);
                 if (studentIndex !== -1) {
@@ -463,7 +463,7 @@ async function updateStudent(studentId) {
         showAlert('Success', 'Student updated successfully!', 'success');
 
     } catch (error) {
-        console.error('❌ Error:', error);
+        console.error('? Error:', error);
         closeModal('editUserModal');
         showAlert('Error', error.message, 'error');
     }
@@ -474,7 +474,7 @@ async function updateStudent(studentId) {
 // ============================================
 async function verifyUpdateInBackground(studentId, expectedValue) {
     try {
-        console.log('🔍 Verifying update in background...');
+        console.log('?? Verifying update in background...');
 
         const response = await fetch(`${API_URL}/admin/allowed-students`);
         const data = await response.json();
@@ -485,15 +485,15 @@ async function verifyUpdateInBackground(studentId, expectedValue) {
             if (updatedStudent) {
                 const dbValue = !!updatedStudent.is_registered;
 
-                console.log('🔍 Verification result:', {
+                console.log('?? Verification result:', {
                     studentId,
                     expected: expectedValue,
                     actual: dbValue,
-                    match: dbValue === expectedValue ? '✅ MATCH' : '❌ MISMATCH'
+                    match: dbValue === expectedValue ? '? MATCH' : '? MISMATCH'
                 });
 
                 if (dbValue !== expectedValue) {
-                    console.error('❌ MISMATCH DETECTED!');
+                    console.error('? MISMATCH DETECTED!');
 
                     const studentIndex = allowedStudents.findIndex(s => s.id == studentId);
                     if (studentIndex !== -1) {
@@ -506,10 +506,10 @@ async function verifyUpdateInBackground(studentId, expectedValue) {
                         );
                     }
                 } else {
-                    console.log('✅ Verification passed - values match perfectly');
+                    console.log('? Verification passed - values match perfectly');
                 }
             } else {
-                console.error('❌ Student not found in database response');
+                console.error('? Student not found in database response');
             }
         }
     } catch (error) {
@@ -584,7 +584,7 @@ function showAlert(title, message, type = 'info') {
 // ============================================
 async function addAllowedStudent(formData) {
     try {
-        console.log('📤 Sending student data:', {
+        console.log('?? Sending student data:', {
             ...formData,
             password: formData.password ? `${formData.password.length} chars` : 'NOT SET'
         });
@@ -597,21 +597,21 @@ async function addAllowedStudent(formData) {
             body: JSON.stringify(formData)
         });
 
-        console.log('📥 Response status:', response.status);
+        console.log('?? Response status:', response.status);
 
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
             const text = await response.text();
-            console.error('❌ Server returned HTML instead of JSON:', text.substring(0, 500));
+            console.error('? Server returned HTML instead of JSON:', text.substring(0, 500));
             showAlert('Error', 'Server error. Please check the backend logs for details.', 'error');
             return false;
         }
 
         const data = await response.json();
-        console.log('📥 Response data:', data);
+        console.log('?? Response data:', data);
 
         if (response.status === 422) {
-            console.error('❌ Validation Error:', data);
+            console.error('? Validation Error:', data);
             showAlert('Validation Error', data.message || 'Please check your input', 'error');
             return false;
         }
@@ -626,7 +626,7 @@ async function addAllowedStudent(formData) {
             return false;
         }
     } catch (error) {
-        console.error('❌ Error adding student:', error);
+        console.error('? Error adding student:', error);
         showAlert('Error', 'Network error: ' + error.message, 'error');
         return false;
     }
@@ -730,7 +730,7 @@ window.showConfirm = showConfirm;
 window.openModal = openModal;
 window.closeModal = closeModal;
 
-console.log('✅ Update student functions loaded');
+console.log('? Update student functions loaded');
 
 // ============================================
 // NAVIGATION
@@ -877,7 +877,7 @@ function setupForms() {
                 auto_registered: true
             };
 
-            console.log('🔑 Auto-generated password for new user:', autoPassword);
+            console.log('?? Auto-generated password for new user:', autoPassword);
 
             const success = await addAllowedStudent(formData);
             if (success) {
@@ -1013,7 +1013,7 @@ window.onclick = function (event) {
 }
 
 // ============================================
-// LOGOUT FUNCTIONS — Director style
+// LOGOUT FUNCTIONS � Director style
 // ============================================
 function logout() {
     document.getElementById('logoutModal').style.display = 'flex';

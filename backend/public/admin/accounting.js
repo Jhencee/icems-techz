@@ -13,7 +13,7 @@ if (typeof WebSocket !== 'undefined') {
 // ACCOUNTING.JS - CLEAN VERSION
 // ============================================
 
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
+const API_BASE_URL = 'https://icems-techz-production.up.railway.app/api';
 
 let clearances = [];
 let students = [];

@@ -1,4 +1,4 @@
-﻿window.API_URL = window.API_URL || 'http://127.0.0.1:8000';
+window.API_URL = window.API_URL || 'https://icems-techz-production.up.railway.app';
 
 const customModal = document.getElementById('customModal');
 const promptModal = document.getElementById('promptModal');
@@ -15,7 +15,7 @@ let currentStudentRow = null;
 // LOAD GYMNASIUM CLEARANCE SUBMISSIONS
 // ============================================
 async function loadGymnasiumClearances() {
-    console.log('🔍 Loading gymnasium clearance submissions...');
+    console.log('?? Loading gymnasium clearance submissions...');
 
     try {
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || localStorage.getItem('adminUser') || 'null');
@@ -27,16 +27,16 @@ async function loadGymnasiumClearances() {
 
         if (data.success) {
             gymnasiumClearances = data.clearances || [];
-            console.log('✅ Loaded clearances:', gymnasiumClearances.length);
+            console.log('? Loaded clearances:', gymnasiumClearances.length);
             loadTableData();
             updateStats();
         } else {
-            console.error('❌ Failed to load clearances');
+            console.error('? Failed to load clearances');
             gymnasiumClearances = [];
             loadTableData();
         }
     } catch (error) {
-        console.error('❌ Error loading clearances:', error);
+        console.error('? Error loading clearances:', error);
         gymnasiumClearances = [];
         loadTableData();
     }
@@ -218,11 +218,11 @@ async function handlePromptSubmission() {
                 'success'
             );
         } else {
-            alert('❌ Failed to update clearance: ' + (data.message || 'Unknown error'));
+            alert('? Failed to update clearance: ' + (data.message || 'Unknown error'));
         }
     } catch (error) {
         console.error('Error updating clearance:', error);
-        alert('❌ Failed to update clearance. Please try again.');
+        alert('? Failed to update clearance. Please try again.');
     }
 }
 
@@ -331,7 +331,7 @@ function loadTableData() {
         // Remove "N/A" text and clean up hyphens
         sectionDisplay = sectionDisplay.replace(/N\/A/g, '').replace(/^-+|-+$/g, '').trim();
         if (sectionDisplay === '') {
-            sectionDisplay = '—';
+            sectionDisplay = '�';
         }
 
         html += `<tr>
@@ -441,9 +441,9 @@ function logout() {
 // INITIALIZE ON PAGE LOAD
 // ============================================
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🏋️ Gymnasium Dashboard Loading...');
+    console.log('??? Gymnasium Dashboard Loading...');
     await loadGymnasiumClearances();
-    console.log('✅ Gymnasium dashboard initialized');
+    console.log('? Gymnasium dashboard initialized');
 });
 
 window.showPrompt = showPrompt;

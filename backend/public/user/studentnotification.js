@@ -3,7 +3,7 @@
 // Connects to Laravel /api/notifications/* endpoints
 // ============================================
 
-const API_BASE_URL = window.API_URL || 'http://127.0.0.1:8000';
+const API_BASE_URL = window.API_URL || 'https://icems-techz-production.up.railway.app';
 let currentUser = null;
 let allNotifications = [];
 let currentFilter = 'all';

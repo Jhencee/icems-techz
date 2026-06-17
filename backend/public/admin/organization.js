@@ -1,8 +1,8 @@
-﻿// ============================================
+// ============================================
 // ORGANIZATION.JS - MAIN NAVIGATION & DATA
 // ============================================
 
-const API_BASE_URL_SC = 'http://127.0.0.1:8000/api';
+const API_BASE_URL_SC = 'https://icems-techz-production.up.railway.app/api';
 
 // State
 let scEvents = [];
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 isClearance: e.is_clearance || false,
             };
         });
-        console.log('📦 [SC] Restored from session cache');
+        console.log('?? [SC] Restored from session cache');
     } else {
         await Promise.all([
             loadEvents(),
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         sessionStorage.setItem('scPayments',   JSON.stringify(scPayments));
         sessionStorage.setItem('scStudents',   JSON.stringify(scStudents));
         sessionStorage.setItem('scDataLoaded', 'true');
-        console.log('✅ [SC] Data loaded from API and cached');
+        console.log('? [SC] Data loaded from API and cached');
     }
 
     updateDashboardStats();
@@ -182,7 +182,7 @@ function updateDashboardStats() {
     const verifiedTotal = scPayments
         .filter(p => p.status === 'verified')
         .reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
-    if (totalPayments) totalPayments.textContent = '₱' + verifiedTotal.toLocaleString();
+    if (totalPayments) totalPayments.textContent = '?' + verifiedTotal.toLocaleString();
 }
 
 function updateBadges() {
@@ -348,16 +348,16 @@ async function submitClearanceStatus(id, status) {
         });
         const data = await res.json();
         if (data.success) {
-            alert(`âœ… Clearance ${status} successfully!`);
+            alert(`✅ Clearance ${status} successfully!`);
             closeClearanceReview();
             await loadClearances();
             updateDashboardStats();
             updateBadges();
         } else {
-            alert('âŒ Failed: ' + (data.message || 'Unknown error'));
+            alert('❌ Failed: ' + (data.message || 'Unknown error'));
         }
     } catch (e) {
-        alert('âŒ Server error. Please try again.');
+        alert('❌ Server error. Please try again.');
         console.error(e);
     }
 }
@@ -375,7 +375,7 @@ function renderPaymentsTable() {
     const verifiedTotal = verified.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
 
     const statsCards = document.querySelectorAll('#paymentsSection .stat-card .stat-value');
-    if (statsCards[0]) statsCards[0].textContent = '₱' + verifiedTotal.toLocaleString();
+    if (statsCards[0]) statsCards[0].textContent = '?' + verifiedTotal.toLocaleString();
     if (statsCards[1]) statsCards[1].textContent = pending.length;
     if (statsCards[2]) statsCards[2].textContent = verified.length;
 
@@ -396,7 +396,7 @@ function renderPaymentsTable() {
             <tr>
                 <td>${p.student_number || '-'}</td>
                 <td style="font-weight:500;">${p.student_name || '-'}</td>
-                <td>₱${parseFloat(p.amount || 0).toLocaleString()}</td>
+                <td>?${parseFloat(p.amount || 0).toLocaleString()}</td>
                 <td>${p.created_at ? new Date(p.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '-'}</td>
                 <td>-</td>
                 <td><span style="color:${statusColor};font-weight:600;">${capitalize(p.status)}</span></td>
@@ -454,7 +454,7 @@ async function openPaymentReview(id) {
                 <div style="background:#f9fafb;padding:15px;border-radius:8px;margin-bottom:20px;">
                     <p><strong>Student:</strong> ${p.student_name || p.student_number}</p>
                     <p><strong>Payment:</strong> ${p.requirement_title || '-'}</p>
-                    <p><strong>Amount:</strong> ₱${parseFloat(p.amount || 0).toLocaleString()}</p>
+                    <p><strong>Amount:</strong> ?${parseFloat(p.amount || 0).toLocaleString()}</p>
                     <p><strong>Status:</strong> <span style="color:${statusColor};font-weight:600;">${capitalize(p.status)}</span></p>
                     ${p.admin_notes ? `<p><strong>Notes:</strong> ${p.admin_notes}</p>` : ''}
                 </div>
@@ -504,16 +504,16 @@ async function submitPaymentStatus(id, status) {
         });
         const data = await res.json();
         if (data.success) {
-            alert(`âœ… Payment ${status} successfully!`);
+            alert(`✅ Payment ${status} successfully!`);
             closePaymentReview();
             await loadPayments();
             updateDashboardStats();
             updateBadges();
         } else {
-            alert('âŒ Failed: ' + (data.message || 'Unknown error'));
+            alert('❌ Failed: ' + (data.message || 'Unknown error'));
         }
     } catch (e) {
-        alert('âŒ Server error. Please try again.');
+        alert('❌ Server error. Please try again.');
         console.error(e);
     }
 }

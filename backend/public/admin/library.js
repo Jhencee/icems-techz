@@ -3,7 +3,7 @@
 // ==========================================================
 
 if (typeof window.API_URL === 'undefined') {
-    window.API_URL = 'http://127.0.0.1:8000/api';
+    window.API_URL = 'https://icems-techz-production.up.railway.app/api';
     console.log('âš™ï¸ Using default API_URL:', window.API_URL);
 }
 

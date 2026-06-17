@@ -1,4 +1,4 @@
-﻿const API_URL = 'http://127.0.0.1:8000/api';
+const API_URL = 'https://icems-techz-production.up.railway.app/api';
 window.API_URL = API_URL;
 
 // Sample Admins
@@ -150,7 +150,7 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = 10000) {
     } catch (error) {
         clearTimeout(timer);
         if (error.name === 'AbortError') {
-            throw new Error('Request timed out. Is the Laravel server running on http://127.0.0.1:8000?');
+            throw new Error('Request timed out. Is the Laravel server running on https://icems-techz-production.up.railway.app?');
         }
         throw error;
     }
@@ -165,11 +165,11 @@ async function loadAllDataOnce() {
         const parsedCache = cached ? JSON.parse(cached) : null;
 
         if (!parsedCache || parsedCache.length === 0) {
-            console.log('⚠️ Cache is empty, fetching fresh...');
+            console.log('?? Cache is empty, fetching fresh...');
             sessionStorage.removeItem('adminDataLoaded');
             sessionStorage.removeItem('cachedStudents');
         } else {
-            console.log('✅ Loading from cache...');
+            console.log('? Loading from cache...');
             allowedStudents = parsedCache;
             displayAllowedStudents();
             loadRoles();
@@ -181,7 +181,7 @@ async function loadAllDataOnce() {
     }
 
     try {
-        console.log('🔄 Fetching fresh data from API...');
+        console.log('?? Fetching fresh data from API...');
         await Promise.all([
             loadAllowedStudents(),
             loadRoles(),
@@ -205,15 +205,15 @@ async function loadAllDataOnce() {
 // LOAD ALLOWED STUDENTS
 // ============================================
 async function loadAllowedStudents() {
-    console.log('🔍 Loading students from API...');
+    console.log('?? Loading students from API...');
 
     try {
         const response = await fetchWithTimeout(`${API_URL}/admin/allowed-students`);
 
-        console.log('📥 Response status:', response.status);
+        console.log('?? Response status:', response.status);
 
         const rawText = await response.text();
-        console.log('📥 Raw response (first 500 chars):', rawText.substring(0, 500));
+        console.log('?? Raw response (first 500 chars):', rawText.substring(0, 500));
 
         let data;
         try {
@@ -225,22 +225,22 @@ async function loadAllowedStudents() {
         }
 
         if (data.success) {
-            console.log(`📊 Received ${data.students.length} students from API`);
+            console.log(`?? Received ${data.students.length} students from API`);
 
             const registeredCount = data.students.filter(s => s.is_registered).length;
             const notRegisteredCount = data.students.filter(s => !s.is_registered).length;
 
-            console.log(`📊 Total: ${data.students.length} | Registered: ${registeredCount} | Not Registered: ${notRegisteredCount}`);
+            console.log(`?? Total: ${data.students.length} | Registered: ${registeredCount} | Not Registered: ${notRegisteredCount}`);
 
             allowedStudents = data.students;
             displayAllowedStudents();
 
         } else {
-            console.error('❌ API returned success: false', data);
+            console.error('? API returned success: false', data);
             showAlert('Error', data.message || 'Failed to load students from server.', 'error');
         }
     } catch (error) {
-        console.error('❌ ERROR LOADING STUDENTS:', error);
+        console.error('? ERROR LOADING STUDENTS:', error);
         showAlert('Error', error.message || 'Failed to load students. Check if the server is running.', 'error');
     }
 }
@@ -278,13 +278,13 @@ function displayAllowedStudents() {
     const tbody = document.getElementById('usersTableBody');
 
     if (!tbody) {
-        console.error('❌ Table body element not found!');
+        console.error('? Table body element not found!');
         return;
     }
 
     tbody.innerHTML = '';
 
-    console.log(`📊 Displaying ${allowedStudents.length} students in table...`);
+    console.log(`?? Displaying ${allowedStudents.length} students in table...`);
 
     if (allowedStudents.length === 0) {
         tbody.innerHTML = `
@@ -309,7 +309,7 @@ function displayAllowedStudents() {
             : '<span class="status-badge status-inactive">Not Registered</span>';
 
         const passwordDisplay = student.password
-            ? `<span style="font-family: monospace;">••••••••</span>`
+            ? `<span style="font-family: monospace;">��������</span>`
             : '<span style="color: #999;">Not Set</span>';
 
         const studentId = student.allowed_student_id || student.id;
@@ -336,7 +336,7 @@ function displayAllowedStudents() {
         tbody.appendChild(tr);
     });
 
-    console.log('✅ Students displayed successfully');
+    console.log('? Students displayed successfully');
 }
 
 // ============================================
@@ -346,7 +346,7 @@ function editStudent(studentId) {
     const student = allowedStudents.find(s => s.id === studentId || s.allowed_student_id === studentId);
 
     if (!student) {
-        console.error('❌ Student not found in local data!');
+        console.error('? Student not found in local data!');
         showAlert('Error', 'Student not found', 'error');
         return;
     }
@@ -399,7 +399,7 @@ function setupEditFormHandler() {
             }
             await updateStudent(studentId);
         });
-        console.log('✅ Edit form handler attached');
+        console.log('? Edit form handler attached');
     }
 }
 
@@ -426,7 +426,7 @@ async function updateStudent(studentId) {
             is_registered: isRegistered
         };
 
-        console.log('📤 Sending update:', updateData);
+        console.log('?? Sending update:', updateData);
 
         const response = await fetchWithTimeout(`${API_URL}/admin/allowed-students/${studentId}`, {
             method: 'PUT',
@@ -438,7 +438,7 @@ async function updateStudent(studentId) {
         });
 
         const data = await response.json();
-        console.log('📥 Backend response:', data);
+        console.log('?? Backend response:', data);
 
         if (!response.ok) {
             throw new Error(data.message || data.error || 'Update failed');
@@ -465,7 +465,7 @@ async function updateStudent(studentId) {
         showAlert('Success', 'Student updated successfully!', 'success');
 
     } catch (error) {
-        console.error('❌ Error updating student:', error);
+        console.error('? Error updating student:', error);
         closeModal('editUserModal');
         showAlert('Error', error.message, 'error');
     }
@@ -476,7 +476,7 @@ async function updateStudent(studentId) {
 // ============================================
 async function addAllowedStudent(formData) {
     try {
-        console.log('📤 Sending student data:', {
+        console.log('?? Sending student data:', {
             ...formData,
             password: formData.password ? `${formData.password.length} chars` : 'NOT SET'
         });
@@ -487,18 +487,18 @@ async function addAllowedStudent(formData) {
             body: JSON.stringify(formData)
         });
 
-        console.log('📥 Response status:', response.status);
+        console.log('?? Response status:', response.status);
 
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
             const text = await response.text();
-            console.error('❌ Server returned non-JSON:', text.substring(0, 500));
+            console.error('? Server returned non-JSON:', text.substring(0, 500));
             showAlert('Error', 'Server error. Please check the backend logs.', 'error');
             return false;
         }
 
         const data = await response.json();
-        console.log('📥 Response data:', data);
+        console.log('?? Response data:', data);
 
         if (response.status === 422) {
             showAlert('Validation Error', data.message || 'Please check your input', 'error');
@@ -515,7 +515,7 @@ async function addAllowedStudent(formData) {
             return false;
         }
     } catch (error) {
-        console.error('❌ Error adding student:', error);
+        console.error('? Error adding student:', error);
         showAlert('Error', 'Network error: ' + error.message, 'error');
         return false;
     }
@@ -871,5 +871,5 @@ window.closeModal = closeModal;
 window.refreshStudentList = refreshStudentList;
 window.loadAllowedStudents = loadAllowedStudents;
 
-console.log('✅ SystemAdmin.js loaded successfully');
+console.log('? SystemAdmin.js loaded successfully');
 
