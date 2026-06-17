@@ -1,0 +1,289 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Download ICEMS App</title>
+    <link rel="icon" href="/icon-192x192.png" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f8f0f1 0%, #f5f5f5 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 40px rgba(122,31,43,0.13);
+            padding: 48px 40px;
+            max-width: 440px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .logo-wrap {
+            background: #7a1f2b;
+            width: 84px;
+            height: 84px;
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 4px 16px rgba(122,31,43,0.3);
+        }
+
+        .logo-wrap img {
+            width: 52px;
+            height: 52px;
+            object-fit: contain;
+        }
+
+        .logo-wrap svg {
+            width: 48px;
+            height: 48px;
+            fill: #fff;
+        }
+
+        h1 {
+            font-size: 1.55rem;
+            color: #7a1f2b;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            color: #777;
+            font-size: 0.9rem;
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .badge-row {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #f0e6e8;
+            color: #7a1f2b;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #7a1f2b;
+            color: #fff;
+            text-decoration: none;
+            padding: 16px 28px;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 14px rgba(122,31,43,0.25);
+        }
+
+        .download-btn:hover {
+            background: #5e1720;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(122,31,43,0.35);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        .download-btn svg {
+            width: 22px;
+            height: 22px;
+            fill: #fff;
+        }
+
+        .file-info {
+            color: #aaa;
+            font-size: 0.78rem;
+            margin-bottom: 28px;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #f0f0f0;
+            margin: 24px 0;
+        }
+
+        .steps {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 4px;
+        }
+
+        .steps li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+            font-size: 0.86rem;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .step-num {
+            background: #7a1f2b;
+            color: #fff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .ios-note {
+            background: #fff8e1;
+            border: 1px solid #ffe082;
+            border-radius: 12px;
+            padding: 14px 16px;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .ios-note p {
+            font-size: 0.81rem;
+            color: #7a6020;
+            line-height: 1.6;
+        }
+
+        .ios-note strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #5d4c10;
+            font-size: 0.84rem;
+        }
+
+        .back-link {
+            margin-top: 28px;
+            font-size: 0.82rem;
+        }
+
+        .back-link a {
+            color: #7a1f2b;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            margin-top: 14px;
+            font-size: 0.72rem;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+
+    <!-- Logo -->
+    <div class="logo-wrap">
+        <!-- Uses your existing icon; fallback to SVG if missing -->
+        <img src="/icon-192x192.png" alt="ICEMS Logo"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+        <svg viewBox="0 0 24 24" style="display:none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9
+            2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12
+            14.17l7.59-7.59L21 8l-9 9z"/>
+        </svg>
+    </div>
+
+    <h1>ICEMS Mobile App</h1>
+    <p class="subtitle">
+        Integrated Clearance and Event Management System<br>
+        for PUP Santa Maria Campus
+    </p>
+
+    <div class="badge-row">
+        <span class="badge">Android APK</span>
+        <span class="badge">v1.0.0</span>
+        <span class="badge">21 MB</span>
+    </div>
+
+    <!-- Download Button -->
+    <a href="/downloads/ICEMS.apk" class="download-btn" download="ICEMS.apk">
+        <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.84v4h5.66V9h3.84L12 2z"/></svg>
+        Download for Android
+    </a>
+
+    <p class="file-info">APK &bull; Android 6.0 and above</p>
+
+    <!-- Steps -->
+    <ul class="steps">
+        <li>
+            <span class="step-num">1</span>
+            <span>Tap <strong>Download for Android</strong> above.</span>
+        </li>
+        <li>
+            <span class="step-num">2</span>
+            <span>Open your <strong>Downloads</strong> folder and tap <strong>ICEMS.apk</strong>.</span>
+        </li>
+        <li>
+            <span class="step-num">3</span>
+            <span>If prompted, enable <strong>Install from Unknown Sources</strong> in Settings.</span>
+        </li>
+        <li>
+            <span class="step-num">4</span>
+            <span>Tap <strong>Install</strong> and open the app.</span>
+        </li>
+    </ul>
+
+    <hr class="divider">
+
+    <!-- iOS Note -->
+    <div class="ios-note">
+        <p>
+            <strong>📱 iOS / iPhone Users</strong>
+            The ICEMS app is currently available for Android only.
+            iOS support is coming soon.
+        </p>
+    </div>
+
+    <div class="back-link">
+        <a href="/">← Back to ICEMS Web App</a>
+    </div>
+
+    <footer>
+        &copy; <span id="yr"></span> PUP Santa Maria Campus &bull; ICEMS
+    </footer>
+</div>
+
+<script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
