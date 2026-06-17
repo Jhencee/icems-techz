@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers\Api;
 
@@ -11,29 +11,16 @@ use Illuminate\Support\Facades\Validator;
 
 class AllowedStudentController extends Controller
 {
-    // ─────────────────────────────────────────
-    // GET /api/admin/allowed-students
-    // ─────────────────────────────────────────
     public function index()
     {
         try {
             $students = AllowedStudent::orderBy('id')->get();
-
-            return response()->json([
-                'success' => true,
-                'students' => $students,
-            ]);
+            return response()->json(['success' => true, 'students' => $students]);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
-    // ─────────────────────────────────────────
-    // POST /api/admin/allowed-students
-    // ─────────────────────────────────────────
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -47,15 +34,11 @@ class AllowedStudentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation failed.',
-                'errors' => $validator->errors(),
-            ], 422);
+            return response()->json(['success' => false, 'message' => 'Validation failed.', 'errors' => $validator->errors()], 422);
         }
 
         try {
-            $student = AllowedStudent::create([
+            $data = [
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'email' => $request->email,
@@ -64,33 +47,27 @@ class AllowedStudentController extends Controller
                 'year' => $request->year ?? null,
                 'password' => Hash::make($request->password),
                 'is_registered' => $request->boolean('auto_registered', false),
-            ]);
+            ];
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Student added successfully.',
-                'student' => $student,
-            ], 201);
+            $student = AllowedStudent::create($data);
+
+            try {
+                AllowedStudent::on('mysql_local')->create($data);
+            } catch (\Exception $localEx) {
+                \Log::warning('Local DB sync failed: ' . $localEx->getMessage());
+            }
+
+            return response()->json(['success' => true, 'message' => 'Student added successfully.', 'student' => $student], 201);
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
-            ], 500);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
-    // ─────────────────────────────────────────
-    // PUT /api/admin/allowed-students/{id}
-    // ─────────────────────────────────────────
     public function update(Request $request, $id)
     {
         $student = AllowedStudent::find($id);
-
         if (!$student) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Student not found.',
-            ], 404);
+            return response()->json(['success' => false, 'message' => 'Student not found.'], 404);
         }
 
         $validator = Validator::make($request->all(), [
@@ -101,61 +78,50 @@ class AllowedStudentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation failed.',
-                'errors' => $validator->errors(),
-            ], 422);
+            return response()->json(['success' => false, 'message' => 'Validation failed.', 'errors' => $validator->errors()], 422);
         }
 
-        $student->update([
+        $updateData = [
             'first_name' => $request->input('first_name', $student->first_name),
             'last_name' => $request->input('last_name', $student->last_name),
             'email' => $request->input('email', $student->email),
-            'is_registered' => $request->has('is_registered')
-                ? (bool) $request->input('is_registered')
-                : $student->is_registered,
-        ]);
+            'is_registered' => $request->has('is_registered') ? (bool) $request->input('is_registered') : $student->is_registered,
+        ];
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Student updated successfully.',
-            'student' => $student->fresh(),
-        ]);
+        $student->update($updateData);
+
+        try {
+            $localStudent = AllowedStudent::on('mysql_local')->find($id);
+            if ($localStudent) $localStudent->update($updateData);
+        } catch (\Exception $localEx) {
+            \Log::warning('Local DB update sync failed: ' . $localEx->getMessage());
+        }
+
+        return response()->json(['success' => true, 'message' => 'Student updated successfully.', 'student' => $student->fresh()]);
     }
 
-    // ─────────────────────────────────────────
-    // DELETE /api/admin/allowed-students/{id}
-    // ─────────────────────────────────────────
     public function destroy($id)
     {
         $student = AllowedStudent::find($id);
-
         if (!$student) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Student not found.',
-            ], 404);
+            return response()->json(['success' => false, 'message' => 'Student not found.'], 404);
         }
-
         if ($student->is_registered) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Cannot delete a registered student.',
-            ], 403);
+            return response()->json(['success' => false, 'message' => 'Cannot delete a registered student.'], 403);
         }
 
         $student->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Student deleted successfully.',
-        ]);
+        try {
+            $localStudent = AllowedStudent::on('mysql_local')->find($id);
+            if ($localStudent) $localStudent->delete();
+        } catch (\Exception $localEx) {
+            \Log::warning('Local DB delete sync failed: ' . $localEx->getMessage());
+        }
+
+        return response()->json(['success' => true, 'message' => 'Student deleted successfully.']);
     }
 
-    // ─────────────────────────────────────────
-    // POST /api/admin/allowed-students/batch
-    // ─────────────────────────────────────────
     public function batch(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -168,11 +134,7 @@ class AllowedStudentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation failed.',
-                'errors' => $validator->errors(),
-            ], 422);
+            return response()->json(['success' => false, 'message' => 'Validation failed.', 'errors' => $validator->errors()], 422);
         }
 
         $successCount = 0;
@@ -181,7 +143,6 @@ class AllowedStudentController extends Controller
 
         foreach ($request->students as $item) {
             try {
-                // Skip duplicates instead of failing entire batch
                 $exists = AllowedStudent::where('email', $item['email'])
                     ->orWhere('student_number', $item['student_number'])
                     ->exists();
@@ -192,7 +153,7 @@ class AllowedStudentController extends Controller
                     continue;
                 }
 
-                AllowedStudent::create([
+                $data = [
                     'first_name' => $item['first_name'],
                     'last_name' => $item['last_name'],
                     'email' => $item['email'],
@@ -201,7 +162,15 @@ class AllowedStudentController extends Controller
                     'year' => $item['year'] ?? null,
                     'password' => Hash::make($item['password']),
                     'is_registered' => false,
-                ]);
+                ];
+
+                AllowedStudent::create($data);
+
+                try {
+                    AllowedStudent::on('mysql_local')->create($data);
+                } catch (\Exception $localEx) {
+                    \Log::warning('Local DB batch sync failed: ' . $localEx->getMessage());
+                }
 
                 $successCount++;
             } catch (\Exception $e) {
@@ -219,44 +188,30 @@ class AllowedStudentController extends Controller
         ]);
     }
 
-    // ─────────────────────────────────────────
-    // POST /api/admin/send-password  (single)
-    // ─────────────────────────────────────────
     public function sendPassword(Request $request)
-{
-    $student = AllowedStudent::find($request->student_id);
+    {
+        $student = AllowedStudent::find($request->student_id);
+        if (!$student) {
+            return response()->json(['success' => false, 'message' => 'Student not found.'], 404);
+        }
 
-    if (!$student) {
-        return response()->json(['success' => false, 'message' => 'Student not found.'], 404);
+        $plainPassword = $this->generatePassword();
+        $student->update(['password' => Hash::make($plainPassword)]);
+
+        try {
+            Mail::raw(
+                "Hello {$request->student_name},\n\nYour ICEMS account credentials:\nStudent Number: {$request->student_number}\nPassword: {$plainPassword}\n\nPlease log in and change your password.\n\nPUP Santa Maria Branch",
+                function ($message) use ($request) {
+                    $message->to($request->email)->subject('Your ICEMS Account Password');
+                }
+            );
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Failed to send email: ' . $e->getMessage()], 500);
+        }
+
+        return response()->json(['success' => true, 'message' => "Password sent to {$request->email}."]);
     }
 
-    $plainPassword = $this->generatePassword();
-    $student->update(['password' => Hash::make($plainPassword)]);
-
-    try {
-        Mail::raw(
-            "Hello {$request->student_name},\n\n" .
-            "Your ICEMS account credentials:\n" .
-            "Student Number: {$request->student_number}\n" .
-            "Password: {$plainPassword}\n\n" .
-            "Please log in and change your password.\n\n" .
-            "PUP Santa Maria Branch",
-            function ($message) use ($request) {
-                $message->to($request->email)
-                    ->subject('Your ICEMS Account Password');
-            }
-        );
-    } catch (\Exception $e) {
-        return response()->json(['success' => false, 'message' => 'Failed to send email: ' . $e->getMessage()], 500);
-    }
-
-    return response()->json(['success' => true, 'message' => "Password sent to {$request->email}."]);
-}
-
-
-    // ─────────────────────────────────────────
-    // POST /api/admin/send-passwords-batch
-    // ─────────────────────────────────────────
     public function sendPasswordsBatch(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -268,11 +223,7 @@ class AllowedStudentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation failed.',
-                'errors' => $validator->errors(),
-            ], 422);
+            return response()->json(['success' => false, 'message' => 'Validation failed.', 'errors' => $validator->errors()], 422);
         }
 
         $sentCount = 0;
@@ -282,25 +233,15 @@ class AllowedStudentController extends Controller
         foreach ($request->students as $item) {
             try {
                 $student = AllowedStudent::find($item['student_id']);
-                if (!$student) {
-                    $failedCount++;
-                    $failedEmails[] = $item['email'];
-                    continue;
-                }
+                if (!$student) { $failedCount++; $failedEmails[] = $item['email']; continue; }
 
                 $plainPassword = $this->generatePassword();
                 $student->update(['password' => Hash::make($plainPassword)]);
 
                 Mail::raw(
-                    "Hello {$item['student_name']},\n\n" .
-                    "Your ICEMS account credentials:\n" .
-                    "Student Number: {$item['student_number']}\n" .
-                    "Password: {$plainPassword}\n\n" .
-                    "Please log in and change your password.\n\n" .
-                    "PUP Santa Maria Branch",
+                    "Hello {$item['student_name']},\n\nYour ICEMS account credentials:\nStudent Number: {$item['student_number']}\nPassword: {$plainPassword}\n\nPlease log in and change your password.\n\nPUP Santa Maria Branch",
                     function ($message) use ($item) {
-                        $message->to($item['email'])
-                            ->subject('Your ICEMS Account Password');
+                        $message->to($item['email'])->subject('Your ICEMS Account Password');
                     }
                 );
 
@@ -320,9 +261,6 @@ class AllowedStudentController extends Controller
         ]);
     }
 
-    // ─────────────────────────────────────────
-    // HELPER: generate a random password
-    // ─────────────────────────────────────────
     private function generatePassword(int $length = 10): string
     {
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$';
