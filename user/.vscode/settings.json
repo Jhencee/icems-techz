@@ -1,0 +1,5 @@
+﻿{
+    "liveServer.settings.ignoreFiles": ["**/*.html", "**/*.js", "**/*.css"],
+    "liveServer.settings.fullReload": false,
+    "liveServer.settings.wait": 10000
+}

@@ -1,0 +1,9 @@
+﻿backend/vendor/
+backend/node_modules/
+backend/.env
+icems-app/build/
+icems-app/.dart_tool/
+.DS_Store
+*.log
+claude_dump.txt
+claude_dump2.txt

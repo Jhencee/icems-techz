@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<script>(function(){var ws=window.WebSocket;window.WebSocket=function(url){if(url.indexOf("livereload")!==-1||url.indexOf("5500")!==-1){return{send:function(){},close:function(){},addEventListener:function(){}};}return new ws(url);};var es=window.EventSource;window.EventSource=function(url){if(url.indexOf("livereload")!==-1||url.indexOf("5500")!==-1){return{close:function(){},addEventListener:function(){}};}return new es(url);};})();</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICEMS - Payments</title>
+    <link rel="stylesheet" href="studentdashboard.css">
+    <link rel="stylesheet" href="payments.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+    <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo-section">
+            <div class="logo"><img src="PUP.png" alt="puplogo"></div>
+            <div class="logo-text">
+                <h2>ICEMS</h2>
+                <p>PUP Santa Maria</p>
+            </div>
+        </div>
+
+        <div class="user-profile" onclick="openProfileModal()">
+            <div class="user-avatar-large" id="sidebarAvatar">--</div>
+            <div class="user-name" id="sidebarName">Loading...</div>
+            <div class="user-id" id="sidebarId">Loading...</div>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="studentdashboard.html" class="nav-link"><i
+                        class="fas fa-home nav-icon"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="studentclearance.html" class="nav-link"><i
+                        class="fas fa-list-check nav-icon"></i><span>Clearances</span><span class="nav-badge"
+                        id="clearanceBadge">0</span></a></li>
+            <li class="nav-item"><a href="studentevent.html" class="nav-link"><i
+                        class="fas fa-calendar-alt nav-icon"></i><span>Events</span><span class="nav-badge"
+                        id="eventsBadge">0</span></a></li>
+            <li class="nav-item"><a href="studentpayment.html" class="nav-link active"><i
+                        class="fas fa-peso-sign nav-icon"></i><span>Payments</span></a></li>
+            <li class="nav-item"><a href="attendance.html" class="nav-link"><i
+                        class="fas fa-user-check nav-icon"></i><span>Attendance</span></a></li>
+        </ul>
+
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()"><i
+                    class="fas fa-sign-out-alt"></i><span>Logout</span></button>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="header-left">
+                <h1>Payments <i class="fas fa-peso-sign"></i></h1>
+                <p>Manage your fees and payment transactions</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon payments"><i class="fas fa-money-bill-transfer"></i></div>
+                    <span class="stat-change positive">Paid</span>
+                </div>
+                <div class="stat-value" id="statTotalPaid">₱0</div>
+                <div class="stat-label">Total Paid</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon clearance"><i class="fas fa-circle-exclamation"></i></div>
+                    <span class="stat-change negative">Unpaid</span>
+                </div>
+                <div class="stat-value" id="statTotalUnpaid">₱0</div>
+                <div class="stat-label">Total Unpaid</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon events"><i class="fas fa-receipt"></i></div>
+                    <span class="stat-change positive" id="statTransactionLabel">0 Transactions</span>
+                </div>
+                <div class="stat-value" id="statTransactions">0</div>
+                <div class="stat-label">Transactions</div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <button class="filter-btn active" onclick="filterPayments('all')">All</button>
+            <button class="filter-btn" onclick="filterPayments('pending')">Pending</button>
+            <button class="filter-btn" onclick="filterPayments('paid')">Paid</button>
+        </div>
+
+        <h2 class="card-title">Pending Payments</h2>
+        <!-- DB-loaded payment cards render here -->
+        <div class="payment-grid" id="paymentContainer">
+            <div style="text-align:center;padding:40px;color:#666;">
+                <i class="fas fa-spinner fa-spin" style="font-size:2rem;color:#800020;"></i>
+                <p>Loading payments...</p>
+            </div>
+        </div>
+
+        <h2 class="card-title history-title">Payment History</h2>
+        <div id="historyContainer">
+            <div class="empty-state">
+                <div class="empty-icon"><i class="fas fa-receipt"></i></div>
+                <h2>No Payment History</h2>
+                <p>You haven't made any payments yet</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAYMENT MODAL -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closePaymentModal()">&times;</span>
+            <div class="modal-header">
+                <h2 class="modal-title" id="paymentTitle">Payment</h2>
+                <p class="amount-text">Amount: <strong id="paymentAmount" class="amount-highlight">₱0</strong></p>
+            </div>
+            <div class="payment-method">
+                <div class="method-option selected" onclick="selectMethod('gcash', this)" data-method="gcash">
+                    <div class="method-icon"><i class="fas fa-mobile-screen-button"></i></div>
+                    <div class="method-name">GCash</div>
+                </div>
+            </div>
+            <div id="paymentInstructions"></div>
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('proofInput').click()">
+                <div class="upload-icon"><i class="fas fa-cloud-arrow-up"></i></div>
+                <p><strong>Upload Proof of Payment</strong></p>
+                <p class="upload-note">Screenshot or photo of receipt (max 5MB)</p>
+                <input type="file" id="proofInput" accept="image/*" hidden onchange="handleProofSelect(event)">
+            </div>
+            <div class="file-preview" id="filePreview" style="display:none;">
+                <div class="file-info">
+                    <i class="fas fa-image"></i>
+                    <span id="fileName"></span>
+                    <button class="remove-file" onclick="removeUploadedFile()"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <button class="btn btn-primary full-btn" onclick="submitPayment()">Submit Payment</button>
+        </div>
+    </div>
+
+    <!-- PROFILE MODAL -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeProfileModal()">&times;</span>
+            <div class="modal-header">
+                <h2 class="modal-title">Edit Profile</h2>
+            </div>
+            <div class="form-group"><label>Full Name</label><input type="text" id="editName" class="form-input"></div>
+            <div class="form-group"><label>Course & Year</label><input type="text" id="editCourse" class="form-input">
+            </div>
+            <div class="form-group"><label>Student ID</label><input type="text" id="editStudentId" class="form-input"
+                    readonly></div>
+            <div class="form-group"><label>Email</label><input type="email" id="editEmail" class="form-input"></div>
+            <button class="btn btn-primary full-btn" onclick="saveProfile()">Save Changes</button>
+        </div>
+    </div>
+
+    <!-- LOGOUT MODAL -->
+    <div class="logout-modal" id="logoutModal">
+        <div class="logout-modal-content">
+            <h2>Logout Confirmation</h2>
+            <p>Are you sure you want to logout?</p>
+            <div class="logout-btn-wrapper">
+                <button class="logout-confirm" onclick="confirmLogout()">Yes</button>
+                <button class="logout-cancel" onclick="closeLogoutModal()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2025 PUP Santa Maria Campus - ICEMS |
+        <a href="../about us/about.html" target="_blank" class="footer-link">About Us</a>
+    </div>
+
+    <script src="studentdashboard.js"></script>
+    <script src="payments.js"></script>
+
+    <script>
+        function logout() { document.getElementById('logoutModal').style.display = 'flex'; }
+        function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
+        function confirmLogout() { localStorage.removeItem('currentUser'); window.location.href = 'studentlogin.html'; }
+        window.onclick = e => {
+            if (e.target === document.getElementById('logoutModal')) closeLogoutModal();
+        };
+    </script>
+</body>
+
+</html>

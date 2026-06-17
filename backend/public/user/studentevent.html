@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ICEMS - Events</title>
+
+  <link rel="stylesheet" href="studentdashboard.css">
+  <link rel="stylesheet" href="studentevent.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+
+<body>
+  <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+
+  <div class="sidebar" id="sidebar">
+    <div class="logo-section">
+      <div class="logo">
+        <img src="PUP.png" alt="PUP Logo">
+      </div>
+      <div class="logo-text">
+        <h2>ICEMS</h2>
+        <p>PUP Santa Maria</p>
+      </div>
+    </div>
+
+    <div class="user-profile" onclick="openProfileModal()">
+      <div class="user-avatar-large" id="sidebarAvatar">JB</div>
+      <div class="user-name" id="sidebarName">Jhencee Borjal</div>
+      <div class="user-id" id="sidebarId">BSIT 3-2 | 2021-54321</div>
+    </div>
+
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a href="studentdashboard.html" class="nav-link">
+          <i class="fas fa-home nav-icon"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="studentclearance.html" class="nav-link">
+          <i class="fas fa-list-check nav-icon"></i>
+          <span>Clearances</span>
+          <span class="nav-badge" id="clearanceBadge">0</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="studentevent.html" class="nav-link active">
+          <i class="fas fa-calendar-alt nav-icon"></i>
+          <span>Events</span>
+          <span class="nav-badge" id="eventsBadge">0</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="studentpayment.html" class="nav-link">
+          <i class="fas fa-peso-sign nav-icon"></i>
+          <span>Payments</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="attendance.html" class="nav-link">
+          <i class="fas fa-user-check nav-icon"></i>
+          <span>Attendance</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="studentnotification.html" class="nav-link">
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="main-wrapper">
+    <div class="header">
+      <div class="header-left">
+        <h1>Events <i class="fas fa-calendar-alt"></i></h1>
+        <p>View and manage upcoming events</p>
+      </div>
+    </div>
+
+    <div class="calendar-view">
+      <div class="calendar-header">
+        <h3>October 2025</h3>
+        <div class="calendar-nav">
+          <button>← Prev</button>
+          <button>Today</button>
+          <button>Next →</button>
+        </div>
+      </div>
+      <div class="calendar-grid">
+        <div class="calendar-day header">Sun</div>
+        <div class="calendar-day header">Mon</div>
+        <div class="calendar-day header">Tue</div>
+        <div class="calendar-day header">Wed</div>
+        <div class="calendar-day header">Thu</div>
+        <div class="calendar-day header">Fri</div>
+        <div class="calendar-day header">Sat</div>
+
+        <div class="calendar-day empty"></div>
+        <div class="calendar-day empty"></div>
+        <div class="calendar-day empty"></div>
+
+      </div>
+      <div class="legend-item">
+        <div class="legend-color legend-event"></div>
+        <span>Upcoming Event</span>
+      </div>
+    </div>
+
+    <div class="tab-container">
+      <button class="tab-btn active" onclick="switchTab('upcoming')">Upcoming Events</button>
+      <button class="tab-btn" onclick="switchTab('attended')">Attended Events</button>
+      <button class="tab-btn" onclick="switchTab('all')">All Events</button>
+    </div>
+
+    <div class="tab-content active" id="upcoming">
+    </div>
+
+    <div class="tab-content" id="attended">
+    </div>
+
+    <div class="tab-content" id="all">
+    </div>
+  </div>
+
+  <div class="modal" id="uploadModal">
+    <div class="modal-content">
+      <!-- ✅ CLOSE BUTTON (change onclick) -->
+      <span class="close-modal" onclick="closeUploadModal()">&times;</span>
+
+      <!-- ✅ ADD id="modalEventTitle" -->
+      <h2 id="modalEventTitle">🔼 Submit Attendance Proof</h2>
+
+      <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+        <div class="upload-icon"><i class="fas fa-cloud-arrow-up"></i></div>
+        <p class="upload-text"><strong>Click to upload photo</strong></p>
+        <p class="upload-subtext">JPG, PNG or HEIC (max 5MB)</p>
+        <input type="file" id="fileInput" accept="image/*" class="hidden-input" onchange="handleFileSelect(event)">
+      </div>
+
+      <!-- ✅ ADD preview area (hidden by default) -->
+      <div class="preview-area" id="previewArea" style="display: none;">
+        <img id="imagePreview" alt="Preview" style="max-width: 100%; border-radius: 8px;">
+        <p class="file-info" id="fileInfo"></p>
+      </div>
+
+      <!-- ✅ CHANGE button: remove proofEventTitle, add id, change onclick -->
+      <button class="btn btn-primary full-btn" id="submitProofBtn" onclick="submitProof()">
+        <i class="fas fa-upload"></i> Submit Proof
+      </button>
+    </div>
+  </div>
+
+  <div class="modal" id="detailsModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeDetailsModal()">&times;</span>
+
+      <h2 id="detailsTitle" class="details-title"></h2>
+
+      <div class="details-info">
+        <p><i class="fas fa-location-dot"></i> <strong>Location:</strong> <span id="detailsLocation"></span></p>
+        <p><i class="fas fa-calendar-days"></i> <strong>Date & Time:</strong> <span id="detailsDate"></span></p>
+        <p><i class="fas fa-users"></i> <strong>Organizer:</strong> <span id="detailsOrganizer"></span></p>
+      </div>
+
+      <hr class="divider">
+
+      <p id="detailsDescription" class="details-description"></p>
+    </div>
+  </div>
+
+  <div class="modal" id="profileModal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeProfileModal()">&times;</span>
+      <div class="modal-header">
+        <h2 class="modal-title">Edit Profile</h2>
+      </div>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="editName" class="form-input" value="Jhencee Borjal">
+      </div>
+
+      <div class="form-group">
+        <label>Course & Year</label>
+        <input type="text" id="editCourse" class="form-input" value="BSIT 3-1">
+      </div>
+
+      <div class="form-group">
+        <label>Student ID</label>
+        <input type="text" id="editStudentId" class="form-input" value="2021-54321" readonly>
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="editEmail" class="form-input" value="jhencee.borjal@pupsmb.edu.ph">
+      </div>
+
+      <button class="btn btn-primary full-btn" onclick="saveProfile()">Save Changes</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    © 2025 PUP Santa Maria Campus - ICEMS |
+    <a href="../about us/about.html" target="_blank" class="footer-link">About Us</a>
+
+  </div>
+
+  <div class="logout-modal" id="logoutModal">
+    <div class="logout-modal-content">
+      <h2>Logout Confirmation</h2>
+      <p>Are you sure you want to logout?</p>
+
+      <div class="logout-btn-wrapper">
+        <button class="logout-confirm" onclick="confirmLogout()">Yes</button>
+        <button class="logout-cancel" onclick="closeLogoutModal()">No</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="studentdashboard.js"></script>
+  <script src="studentevent.js"></script>
+</body>
+
+</html>
