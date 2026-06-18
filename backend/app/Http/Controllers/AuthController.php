@@ -48,6 +48,7 @@ class AuthController extends Controller
                     'last_name' => $student->last_name,
                     'student_number' => $student->student_number,
                     'role' => 'student',
+                    'password_changed' => $student->password_changed,
                 ]
             ]);
         }
@@ -72,6 +73,7 @@ class AuthController extends Controller
                     'year' => $allowed->year,
                     'section' => $allowed->section,
                     'role' => 'student',
+                    'password_changed' => $student->password_changed,
                 ]
             ]);
         }
@@ -162,6 +164,7 @@ class AuthController extends Controller
     // POST /api/password/send-code
     public function sendResetCode(Request $request): JsonResponse
     {
+        \Log::info('sendResetCode request', ['body' => $request->all(), 'raw' => $request->getContent()]);
         $request->validate(['email' => 'required|email']);
 
         // Check if email exists in students or allowed_students
@@ -335,6 +338,7 @@ class AuthController extends Controller
                     'course' => $student->course,
                     'year' => $student->year,
                     'role' => 'student',
+                    'password_changed' => $student->password_changed,
                 ]
             ]);
         }
